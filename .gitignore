@@ -1,0 +1,59 @@
+# ==========================================
+# Microsoft Fabric & Power BI (.pbip)
+# ==========================================
+# Local dataset cache (large binary file that updates on every desktop refresh)
+**/.pbi/cache.abf
+
+# User-specific layout and canvas settings
+**/.pbi/localSettings.json
+
+# Temporary Power BI cache directories
+**/DataMashup/
+**/Report/Layout
+
+# ==========================================
+# Python & Spark Notebooks
+# ==========================================
+__pycache__/
+*.py[cod]
+*$py.class
+.ipynb_checkpoints/
+*.synapse_execution
+
+# Virtual environments
+.venv/
+venv/
+ENV/
+env/
+
+# Data caches & temporary outputs
+*.csv
+*.parquet
+*.jsonl
+!.gitkeep
+
+# ==========================================
+# Secrets & Credentials
+# ==========================================
+.env
+.env.*
+secrets.json
+*.key
+*.pem
+*.pfx
+
+# ==========================================
+# Operating System & IDE Files
+# ==========================================
+# macOS / Windows metadata
+.DS_Store
+Thumbs.db
+ehthumbs.db
+
+# VS Code (ignore user settings, keep project configs if needed)
+.vscode/*
+# Use exclamation marks to sidestep a rule, e.g.:
+# !.vscode/settings.json
+
+# JetBrains / PyCharm
+.idea/
