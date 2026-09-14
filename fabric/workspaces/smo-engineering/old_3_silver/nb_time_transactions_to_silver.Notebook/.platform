@@ -1,0 +1,11 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "Notebook",
+    "displayName": "nb_time_transactions_to_silver"
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "88dd5afa-6669-bd30-4e2f-87c9745c5ef8"
+  }
+}

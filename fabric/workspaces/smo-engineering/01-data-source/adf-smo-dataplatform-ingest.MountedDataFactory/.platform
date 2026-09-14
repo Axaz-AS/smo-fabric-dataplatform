@@ -1,0 +1,11 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "MountedDataFactory",
+    "displayName": "adf-smo-dataplatform-ingest"
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "d6752442-6f2b-9599-401d-a804a12fcd8e"
+  }
+}

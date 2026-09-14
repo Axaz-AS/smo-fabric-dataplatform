@@ -1,0 +1,78 @@
+{
+  "formatVersion": "202502",
+  "computeEngineSettings": {
+    "allowModernEvaluationEngine": true
+  },
+  "name": "df_sharepoint_mappings_load",
+  "queryGroups": [],
+  "documentLocale": "en-GB",
+  "queriesMetadata": {
+    "Ansatt-Navn": {
+      "queryId": "b940c699-1b35-4cc0-9d93-5fa6c09ae941",
+      "queryName": "Ansatt-Navn",
+      "loadEnabled": false
+    },
+    "Tidskategori": {
+      "queryId": "a5bf54ce-1f78-4df8-809b-62a8600201f8",
+      "queryName": "Tidskategori",
+      "loadEnabled": false
+    },
+    "Nomenklatur": {
+      "queryId": "20703d2f-0660-4fa3-9d15-d7b9c5cf01f5",
+      "queryName": "Nomenklatur",
+      "loadEnabled": false
+    },
+    "Nomenkaltur Mikkel forenklet": {
+      "queryId": "37f38fdc-fa50-4cbe-a37c-b13636e11318",
+      "queryName": "Nomenkaltur Mikkel forenklet",
+      "loadEnabled": false
+    },
+    "Ansatt-Avdeling": {
+      "queryId": "9817f37a-78dc-4daa-b419-692a905a74eb",
+      "queryName": "Ansatt-Avdeling",
+      "loadEnabled": false
+    },
+    "Tidskategori_DataDestination": {
+      "queryId": "572fb14b-7c40-4262-880b-eefcec74832b",
+      "queryName": "Tidskategori_DataDestination",
+      "isHidden": true,
+      "loadEnabled": false
+    },
+    "Nomenkaltur Mikkel forenklet_DataDestination": {
+      "queryId": "1c814c06-c01b-4518-8038-922c181c4870",
+      "queryName": "Nomenkaltur Mikkel forenklet_DataDestination",
+      "isHidden": true,
+      "loadEnabled": false
+    },
+    "Ansatt-Avdeling_DataDestination": {
+      "queryId": "d47fc22f-24c7-476d-af3c-ab890c70df1d",
+      "queryName": "Ansatt-Avdeling_DataDestination",
+      "isHidden": true,
+      "loadEnabled": false
+    },
+    "Ansatt-Navn_DataDestination": {
+      "queryId": "025ee25b-4e5f-4040-ac68-781b65807f47",
+      "queryName": "Ansatt-Navn_DataDestination",
+      "isHidden": true,
+      "loadEnabled": false
+    },
+    "Nomenklatur_DataDestination": {
+      "queryId": "74e16b6e-8af2-4c32-bbfc-1a8cfd56d040",
+      "queryName": "Nomenklatur_DataDestination",
+      "isHidden": true,
+      "loadEnabled": false
+    }
+  },
+  "connections": [
+    {
+      "path": "https://sophiesmindeortopedi.sharepoint.com/",
+      "kind": "SharePoint",
+      "connectionId": "{\"ClusterId\":\"b432db42-5e1d-4ea5-91aa-6cfd0f59c3e9\",\"DatasourceId\":\"2624eaa7-98f6-46ed-aac6-f4bac79a7425\"}"
+    },
+    {
+      "path": "Lakehouse",
+      "kind": "Lakehouse",
+      "connectionId": "{\"ClusterId\":\"b432db42-5e1d-4ea5-91aa-6cfd0f59c3e9\",\"DatasourceId\":\"d7e30483-b31c-4f5f-b000-96aa154a86fa\"}"
+    }
+  ]
+}

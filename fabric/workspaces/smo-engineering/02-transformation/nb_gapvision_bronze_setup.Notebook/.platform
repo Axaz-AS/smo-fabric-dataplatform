@@ -1,0 +1,11 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "Notebook",
+    "displayName": "nb_gapvision_bronze_setup"
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "6d05a6f5-6101-b156-4c8c-7658e17d80d5"
+  }
+}

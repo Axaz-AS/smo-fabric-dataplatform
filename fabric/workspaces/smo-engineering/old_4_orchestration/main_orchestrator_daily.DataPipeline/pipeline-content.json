@@ -1,0 +1,310 @@
+{
+  "properties": {
+    "activities": [
+      {
+        "type": "TridentNotebook",
+        "typeProperties": {
+          "notebookId": "a0bbda99-4f0e-a982-43d3-8f59df208d3b",
+          "workspaceId": "00000000-0000-0000-0000-000000000000"
+        },
+        "policy": {
+          "timeout": "0.12:00:00",
+          "retry": 0,
+          "retryIntervalInSeconds": 30,
+          "secureInput": false,
+          "secureOutput": false
+        },
+        "name": "Silver GAP Vision",
+        "dependsOn": [
+          {
+            "activity": "adf_ingest_gapvision",
+            "dependencyConditions": [
+              "Succeeded"
+            ]
+          }
+        ]
+      },
+      {
+        "type": "RefreshDataflow",
+        "typeProperties": {
+          "dataflowId": "3944cda0-b743-44ce-a797-b59a6c502d51",
+          "workspaceId": "980353b7-5679-44f3-995c-c6295358f15f",
+          "notifyOption": "NoNotification",
+          "dataflowType": "DataflowFabric"
+        },
+        "policy": {
+          "timeout": "0.12:00:00",
+          "retry": 0,
+          "retryIntervalInSeconds": 30,
+          "secureInput": false,
+          "secureOutput": false
+        },
+        "name": "df_gapvision_to_gold",
+        "dependsOn": [
+          {
+            "activity": "Silver GAP Vision",
+            "dependencyConditions": [
+              "Succeeded"
+            ]
+          }
+        ]
+      },
+      {
+        "type": "InvokePipeline",
+        "typeProperties": {
+          "parameters": {},
+          "waitOnCompletion": true,
+          "pipelineName": "pl_main_gapvision_export",
+          "operationType": "InvokeADFPipeline"
+        },
+        "externalReferences": {
+          "connection": "7972ec38-c85a-41c3-a5a9-bada360bf1c2"
+        },
+        "policy": {
+          "timeout": "0.12:00:00",
+          "retry": 3,
+          "retryIntervalInSeconds": 30,
+          "secureInput": false,
+          "secureOutput": false
+        },
+        "name": "adf_ingest_gapvision",
+        "dependsOn": []
+      },
+      {
+        "type": "TridentNotebook",
+        "typeProperties": {
+          "notebookId": "1500fd86-36ec-b040-4956-fd3a9ac573bf",
+          "workspaceId": "00000000-0000-0000-0000-000000000000"
+        },
+        "policy": {
+          "timeout": "0.12:00:00",
+          "retry": 0,
+          "retryIntervalInSeconds": 30,
+          "secureInput": false,
+          "secureOutput": false
+        },
+        "name": "Silver NOBS",
+        "dependsOn": [
+          {
+            "activity": "Bronze NOBS load json",
+            "dependencyConditions": [
+              "Succeeded"
+            ]
+          },
+          {
+            "activity": "Sharepoint Excell mapping to bronze",
+            "dependencyConditions": [
+              "Succeeded"
+            ]
+          }
+        ]
+      },
+      {
+        "type": "InvokePipeline",
+        "typeProperties": {
+          "parameters": {
+            "entity_list": [
+              "STAT_Statistikk",
+              "StatEvent",
+              "StatKliniker",
+              "StatNomenklatur_detail",
+              "StatOrdrehistorikk",
+              "StatOrdrelinje",
+              "StatPasient_detail",
+              "StatTime",
+              "StatVedtak"
+            ]
+          },
+          "waitOnCompletion": true,
+          "pipelineName": "pl_main_nobs_full_load_set_of_entities",
+          "operationType": "InvokeADFPipeline"
+        },
+        "externalReferences": {
+          "connection": "7972ec38-c85a-41c3-a5a9-bada360bf1c2"
+        },
+        "policy": {
+          "timeout": "0.12:00:00",
+          "retry": 0,
+          "retryIntervalInSeconds": 30,
+          "secureInput": false,
+          "secureOutput": false
+        },
+        "name": "adf_ingest_nobs",
+        "dependsOn": []
+      },
+      {
+        "type": "RefreshDataflow",
+        "typeProperties": {
+          "dataflowId": "47738cd9-3f3a-4696-bbdb-aaccee674658",
+          "workspaceId": "980353b7-5679-44f3-995c-c6295358f15f",
+          "notifyOption": "NoNotification",
+          "dataflowType": "DataflowFabric"
+        },
+        "policy": {
+          "timeout": "0.12:00:00",
+          "retry": 0,
+          "retryIntervalInSeconds": 30,
+          "secureInput": false,
+          "secureOutput": false
+        },
+        "name": "df_nobs_to_gold",
+        "dependsOn": [
+          {
+            "activity": "Silver NOBS",
+            "dependencyConditions": [
+              "Succeeded"
+            ]
+          }
+        ]
+      },
+      {
+        "type": "TridentNotebook",
+        "typeProperties": {
+          "notebookId": "859525c3-4eb4-8c77-408b-ca066f03de4e",
+          "workspaceId": "00000000-0000-0000-0000-000000000000"
+        },
+        "policy": {
+          "timeout": "0.12:00:00",
+          "retry": 0,
+          "retryIntervalInSeconds": 30,
+          "secureInput": false,
+          "secureOutput": false
+        },
+        "name": "Bronze NOBS load json",
+        "dependsOn": [
+          {
+            "activity": "adf_ingest_nobs",
+            "dependencyConditions": [
+              "Succeeded"
+            ]
+          }
+        ]
+      },
+      {
+        "type": "InvokePipeline",
+        "typeProperties": {
+          "parameters": {
+            "start_date": "2025-01-01",
+            "end_date": "2026-06-01"
+          },
+          "waitOnCompletion": true,
+          "pipelineName": "pl_main_capitech_export",
+          "operationType": "InvokeADFPipeline"
+        },
+        "externalReferences": {
+          "connection": "7972ec38-c85a-41c3-a5a9-bada360bf1c2"
+        },
+        "policy": {
+          "timeout": "0.12:00:00",
+          "retry": 0,
+          "retryIntervalInSeconds": 30,
+          "secureInput": false,
+          "secureOutput": false
+        },
+        "name": "adf_capitech_ingest",
+        "dependsOn": []
+      },
+      {
+        "type": "TridentNotebook",
+        "typeProperties": {
+          "notebookId": "88dd5afa-6669-bd30-4e2f-87c9745c5ef8",
+          "workspaceId": "00000000-0000-0000-0000-000000000000"
+        },
+        "policy": {
+          "timeout": "0.12:00:00",
+          "retry": 0,
+          "retryIntervalInSeconds": 30,
+          "secureInput": false,
+          "secureOutput": false
+        },
+        "name": "Silver - Unified Time Transactions",
+        "dependsOn": [
+          {
+            "activity": "Bronze NOBS load json",
+            "dependencyConditions": [
+              "Succeeded"
+            ]
+          },
+          {
+            "activity": "Bronze Capitech Load json",
+            "dependencyConditions": [
+              "Succeeded"
+            ]
+          },
+          {
+            "activity": "Sharepoint Excell mapping to bronze",
+            "dependencyConditions": [
+              "Succeeded"
+            ]
+          }
+        ]
+      },
+      {
+        "type": "TridentNotebook",
+        "typeProperties": {
+          "notebookId": "5ea7bd26-d974-a512-466d-4314e25837da",
+          "workspaceId": "00000000-0000-0000-0000-000000000000"
+        },
+        "policy": {
+          "timeout": "0.12:00:00",
+          "retry": 0,
+          "retryIntervalInSeconds": 30,
+          "secureInput": false,
+          "secureOutput": false
+        },
+        "name": "Bronze Capitech Load json",
+        "dependsOn": [
+          {
+            "activity": "adf_capitech_ingest",
+            "dependencyConditions": [
+              "Succeeded"
+            ]
+          }
+        ]
+      },
+      {
+        "type": "RefreshDataflow",
+        "typeProperties": {
+          "dataflowId": "574417c7-78f2-4d2f-a6ba-bbade55227bf",
+          "workspaceId": "980353b7-5679-44f3-995c-c6295358f15f",
+          "notifyOption": "NoNotification",
+          "dataflowType": "DataflowFabric"
+        },
+        "policy": {
+          "timeout": "0.12:00:00",
+          "retry": 0,
+          "retryIntervalInSeconds": 30,
+          "secureInput": false,
+          "secureOutput": false
+        },
+        "name": "Gold - Unified Time Transactions",
+        "dependsOn": [
+          {
+            "activity": "Silver - Unified Time Transactions",
+            "dependencyConditions": [
+              "Succeeded"
+            ]
+          }
+        ]
+      },
+      {
+        "type": "RefreshDataflow",
+        "typeProperties": {
+          "dataflowId": "89f4e6b0-9b9e-837e-4e89-94359e739d59",
+          "workspaceId": "00000000-0000-0000-0000-000000000000",
+          "notifyOption": "NoNotification",
+          "dataflowType": "DataflowFabric"
+        },
+        "policy": {
+          "timeout": "0.12:00:00",
+          "retry": 0,
+          "retryIntervalInSeconds": 30,
+          "secureInput": false,
+          "secureOutput": false
+        },
+        "name": "Sharepoint Excell mapping to bronze",
+        "dependsOn": []
+      }
+    ]
+  }
+}

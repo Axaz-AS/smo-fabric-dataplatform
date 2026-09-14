@@ -1,0 +1,11 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "GraphQLApi",
+    "displayName": "api_boomi_integrations_authsso"
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "d5bb16f5-5374-b4a0-4e08-8cb4c7605864"
+  }
+}

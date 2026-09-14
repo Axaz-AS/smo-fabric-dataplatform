@@ -1,0 +1,11 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "Dataflow",
+    "displayName": "df_sharepoint_mappings_load"
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "89f4e6b0-9b9e-837e-4e89-94359e739d59"
+  }
+}

@@ -1,0 +1,82 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/graphqlApi/definition/1.0.0/schema.json",
+  "datasources": [
+    {
+      "objects": [
+        {
+          "actions": {
+            "Query": "Enabled"
+          },
+          "fieldMappings": {
+            "created_at_utc": "created_at_utc",
+            "date_delivered": "date_delivered",
+            "date_planned_delivery": "date_planned_delivery",
+            "department": "department",
+            "engineer_name": "engineer_name",
+            "engineer_name_simployer": "engineer_name_simployer",
+            "ingestion_timestamp": "ingestion_timestamp",
+            "is_urgent": "is_urgent",
+            "modified_at_utc": "modified_at_utc",
+            "nomenclature_code": "nomenclature_code",
+            "nomenclature_description": "nomenclature_description",
+            "nomenclature_fixed_price": "nomenclature_fixed_price",
+            "nomenclature_product_group": "nomenclature_product_group",
+            "nomenclature_subject_area": "nomenclature_subject_area",
+            "order_number": "order_number",
+            "order_type": "order_type",
+            "patient_age": "patient_age",
+            "patient_number": "patient_number",
+            "production_manager_name": "production_manager_name",
+            "production_manager_name_simployer": "production_manager_name_simployer",
+            "status": "status"
+          },
+          "graphqlType": "order",
+          "relationships": [
+            {
+              "cardinality": "ManyToOne",
+              "field": "nomenclature",
+              "linkingSourceFields": [],
+              "linkingTargetFields": [],
+              "sourceFields": [
+                "nomenclature_code"
+              ],
+              "targetFields": [
+                "pk_nomenclature_code"
+              ],
+              "targetObject": "nobs.s_nobs_nomenclature"
+            }
+          ],
+          "sourceObject": "boomi_data_products.v_orders",
+          "sourceObjectType": "View"
+        },
+        {
+          "actions": {
+            "Query": "Enabled",
+            "Query_by_pk": "Enabled",
+            "Create": "Enabled",
+            "Update": "Enabled",
+            "Delete": "Enabled"
+          },
+          "fieldMappings": {
+            "description": "description",
+            "has_additional_codes": "has_additional_codes",
+            "nobs_id": "nobs_id",
+            "nomenclature_category_code": "nomenclature_category_code",
+            "pk_nomenclature_code": "pk_nomenclature_code",
+            "price_group": "price_group",
+            "product_group": "product_group",
+            "product_sub_group": "product_sub_group",
+            "subject_area": "subject_area"
+          },
+          "graphqlType": "nomenclature",
+          "relationships": [],
+          "sourceObject": "nobs.s_nobs_nomenclature",
+          "sourceObjectType": "Table"
+        }
+      ],
+      "sourceItemId": "fe86dba9-e7b0-433e-863a-b366d6a37611",
+      "sourceType": "SqlAnalyticsEndpoint",
+      "sourceWorkspaceId": "0090292d-63b6-403d-b31a-2ae7358fc623"
+    }
+  ]
+}

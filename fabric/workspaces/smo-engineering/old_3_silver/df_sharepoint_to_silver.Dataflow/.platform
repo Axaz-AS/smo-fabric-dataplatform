@@ -1,0 +1,11 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "Dataflow",
+    "displayName": "df_sharepoint_to_silver"
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "86cbc3d1-6cb1-9a9c-4006-35a480f06ee3"
+  }
+}
