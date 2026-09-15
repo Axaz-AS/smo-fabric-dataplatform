@@ -1,6 +1,6 @@
 /*
-    Model: int_clinical__nomenclature_unified
-    Domain: Clinical
+    Model: int_ops__nomenclature_unified
+    Domain: Operations (Ops)
     Grain: 1 row per nomenclature code (pk_nomenclature_code)
 
     Business Logic & Assumptions:

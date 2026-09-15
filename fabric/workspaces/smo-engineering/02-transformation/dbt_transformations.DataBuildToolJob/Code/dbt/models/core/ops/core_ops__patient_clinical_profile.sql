@@ -1,12 +1,12 @@
 /*
-    Model: core_clinical__patient_clinical_profile
-    Domain: Clinical
+    Model: core_ops__patient_clinical_profile
+    Domain: Operations (Ops)
     Grain: 1 row per patient clinical profile (pk_patient_clinical_profile_id)
 
     Business Logic:
     - Normalized 1:1 clinical metrics, treatment risk assessments, and behavioral/communication
       notes for patients.
-    - Sourced from exp_personalia and strictly linked to core_clinical__patient.
+    - Sourced from exp_personalia and strictly linked to core_ops__patient.
 */
 
 WITH source AS (
@@ -14,7 +14,7 @@ WITH source AS (
 ),
 
 patients AS (
-    SELECT pk_patient_id FROM {{ ref('core_clinical__patient') }}
+    SELECT pk_patient_id FROM {{ ref('core_ops__patient') }}
 ),
 
 clinical_profile AS (

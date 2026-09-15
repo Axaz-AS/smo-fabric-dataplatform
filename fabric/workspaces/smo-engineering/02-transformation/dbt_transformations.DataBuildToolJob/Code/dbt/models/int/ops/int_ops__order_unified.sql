@@ -1,12 +1,12 @@
 /*
-    Model: int_clinical__order_unified
-    Domain: Clinical
-    Grain: 1 row per clinical order (pk_order_id / order_number)
+    Model: int_ops__order_unified
+    Domain: Operations (Ops)
+    Grain: 1 row per clinical / manufacturing order (pk_order_id / order_number)
 
     Business Logic & Assumptions:
-    - Master conformed clinical order entity for Sophies Minde.
+    - Master conformed operational order entity for Sophies Minde.
     - Sourced from base_nobs__statistikk, which records order-level lines and component statistics.
-    - Resolves the order header grain (1 row per order) by selecting the primary assistive device
+    - Resolves the order header grain (1 row per order_number) by selecting the primary assistive device
       nomenclature code (prioritizing physical devices over 598/599 supplementary service codes).
     - Aggregates total order item count, total quantity, and invoice amounts across all lines.
     - Maps role-based foreign keys to patient, engineer (clinician), production manager,

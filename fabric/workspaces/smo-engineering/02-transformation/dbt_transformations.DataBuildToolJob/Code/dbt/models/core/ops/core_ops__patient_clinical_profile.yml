@@ -1,8 +1,8 @@
 version: 2
 
 models:
-  - name: core_clinical__patient_clinical_profile
-    description: "Normalized 1:1 clinical profile per patient containing clinical metrics (height, weight, activity level, treatment risk) and practitioner communication notes. Extracted from exp_personalia and strictly linked to core_clinical__patient."
+  - name: core_ops__patient_clinical_profile
+    description: "Normalized 1:1 clinical profile per patient containing clinical metrics (height, weight, activity level, treatment risk) and practitioner communication notes. Extracted from exp_personalia and strictly linked to core_ops__patient."
     config:
       meta:
         grain: "one row per patient clinical profile"
@@ -13,13 +13,13 @@ models:
           - not_null
           - unique
       - name: fk_patient
-        description: "Foreign key reference to core_clinical__patient."
+        description: "Foreign key reference to core_ops__patient."
         tests:
           - not_null
           - unique
           - relationships:
               arguments:
-                to: ref('core_clinical__patient')
+                to: ref('core_ops__patient')
                 field: pk_patient_id
       - name: clinical_activity_level
         description: "Clinical activity level of the patient (KLI_Aktivitetsnivå)."

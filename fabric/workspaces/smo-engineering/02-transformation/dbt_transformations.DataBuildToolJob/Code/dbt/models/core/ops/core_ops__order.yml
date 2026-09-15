@@ -1,7 +1,7 @@
 version: 2
 
 models:
-  - name: core_clinical__order
+  - name: core_ops__order
     description: "Conformed core entity representing clinical orthopedic orders (prosthetics, orthotics, orthopedic footwear). Resolves the order header grain by capturing primary device nomenclature and aggregating line quantities and financials."
     config:
       meta:
@@ -18,17 +18,17 @@ models:
           - not_null
           - unique
       - name: fk_patient
-        description: "Foreign key reference to core_clinical__patient."
+        description: "Foreign key reference to core_ops__patient."
       - name: patient_number
         description: "Patient number associated with the order."
       - name: fk_employee_engineer
-        description: "Foreign key reference to core_clinical__employee for the attending orthopedic engineer."
+        description: "Foreign key reference to core_ops__employee for the attending orthopedic engineer."
       - name: fk_employee_production_manager
-        description: "Foreign key reference to core_clinical__employee for the production manager."
+        description: "Foreign key reference to core_ops__employee for the production manager."
       - name: fk_health_personnel_rekvirent
-        description: "Foreign key reference to core_clinical__health_personnel for the requisitioning physician."
+        description: "Foreign key reference to core_ops__health_personnel for the requisitioning physician."
       - name: fk_primary_nomenclature
-        description: "Foreign key reference to core_clinical__nomenclature for the primary assistive device."
+        description: "Foreign key reference to core_ops__nomenclature for the primary assistive device."
       - name: department_name
         description: "Clinic department handling the order."
       - name: location_name

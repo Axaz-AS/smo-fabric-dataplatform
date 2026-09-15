@@ -1,7 +1,7 @@
 version: 2
 
 models:
-  - name: core_clinical__nomenclature
+  - name: core_ops__nomenclature
     description: "Conformed core dimension representing the master catalog of orthopedic aid nomenclature codes (ISPO / NAV standard classification). Unifies reference mapping data with internal NOBS product codes."
     config:
       meta:

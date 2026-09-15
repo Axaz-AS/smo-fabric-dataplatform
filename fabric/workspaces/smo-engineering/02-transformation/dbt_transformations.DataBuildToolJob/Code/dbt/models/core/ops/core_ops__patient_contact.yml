@@ -1,7 +1,7 @@
 version: 2
 
 models:
-  - name: core_clinical__patient_contact
+  - name: core_ops__patient_contact
     description: "Normalized 1:N contact methods (mobile numbers, phone numbers, private and work email addresses) per patient. Extracted from exp_kontakt and scoped strictly to patients."
     config:
       meta:
@@ -13,12 +13,12 @@ models:
           - not_null
           - unique
       - name: fk_patient
-        description: "Foreign key reference to core_clinical__patient."
+        description: "Foreign key reference to core_ops__patient."
         tests:
           - not_null
           - relationships:
               arguments:
-                to: ref('core_clinical__patient')
+                to: ref('core_ops__patient')
                 field: pk_patient_id
       - name: contact_type
         description: "Type of contact channel (e.g. Mobil, Telefon, Epost privat, Epost arbeid)."

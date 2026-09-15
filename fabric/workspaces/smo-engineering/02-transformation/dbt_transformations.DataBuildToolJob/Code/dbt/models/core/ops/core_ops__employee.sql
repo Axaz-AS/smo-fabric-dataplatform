@@ -1,17 +1,18 @@
 /*
-    Model: core_clinical__employee
-    Domain: Clinical
+    Model: core_ops__employee
+    Domain: Operations (Ops)
     Grain: 1 row per internal Sophies Minde employee (pk_employee_id)
 
     Business Logic:
     - Represents internal Sophies Minde staff (orthopedic engineers, technicians,
       administrative staff, and leadership).
+    - Excludes clinic consultation and meeting rooms (Rom) present in statkliniker.
     - Unifies the rich master attributes from exp_medarbeider with full legacy population
       coverage from statkliniker.
 */
 
 WITH unified AS (
-    SELECT * FROM {{ ref('int_clinical__employee_unified') }}
+    SELECT * FROM {{ ref('int_ops__employee_unified') }}
 )
 
 SELECT

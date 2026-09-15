@@ -1,6 +1,6 @@
 /*
-    Model: core_clinical__patient
-    Domain: Clinical
+    Model: core_ops__patient
+    Domain: Operations (Ops)
     Grain: 1 row per patient (pk_patient_id)
 
     Business Logic:
@@ -13,7 +13,7 @@
 */
 
 WITH unified AS (
-    SELECT * FROM {{ ref('int_clinical__patient_unified') }}
+    SELECT * FROM {{ ref('int_ops__patient_unified') }}
 )
 
 SELECT

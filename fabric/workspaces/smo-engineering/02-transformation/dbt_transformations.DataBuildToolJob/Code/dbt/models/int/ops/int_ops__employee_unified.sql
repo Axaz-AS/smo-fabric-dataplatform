@@ -1,16 +1,17 @@
 /*
-    Model: int_clinical__employee_unified
-    Domain: Clinical
+    Model: int_ops__employee_unified
+    Domain: Operations (Ops)
     Grain: 1 row per employee / clinician / staff member (person_id)
 
     Business Logic & Assumptions:
     - Unifies internal employees from the new master export (exp_medarbeider) and
       the legacy clinician statistics table (statkliniker).
+    - Filters out clinic consultation and meeting rooms (employee_resource_type = 'Rom')
+      present in statkliniker so only human personnel are included.
     - exp_medarbeider is the primary master for employee attributes (full name, email,
       job title, address, etc.), but currently contains sample data.
-    - statkliniker contains the full historical clinician population (~346 records),
-      providing display name, resource type, and department fallback where exp_medarbeider
-      has not yet exported the employee.
+    - statkliniker contains the full historical clinician population, providing display name,
+      resource type, and department fallback where exp_medarbeider has not yet exported the employee.
     - Periodic metrics and budget counts from statkliniker are excluded here; they belong
       in downstream fact/mart models rather than the employee entity.
 */
@@ -21,6 +22,7 @@ WITH medarbeider AS (
 
 kliniker AS (
     SELECT * FROM {{ ref('base_nobs__kliniker') }}
+    WHERE COALESCE(employee_resource_type, '') <> 'Rom'
 ),
 
 all_persons AS (

@@ -1,6 +1,6 @@
 /*
-    Model: core_clinical__health_personnel
-    Domain: Clinical
+    Model: core_ops__health_personnel
+    Domain: Operations (Ops)
     Grain: 1 row per external healthcare practitioner (pk_health_personnel_id)
 
     Business Logic:

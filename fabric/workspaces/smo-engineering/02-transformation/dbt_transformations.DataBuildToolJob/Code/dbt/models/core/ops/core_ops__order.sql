@@ -1,17 +1,17 @@
 /*
-    Model: core_clinical__order
-    Domain: Clinical
-    Grain: 1 row per clinical order (pk_order_id / order_number)
+    Model: core_ops__order
+    Domain: Operations (Ops)
+    Grain: 1 row per clinical / manufacturing order (pk_order_id / order_number)
 
     Business Logic:
-    - Master conformed clinical order dimension/entity representing custom orthopedic device orders.
-    - Sourced from int_clinical__order_unified.
+    - Master conformed operational order dimension/entity representing custom orthopedic device orders.
+    - Sourced from int_ops__order_unified.
     - Contains normalized role-based foreign keys to patient, engineer, production manager,
       requisitioning physician, and primary assistive device nomenclature code.
 */
 
 WITH unified AS (
-    SELECT * FROM {{ ref('int_clinical__order_unified') }}
+    SELECT * FROM {{ ref('int_ops__order_unified') }}
 )
 
 SELECT

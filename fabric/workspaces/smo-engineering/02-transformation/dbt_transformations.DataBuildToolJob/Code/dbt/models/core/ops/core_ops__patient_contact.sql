@@ -1,11 +1,11 @@
 /*
-    Model: core_clinical__patient_contact
-    Domain: Clinical
+    Model: core_ops__patient_contact
+    Domain: Operations (Ops)
     Grain: 1 row per contact channel per patient (pk_patient_contact_id)
 
     Business Logic:
     - Normalized 1:N contact methods (mobile, phone, private/work email) per patient.
-    - Sourced from exp_kontakt and filtered to persons present in core_clinical__patient.
+    - Sourced from exp_kontakt and filtered to persons present in core_ops__patient.
 */
 
 WITH source AS (
@@ -13,7 +13,7 @@ WITH source AS (
 ),
 
 patients AS (
-    SELECT pk_patient_id FROM {{ ref('core_clinical__patient') }}
+    SELECT pk_patient_id FROM {{ ref('core_ops__patient') }}
 ),
 
 patient_contacts AS (

@@ -1,6 +1,6 @@
 /*
-    Model: core_clinical__nomenclature
-    Domain: Clinical
+    Model: core_ops__nomenclature
+    Domain: Operations (Ops)
     Grain: 1 row per nomenclature code (pk_nomenclature_code)
 
     Business Logic:
@@ -10,7 +10,7 @@
 */
 
 WITH unified AS (
-    SELECT * FROM {{ ref('int_clinical__nomenclature_unified') }}
+    SELECT * FROM {{ ref('int_ops__nomenclature_unified') }}
 )
 
 SELECT
