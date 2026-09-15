@@ -1,0 +1,13 @@
+version: 2
+
+sources:
+  - name: excel_mappings
+    description: "Reference mappings and external lookup tables in bronze Lakehouse"
+    database: lh_bronze
+    schema: excel_mappings
+    quoting:
+      database: false
+      schema: false
+      identifier: false
+    tables:
+      - name: nomenklatur

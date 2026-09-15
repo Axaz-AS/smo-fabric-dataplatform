@@ -1,0 +1,59 @@
+version: 2
+
+models:
+  - name: core_clinical__order
+    description: "Conformed core entity representing clinical orthopedic orders (prosthetics, orthotics, orthopedic footwear). Resolves the order header grain by capturing primary device nomenclature and aggregating line quantities and financials."
+    config:
+      meta:
+        grain: "one row per clinical order"
+    columns:
+      - name: pk_order_id
+        description: "Primary key of the order (conformed NOBS order entity ID)."
+        tests:
+          - not_null
+          - unique
+      - name: order_number
+        description: "Business order identifier number (OrdreNummer)."
+        tests:
+          - not_null
+          - unique
+      - name: fk_patient
+        description: "Foreign key reference to core_clinical__patient."
+      - name: patient_number
+        description: "Patient number associated with the order."
+      - name: fk_employee_engineer
+        description: "Foreign key reference to core_clinical__employee for the attending orthopedic engineer."
+      - name: fk_employee_production_manager
+        description: "Foreign key reference to core_clinical__employee for the production manager."
+      - name: fk_health_personnel_rekvirent
+        description: "Foreign key reference to core_clinical__health_personnel for the requisitioning physician."
+      - name: fk_primary_nomenclature
+        description: "Foreign key reference to core_clinical__nomenclature for the primary assistive device."
+      - name: department_name
+        description: "Clinic department handling the order."
+      - name: location_name
+        description: "Clinic location."
+      - name: order_type
+        description: "Order classification type."
+      - name: order_status
+        description: "Current workflow status of the order."
+      - name: is_urgent
+        description: "Flag indicating whether this is an urgent / rush order (Hasteordre)."
+      - name: order_date
+        description: "Date the order was created."
+      - name: planned_delivery_date
+        description: "Scheduled delivery date for the patient."
+      - name: delivery_date
+        description: "Date the device was delivered to the patient."
+      - name: invoice_date
+        description: "Date the order was invoiced."
+      - name: total_order_items
+        description: "Total number of device or service component lines associated with the order."
+      - name: total_quantity
+        description: "Sum of item quantities across all order lines."
+      - name: total_invoice_amount
+        description: "Total invoiced amount for the order."
+      - name: total_copay_amount
+        description: "Total patient copay amount (Egenbetaling)."
+      - name: source_origin
+        description: "Audit origin indicating source dataset."

@@ -1,0 +1,34 @@
+version: 2
+
+models:
+  - name: core_clinical__nomenclature
+    description: "Conformed core dimension representing the master catalog of orthopedic aid nomenclature codes (ISPO / NAV standard classification). Unifies reference mapping data with internal NOBS product codes."
+    config:
+      meta:
+        grain: "one row per nomenclature code"
+    columns:
+      - name: pk_nomenclature_code
+        description: "Primary key of the nomenclature catalog (clean, standardized nomenclature code)."
+        tests:
+          - not_null
+          - unique
+      - name: nobs_detail_id
+        description: "Internal NOBS record ID from statnomenklatur_detail where available."
+      - name: nomenclature_category_code
+        description: "Main group category code (Hovedgruppe, e.g. 120000)."
+      - name: subject_area
+        description: "Clinical subject/body area (Fagområde, e.g. Arm, Ben, Ortopediske sko)."
+      - name: product_group
+        description: "Main product grouping description (Produktgrupper)."
+      - name: product_sub_group
+        description: "Sub-group or anatomy location description (Beskrivelse2)."
+      - name: description
+        description: "Detailed official description of the nomenclature code."
+      - name: has_additional_codes
+        description: "Flag indicating whether supplementary codes or additional services can be attached."
+      - name: price_group
+        description: "Standard price category or fixed price indicator (Fastpris)."
+      - name: order_type
+        description: "Associated order type classification."
+      - name: source_origin
+        description: "Audit origin indicating whether code originated from excel_mappings, nobs_detail, or both."
