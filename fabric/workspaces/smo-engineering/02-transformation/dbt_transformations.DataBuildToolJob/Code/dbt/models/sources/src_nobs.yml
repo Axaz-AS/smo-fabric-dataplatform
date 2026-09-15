@@ -19,3 +19,14 @@ sources:
       - name: statpasient_detail
       - name: stattime
       - name: statvedtak
+      - name: exp_avtaler
+      - name: exp_diagnose
+      - name: exp_gipslager
+      - name: exp_helsepersonell
+      - name: exp_hjelpemiddel
+      - name: exp_journal
+      - name: exp_kontakt
+      - name: exp_medarbeider
+      - name: exp_pasient
+      - name: exp_personalia
+      - name: exp_vedtak

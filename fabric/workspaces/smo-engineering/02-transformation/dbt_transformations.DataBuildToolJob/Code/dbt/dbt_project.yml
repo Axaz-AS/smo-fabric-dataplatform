@@ -18,10 +18,6 @@ clean-targets:
   - "target"
   - "dbt_packages"
 
-seeds:
-  smo_dbt:
-    +schema: seeds
-
 models:
   smo_dbt:
     +materialized: view
