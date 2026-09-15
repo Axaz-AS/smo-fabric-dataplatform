@@ -33,7 +33,7 @@
             "storage_location": "storage_location",
             "username": "username"
           },
-          "graphqlType": "core_ops__employee",
+          "graphqlType": "Employee",
           "relationships": [],
           "sourceObject": "core.core_ops__employee",
           "sourceObjectType": "Table"
@@ -59,7 +59,7 @@
             "practitioner_category": "practitioner_category",
             "profession": "profession"
           },
-          "graphqlType": "core_ops__health_personnel",
+          "graphqlType": "HealthPersonnel",
           "relationships": [],
           "sourceObject": "core.core_ops__health_personnel",
           "sourceObjectType": "Table"
@@ -85,7 +85,7 @@
             "source_origin": "source_origin",
             "subject_area": "subject_area"
           },
-          "graphqlType": "core_ops__nomenclature",
+          "graphqlType": "Nomenclature",
           "relationships": [],
           "sourceObject": "core.core_ops__nomenclature",
           "sourceObjectType": "Table"
@@ -133,7 +133,7 @@
             "total_order_items": "total_order_items",
             "total_quantity": "total_quantity"
           },
-          "graphqlType": "core_ops__order",
+          "graphqlType": "Order",
           "relationships": [
             {
               "cardinality": "ManyToOne",
@@ -204,7 +204,7 @@
             "recall_next": "recall_next",
             "recall_next_location": "recall_next_location"
           },
-          "graphqlType": "core_ops__patient",
+          "graphqlType": "Patient",
           "relationships": [],
           "sourceObject": "core.core_ops__patient",
           "sourceObjectType": "Table"
@@ -240,7 +240,7 @@
             "modified_by": "modified_by",
             "pk_patient_clinical_profile_id": "pk_patient_clinical_profile_id"
           },
-          "graphqlType": "core_ops__patient_clinical_profile",
+          "graphqlType": "PatientClinicalProfile",
           "relationships": [
             {
               "cardinality": "OneToOne",
@@ -278,7 +278,7 @@
             "modified_by": "modified_by",
             "pk_patient_contact_id": "pk_patient_contact_id"
           },
-          "graphqlType": "core_ops__patient_contact",
+          "graphqlType": "PatientContact",
           "relationships": [
             {
               "cardinality": "ManyToOne",
