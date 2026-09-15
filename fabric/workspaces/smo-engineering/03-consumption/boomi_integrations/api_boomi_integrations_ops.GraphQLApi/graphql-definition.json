@@ -5,12 +5,16 @@
       "objects": [
         {
           "actions": {
-            "Query": "Enabled"
+            "Query": "Enabled",
+            "Query_by_pk": "Enabled",
+            "Create": "Enabled",
+            "Update": "Enabled",
+            "Delete": "Enabled"
           },
           "fieldMappings": {
+            "abbreviation": "abbreviation",
             "address_line_1": "address_line_1",
             "address_line_2": "address_line_2",
-            "abbreviation": "abbreviation",
             "city": "city",
             "country": "country",
             "created_at": "created_at",
@@ -36,7 +40,11 @@
         },
         {
           "actions": {
-            "Query": "Enabled"
+            "Query": "Enabled",
+            "Query_by_pk": "Enabled",
+            "Create": "Enabled",
+            "Update": "Enabled",
+            "Delete": "Enabled"
           },
           "fieldMappings": {
             "created_at": "created_at",
@@ -58,7 +66,11 @@
         },
         {
           "actions": {
-            "Query": "Enabled"
+            "Query": "Enabled",
+            "Query_by_pk": "Enabled",
+            "Create": "Enabled",
+            "Update": "Enabled",
+            "Delete": "Enabled"
           },
           "fieldMappings": {
             "description": "description",
@@ -80,7 +92,11 @@
         },
         {
           "actions": {
-            "Query": "Enabled"
+            "Query": "Enabled",
+            "Query_by_pk": "Enabled",
+            "Create": "Enabled",
+            "Update": "Enabled",
+            "Delete": "Enabled"
           },
           "fieldMappings": {
             "created_at": "created_at",
@@ -138,7 +154,11 @@
         },
         {
           "actions": {
-            "Query": "Enabled"
+            "Query": "Enabled",
+            "Query_by_pk": "Enabled",
+            "Create": "Enabled",
+            "Update": "Enabled",
+            "Delete": "Enabled"
           },
           "fieldMappings": {
             "address_line_1": "address_line_1",
@@ -191,41 +211,11 @@
         },
         {
           "actions": {
-            "Query": "Enabled"
-          },
-          "fieldMappings": {
-            "contact_type": "contact_type",
-            "contact_value": "contact_value",
-            "created_at": "created_at",
-            "created_by": "created_by",
-            "fk_patient": "fk_patient",
-            "is_sms_enabled": "is_sms_enabled",
-            "modified_at": "modified_at",
-            "modified_by": "modified_by",
-            "pk_patient_contact_id": "pk_patient_contact_id"
-          },
-          "graphqlType": "core_ops__patient_contact",
-          "relationships": [
-            {
-              "cardinality": "ManyToOne",
-              "field": "patient",
-              "linkingSourceFields": [],
-              "linkingTargetFields": [],
-              "sourceFields": [
-                "fk_patient"
-              ],
-              "targetFields": [
-                "pk_patient_id"
-              ],
-              "targetObject": "core.core_ops__patient"
-            }
-          ],
-          "sourceObject": "core.core_ops__patient_contact",
-          "sourceObjectType": "Table"
-        },
-        {
-          "actions": {
-            "Query": "Enabled"
+            "Query": "Enabled",
+            "Query_by_pk": "Enabled",
+            "Create": "Enabled",
+            "Update": "Enabled",
+            "Delete": "Enabled"
           },
           "fieldMappings": {
             "attendance_needs": "attendance_needs",
@@ -268,11 +258,49 @@
           ],
           "sourceObject": "core.core_ops__patient_clinical_profile",
           "sourceObjectType": "Table"
+        },
+        {
+          "actions": {
+            "Query": "Enabled",
+            "Query_by_pk": "Enabled",
+            "Create": "Enabled",
+            "Update": "Enabled",
+            "Delete": "Enabled"
+          },
+          "fieldMappings": {
+            "contact_type": "contact_type",
+            "contact_value": "contact_value",
+            "created_at": "created_at",
+            "created_by": "created_by",
+            "fk_patient": "fk_patient",
+            "is_sms_enabled": "is_sms_enabled",
+            "modified_at": "modified_at",
+            "modified_by": "modified_by",
+            "pk_patient_contact_id": "pk_patient_contact_id"
+          },
+          "graphqlType": "core_ops__patient_contact",
+          "relationships": [
+            {
+              "cardinality": "ManyToOne",
+              "field": "patient",
+              "linkingSourceFields": [],
+              "linkingTargetFields": [],
+              "sourceFields": [
+                "fk_patient"
+              ],
+              "targetFields": [
+                "pk_patient_id"
+              ],
+              "targetObject": "core.core_ops__patient"
+            }
+          ],
+          "sourceObject": "core.core_ops__patient_contact",
+          "sourceObjectType": "Table"
         }
       ],
-      "sourceItemId": "6b61ac31-566a-402c-abaf-42da0f48e674",
+      "sourceItemId": "0f48e674-42da-abaf-402c-566a6b61ac31",
       "sourceType": "Warehouse",
-      "sourceWorkspaceId": "0090292d-63b6-403d-b31a-2ae7358fc623"
+      "sourceWorkspaceId": "00000000-0000-0000-0000-000000000000"
     }
   ]
 }
