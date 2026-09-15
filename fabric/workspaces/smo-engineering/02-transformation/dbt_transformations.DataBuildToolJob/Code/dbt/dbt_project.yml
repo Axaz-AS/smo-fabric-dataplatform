@@ -1,0 +1,44 @@
+name: 'smo_dbt'
+version: '1.0.0'
+config-version: 2
+
+profile: 'default'
+
+model-paths: ["models"]
+seed-paths: ["seeds"]
+snapshot-paths: ["snapshots"]
+analysis-paths: ["analyses"]
+macro-paths: ["macros"]
+test-paths: ["tests"]
+docs-paths: ["docs"]
+asset-paths: ["assets"]
+
+target-path: "target"
+clean-targets:
+  - "target"
+  - "dbt_packages"
+
+seeds:
+  smo_dbt:
+    +schema: seeds
+
+models:
+  smo_dbt:
+    +materialized: view
+
+    source:
+      +materialized: view
+      +schema: src
+
+    int:
+      +materialized: view
+      +schema: int
+
+    core:
+      +materialized: table
+      +schema: core
+
+    mart:
+      +materialized: table
+      +schema: mart
+      +database: wh_gold

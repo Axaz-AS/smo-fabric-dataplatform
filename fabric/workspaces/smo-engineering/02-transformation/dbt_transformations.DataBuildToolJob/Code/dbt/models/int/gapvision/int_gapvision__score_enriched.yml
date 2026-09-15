@@ -1,0 +1,13 @@
+version: 2
+
+models:
+  - name: int_gapvision__score_enriched
+    description: "Intermediate view joining score records with sendout metadata."
+    config:
+      meta:
+        grain: "one row per respondent answer with sendout details"
+    columns:
+      - name: response_id
+        description: "Survey response ID."
+        tests:
+          - not_null

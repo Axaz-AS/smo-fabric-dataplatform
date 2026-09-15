@@ -1,0 +1,19 @@
+version: 2
+
+models:
+  - name: core_gapvision_score
+    description: "Conformed core business entity representing respondent survey scores."
+    config:
+      meta:
+        grain: "one row per respondent answer"
+    columns:
+      - name: response_id
+        description: "Reference to the survey response."
+        tests:
+          - not_null
+      - name: company_id
+        description: "Firma ID."
+        tests:
+          - not_null
+      - name: score
+        description: "Reported survey score."

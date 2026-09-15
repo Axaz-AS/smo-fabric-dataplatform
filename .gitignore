@@ -57,3 +57,12 @@ ehthumbs.db
 
 # JetBrains / PyCharm
 .idea/
+
+# ==========================================
+# dbt
+# ==========================================
+# dbt artifacts
+target/
+dbt_packages/
+logs/
+profiles.yml

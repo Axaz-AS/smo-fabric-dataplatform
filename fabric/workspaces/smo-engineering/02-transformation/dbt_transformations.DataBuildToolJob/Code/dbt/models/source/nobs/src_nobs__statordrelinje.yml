@@ -1,0 +1,21 @@
+version: 2
+
+models:
+  - name: src_nobs__statordrelinje
+    description: "Staging view over NOBS StatOrdrelinje (order lines with article, supplier, quantity and invoice details). Note: the KPL id column is __kplt_ID (single underscore before ID), unlike the other NOBS tables. All bracket escaping, Delta casing and type casting is quarantined here."
+    config:
+      meta:
+        grain: one row per order line
+        source_system: nobs
+    columns:
+      - name: pk_ordrelinje_id
+        description: "KPL record id of the order line (Delta column [__kplt_ID] — single underscore)."
+        tests: [unique, not_null]
+      - name: fk_ordre_id
+        description: "KPL order id the line belongs to."
+      - name: fk_parent_ordrelinje_id
+        description: "KPL order line id of the parent/grouping line."
+      - name: fk_leverandoer_id
+        description: "KPL supplier id for the line."
+      - name: is_deleted
+        description: "KPL soft-delete flag (0 = active)."

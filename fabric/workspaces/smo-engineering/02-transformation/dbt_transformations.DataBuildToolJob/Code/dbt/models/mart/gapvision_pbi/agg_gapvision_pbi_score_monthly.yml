@@ -1,0 +1,19 @@
+version: 2
+
+models:
+  - name: agg_gapvision_pbi_score_monthly
+    description: "Monthly aggregated GapVision survey scores shaped for Power BI consumption."
+    config:
+      meta:
+        grain: "one row per company, measurement, and question per calendar month"
+    columns:
+      - name: score_month
+        description: "First day of the calendar month."
+        tests:
+          - not_null
+      - name: total_responses
+        description: "Number of responses registered in the month."
+        tests:
+          - not_null
+      - name: average_score
+        description: "Mean score value for the cohort."

@@ -1,0 +1,13 @@
+version: 2
+
+models:
+  - name: int_nobs__statistikk
+    description: "Active NOBS order statistics rows — staging data with KPL soft-deleted rows removed. Pass-through of src_nobs__stat_statistikk; no further business logic."
+    config:
+      meta:
+        grain: one row per active order statistics row
+        source_system: nobs
+    columns:
+      - name: pk_statistikk_id
+        description: "KPL record id of the statistics row."
+        tests: [unique, not_null]

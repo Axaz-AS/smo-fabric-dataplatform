@@ -1,0 +1,16 @@
+version: 2
+
+sources:
+  - name: gapvision
+    description: "GapVision survey data ingested into bronze Lakehouse"
+    database: lh_bronze
+    schema: gapvision
+    quoting:
+      database: false
+      schema: false
+      identifier: false
+    tables:
+      - name: V111_Score
+        description: "GapVision respondent scores per measurement and question"
+      - name: V111_Utsendelse
+        description: "GapVision sendout metadata and respondent comments"

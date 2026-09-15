@@ -1,0 +1,13 @@
+version: 2
+
+models:
+  - name: int_nobs__pasient_detail
+    description: "Active NOBS patient register entries — excludes KPL terminated entries (is_deleted = 9) and dummy/test rows (dummy IS NULL per legacy logic), keeps active rows and rows without a delete flag. Pass-through of src_nobs__statpasient_detail; no further business logic."
+    config:
+      meta:
+        grain: one row per active patient register entry
+        source_system: nobs
+    columns:
+      - name: pk_pasient_detail_id
+        description: "KPL record id of the patient entry."
+        tests: [unique, not_null]

@@ -1,0 +1,13 @@
+version: 2
+
+models:
+  - name: int_nobs__ordrelinje
+    description: "Active NOBS order lines — staging data with KPL soft-deleted rows removed. Pass-through of src_nobs__statordrelinje; no further business logic."
+    config:
+      meta:
+        grain: one row per active order line
+        source_system: nobs
+    columns:
+      - name: pk_ordrelinje_id
+        description: "KPL record id of the order line."
+        tests: [unique, not_null]

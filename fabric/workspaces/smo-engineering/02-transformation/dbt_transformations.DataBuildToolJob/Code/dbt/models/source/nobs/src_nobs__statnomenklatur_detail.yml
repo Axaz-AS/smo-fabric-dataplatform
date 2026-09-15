@@ -1,0 +1,21 @@
+version: 2
+
+models:
+  - name: src_nobs__statnomenklatur_detail
+    description: "Staging view over NOBS StatNomenklatur_detail (nomenclature/product detail rows). All KPL bracket escaping, Delta casing and type casting is quarantined here. No filtering or business rules."
+    config:
+      meta:
+        grain: one row per nomenclature product detail row
+        source_system: nobs
+    columns:
+      - name: pk_nomenklatur_detail_id
+        description: "KPL record id of the nomenclature detail row."
+        tests: [unique, not_null]
+      - name: fk_avdeling_id
+        description: "KPL department id owning the row."
+      - name: fk_sted_id
+        description: "KPL location id owning the row."
+      - name: product_code
+        description: "Nomenclature product code (raw; may contain line breaks/whitespace — clean downstream)."
+      - name: is_deleted
+        description: "KPL soft-delete flag (0 = active)."

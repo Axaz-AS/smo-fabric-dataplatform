@@ -1,0 +1,14 @@
+version: 2
+
+models:
+  - name: src_gapvision__utsendelse
+    description: "Staging view over lh_bronze.gapvision.V111_Utsendelse. Extracts and standardizes survey sendout metadata."
+    config:
+      meta:
+        grain: "one row per survey sendout"
+    columns:
+      - name: pk_response_id
+        description: "Primary key for the sendout response."
+        tests:
+          - unique
+          - not_null

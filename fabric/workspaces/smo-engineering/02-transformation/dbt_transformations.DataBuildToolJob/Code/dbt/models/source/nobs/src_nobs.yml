@@ -1,0 +1,30 @@
+version: 2
+
+sources:
+  - name: nobs
+    description: "NOBS (KPL journal og praksissystem) statistics entities ingested as-is into the bronze Lakehouse by nb_nobs_load_json"
+    database: lh_bronze
+    schema: nobs
+    quoting:
+      database: false
+      schema: false
+      identifier: false
+    tables:
+      - name: stat_statistikk
+        description: "Order statistics snapshot: one row per order with economics, production and patient columns"
+      - name: statevent
+        description: "Consultation and event registrations from the patient archive"
+      - name: statkliniker
+        description: "Clinician statistics snapshot: appointments, production, economics and time per clinician"
+      - name: statnomenklatur_detail
+        description: "Nomenclature/product detail rows as registered in NOBS"
+      - name: statordrehistorikk
+        description: "Order production status history, one row per status stage"
+      - name: statordrelinje
+        description: "Order lines with article, supplier, quantity and invoice details"
+      - name: statpasient_detail
+        description: "Patient detail rows from the patient register"
+      - name: stattime
+        description: "Registered time per employee, order and date"
+      - name: statvedtak
+        description: "NAV decisions (vedtak) linked to orders and persons"

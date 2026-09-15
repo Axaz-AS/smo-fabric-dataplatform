@@ -1,0 +1,13 @@
+version: 2
+
+models:
+  - name: int_nobs__vedtak
+    description: "Active NOBS vedtak (NAV decisions) — staging data with KPL soft-deleted rows removed. Pass-through of src_nobs__statvedtak; no further business logic."
+    config:
+      meta:
+        grain: one row per active vedtak-order link
+        source_system: nobs
+    columns:
+      - name: pk_stat_vedtak_id
+        description: "KPL record id of the vedtak statistics row."
+        tests: [unique, not_null]

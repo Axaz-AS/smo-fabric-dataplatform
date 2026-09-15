@@ -1,0 +1,13 @@
+version: 2
+
+models:
+  - name: int_nobs__kliniker
+    description: "Active NOBS clinician statistics rows — staging data with KPL soft-deleted rows removed. Pass-through of src_nobs__statkliniker; no further business logic."
+    config:
+      meta:
+        grain: one row per active clinician per department in the statistics snapshot
+        source_system: nobs
+    columns:
+      - name: pk_kliniker_id
+        description: "KPL record id of the clinician statistics row."
+        tests: [unique, not_null]

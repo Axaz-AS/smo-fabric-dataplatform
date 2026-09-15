@@ -1,0 +1,19 @@
+version: 2
+
+models:
+  - name: src_nobs__statkliniker
+    description: "Staging view over NOBS StatKliniker (clinician statistics snapshot: appointments, production, economics, time). All KPL bracket escaping, Delta casing and type casting is quarantined here. No filtering or business rules."
+    config:
+      meta:
+        grain: one row per clinician per department in the statistics snapshot
+        source_system: nobs
+    columns:
+      - name: pk_kliniker_id
+        description: "KPL record id of the clinician statistics row."
+        tests: [unique, not_null]
+      - name: fk_person_id
+        description: "KPL person id of the clinician."
+      - name: fk_avdeling_id
+        description: "KPL department id owning the row."
+      - name: is_deleted
+        description: "KPL soft-delete flag (0 = active)."

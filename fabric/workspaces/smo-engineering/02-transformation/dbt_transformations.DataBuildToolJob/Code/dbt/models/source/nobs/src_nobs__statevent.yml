@@ -1,0 +1,23 @@
+version: 2
+
+models:
+  - name: src_nobs__statevent
+    description: "Staging view over NOBS StatEvent (consultation and event registrations). All KPL bracket escaping, Delta casing and type casting is quarantined here; names are standardized snake_case. No filtering or business rules."
+    config:
+      meta:
+        grain: one row per registered consultation/event
+        source_system: nobs
+    columns:
+      - name: pk_event_id
+        description: "KPL record id of the event row."
+        tests: [unique, not_null]
+      - name: fk_pasient_id
+        description: "KPL patient id the event belongs to."
+      - name: fk_medarbeider_id
+        description: "KPL employee id treating the patient."
+      - name: fk_ansvarlig_medarbeider_id
+        description: "KPL employee id responsible for the event."
+      - name: event_date
+        description: "Calendar date of the event (KPL column Dato)."
+      - name: is_deleted
+        description: "KPL soft-delete flag (0 = active)."
