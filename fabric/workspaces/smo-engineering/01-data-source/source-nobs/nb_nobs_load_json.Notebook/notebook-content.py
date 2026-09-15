@@ -35,15 +35,26 @@
 
 # List of entities to process
 ENTITIES = [
-    "STAT_Statistikk",
-    "StatEvent",
-    "StatKliniker",
-    "StatNomenklatur_detail",
-    "StatOrdrehistorikk",
-    "StatOrdrelinje",
-    "StatPasient_detail",
-    "StatTime",
-    "StatVedtak",
+    # "STAT_Statistikk",
+    # "StatEvent",
+    # "StatKliniker",
+    # "StatNomenklatur_detail",
+    # "StatOrdrehistorikk",
+    # "StatOrdrelinje",
+    # "StatPasient_detail",
+    # "StatTime",
+    # "StatVedtak",
+    "exp_Avtaler",
+    "exp_Diagnose",
+    "exp_Gipslager",
+    "exp_Helsepersonell",
+    "exp_Hjelpemiddel",
+    "exp_Journal",
+    "exp_Kontakt",
+    "exp_Medarbeider",
+    "exp_Pasient",
+    "exp_Personalia",
+    "exp_Vedtak"
 ]
 
 # Entities to skip

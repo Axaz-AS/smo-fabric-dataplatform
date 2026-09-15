@@ -1,0 +1,5 @@
+CREATE SCHEMA [int]
+    AUTHORIZATION [dbo];
+
+
+GO

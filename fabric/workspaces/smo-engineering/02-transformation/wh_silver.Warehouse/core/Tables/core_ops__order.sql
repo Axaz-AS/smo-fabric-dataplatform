@@ -1,0 +1,38 @@
+CREATE TABLE [core].[core_ops__order] (
+    [pk_order_id]                    VARCHAR (8000) NULL,
+    [order_number]                   VARCHAR (8000) NULL,
+    [fk_patient]                     VARCHAR (8000) NULL,
+    [patient_number]                 VARCHAR (8000) NULL,
+    [fk_employee_engineer]           VARCHAR (8000) NULL,
+    [fk_employee_production_manager] VARCHAR (8000) NULL,
+    [fk_health_personnel_rekvirent]  VARCHAR (8000) NULL,
+    [fk_primary_nomenclature]        VARCHAR (8000) NULL,
+    [fk_avdeling_id]                 VARCHAR (8000) NULL,
+    [department_name]                VARCHAR (8000) NULL,
+    [fk_sted_id]                     VARCHAR (8000) NULL,
+    [location_name]                  VARCHAR (8000) NULL,
+    [order_type]                     VARCHAR (8000) NULL,
+    [order_status]                   VARCHAR (8000) NULL,
+    [is_urgent]                      BIT            NULL,
+    [is_cancelled]                   INT            NULL,
+    [is_invoiced]                    INT            NULL,
+    [is_in_production]               INT            NULL,
+    [is_ready_for_invoicing]         INT            NULL,
+    [order_date]                     DATE           NULL,
+    [planned_delivery_date]          DATE           NULL,
+    [delivery_date]                  DATE           NULL,
+    [invoice_date]                   DATE           NULL,
+    [days_manufacturing]             BIGINT         NULL,
+    [days_production]                BIGINT         NULL,
+    [days_production_hold]           BIGINT         NULL,
+    [total_order_items]              INT            NULL,
+    [total_quantity]                 FLOAT (53)     NULL,
+    [total_invoice_amount]           FLOAT (53)     NULL,
+    [total_copay_amount]             INT            NULL,
+    [source_origin]                  VARCHAR (15)   NOT NULL,
+    [created_at]                     DATETIME2 (6)  NULL,
+    [modified_at]                    DATETIME2 (6)  NULL
+);
+
+
+GO
