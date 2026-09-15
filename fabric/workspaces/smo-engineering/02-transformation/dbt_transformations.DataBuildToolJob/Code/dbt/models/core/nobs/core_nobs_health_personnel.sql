@@ -1,0 +1,38 @@
+/*
+    Model: core_nobs_health_personnel
+    Domain: NOBS
+    Grain: 1 row per external healthcare practitioner (pk_health_personnel_id)
+
+    Business Logic:
+    - Represents external healthcare practitioners (fastleger, sykehusleger,
+      spesialister, fysioterapeuter, ergoterapeuter, rekvirenter) who interact
+      with Sophies Minde patients but are NOT internal employees.
+    - Sourced from exp_helsepersonell.
+*/
+
+WITH source AS (
+    SELECT * FROM {{ ref('base_nobs__helsepersonell') }}
+),
+
+renamed AS (
+    SELECT
+        pk_helsepersonell_id                                AS pk_health_personnel_id,
+        employee_id_number                                  AS hpr_number,
+        first_name,
+        last_name,
+        CASE
+            WHEN first_name IS NOT NULL OR last_name IS NOT NULL
+            THEN TRIM(CONCAT(COALESCE(first_name, ''), ' ', COALESCE(last_name, '')))
+            ELSE NULL
+        END                                                AS full_name,
+        category                                            AS practitioner_category,
+        profession,
+        created_at,
+        created_by,
+        modified_at,
+        modified_by
+    FROM source
+)
+
+SELECT *
+FROM renamed

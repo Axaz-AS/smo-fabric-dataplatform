@@ -1,0 +1,30 @@
+version: 2
+
+models:
+  - name: core_nobs_health_personnel
+    description: "Conformed core dimension representing external healthcare practitioners (e.g. general practitioners / fastleger, hospital doctors, physical therapists, occupational therapists) who interact with patients but are not internal employees of Sophies Minde."
+    config:
+      meta:
+        grain: "one row per external healthcare practitioner"
+    columns:
+      - name: pk_health_personnel_id
+        description: "Primary key of the external health personnel record."
+        tests:
+          - not_null
+          - unique
+      - name: hpr_number
+        description: "Official practitioner ID number (e.g. HPR / Helsepersonellregisteret ID)."
+      - name: first_name
+        description: "First name of the practitioner."
+      - name: last_name
+        description: "Last name of the practitioner."
+      - name: full_name
+        description: "Combined full name of the practitioner."
+      - name: practitioner_category
+        description: "Medical specialization category (e.g. Spesialist i ortopedisk kirurgi, fysikalsk medisin)."
+      - name: profession
+        description: "Profession classification (e.g. Lege Rekvirent, Ergoterapeut, Fysioterapeut)."
+      - name: created_at
+        description: "Record creation timestamp in source system."
+      - name: modified_at
+        description: "Record modification timestamp in source system."

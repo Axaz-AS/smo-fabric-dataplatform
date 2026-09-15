@@ -1,0 +1,32 @@
+version: 2
+
+models:
+  - name: core_nobs_patient_contact
+    description: "Normalized 1:N contact methods (mobile numbers, phone numbers, private and work email addresses) per patient. Extracted from exp_kontakt and scoped strictly to patients."
+    config:
+      meta:
+        grain: "one row per contact method per patient"
+    columns:
+      - name: pk_patient_contact_id
+        description: "Primary key of the contact record."
+        tests:
+          - not_null
+          - unique
+      - name: fk_patient
+        description: "Foreign key reference to core_nobs_patient."
+        tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('core_nobs_patient')
+                field: pk_patient_id
+      - name: contact_type
+        description: "Type of contact channel (e.g. Mobil, Telefon, Epost privat, Epost arbeid)."
+      - name: contact_value
+        description: "The phone number or email address value."
+      - name: is_sms_enabled
+        description: "Flag indicating if SMS delivery is enabled for this number."
+      - name: created_at
+        description: "Record creation timestamp in source system."
+      - name: modified_at
+        description: "Record modification timestamp in source system."

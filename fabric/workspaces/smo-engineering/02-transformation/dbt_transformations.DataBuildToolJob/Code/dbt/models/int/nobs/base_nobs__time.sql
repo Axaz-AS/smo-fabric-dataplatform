@@ -29,11 +29,11 @@ renamed AS (
         [_kalt_MedarbeiderType]                            AS calc_employee_type,
         [_kalt_OrdreType]                                  AS calc_order_type,
         TRY_CAST([zz__IsDeleted] AS INT)                   AS is_deleted,
-        TRY_CAST([zz__Creation_Timestamp__lxm] AS DATETIME2) AS created_at,
+        TRY_CAST([zz__Creation_Timestamp__lxm] AS DATETIME2(6)) AS created_at,
         [zz__Creation_AccountName__lxt]                    AS created_by,
-        TRY_CAST([zz__Modification_Timestamp__lxm] AS DATETIME2) AS modified_at,
+        TRY_CAST([zz__Modification_Timestamp__lxm] AS DATETIME2(6)) AS modified_at,
         [zz__Modification_AccountName__lxt]                AS modified_by,
-        TRY_CAST([_ingestion_timestamp] AS DATETIME2)      AS ingested_at
+        TRY_CAST([_ingestion_timestamp] AS DATETIME2(6))      AS ingested_at
     FROM source
 )
 

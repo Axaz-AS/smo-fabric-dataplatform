@@ -19,19 +19,19 @@ renamed AS (
         [TimeStart]                                         AS start_time,
         [TimeEnd]                                           AS end_time,
         [Varighet]                                          AS duration,
-        TRY_CAST([Is_HasArrivedTimeStamp] AS DATETIME2)     AS arrived_at,
-        TRY_CAST([Is_HasCheckedOutTimeStamp] AS DATETIME2)  AS checked_out_at,
-        TRY_CAST([Is_DidNotArriveTimeStamp] AS DATETIME2)   AS did_not_arrive_at,
+        TRY_CAST([Is_HasArrivedTimeStamp] AS DATETIME2(6))     AS arrived_at,
+        TRY_CAST([Is_HasCheckedOutTimeStamp] AS DATETIME2(6))  AS checked_out_at,
+        TRY_CAST([Is_DidNotArriveTimeStamp] AS DATETIME2(6))   AS did_not_arrive_at,
         [Avdeling]                                          AS department,
         [Sted]                                              AS location,
         [_kalt_KonsultasjonType]                            AS calc_consultation_type,
         [_kalt_Type]                                        AS calc_type,
         TRY_CAST([zz__IsDeleted] AS INT)                    AS is_deleted,
-        TRY_CAST([zz__Creation_Timestamp__lxm] AS DATETIME2) AS created_at,
+        TRY_CAST([zz__Creation_Timestamp__lxm] AS DATETIME2(6)) AS created_at,
         [zz__Creation_AccountName__lxt]                     AS created_by,
-        TRY_CAST([zz__Modification_Timestamp__lxm] AS DATETIME2) AS modified_at,
+        TRY_CAST([zz__Modification_Timestamp__lxm] AS DATETIME2(6)) AS modified_at,
         [zz__Modification_AccountName__lxt]                 AS modified_by,
-        TRY_CAST([_ingestion_timestamp] AS DATETIME2)       AS ingested_at
+        TRY_CAST([_ingestion_timestamp] AS DATETIME2(6))       AS ingested_at
     FROM source
 )
 

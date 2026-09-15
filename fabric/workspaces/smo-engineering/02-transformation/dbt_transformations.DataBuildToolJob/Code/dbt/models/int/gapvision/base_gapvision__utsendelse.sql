@@ -9,8 +9,8 @@ renamed AS (
         [Måling]                                 AS measurement,
         [Hendelse]                               AS event_name,
         [Målepunkt]                              AS measurement_group,
-        CAST([Utsendtdato] AS DATETIME2)         AS sendout_at,
-        CAST([Svardato] AS DATETIME2)            AS answered_at,
+        CAST([Utsendtdato] AS DATETIME2(6))         AS sendout_at,
+        CAST([Svardato] AS DATETIME2(6))            AS answered_at,
         [ExternalReference]                      AS external_reference,
         [Respondentkommentar]                    AS respondent_comment
     FROM source

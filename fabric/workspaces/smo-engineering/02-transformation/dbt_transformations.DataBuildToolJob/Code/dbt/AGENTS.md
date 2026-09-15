@@ -124,6 +124,10 @@ Inside brackets the only character that needs escaping is `]`, doubled to `]]`. 
 SELECT {{ escape_column('Måling') }} AS measurement
 ```
 
+### DATETIME2 Precision in Fabric DW
+
+Fabric Data Warehouse CTAS (`CREATE TABLE ... AS SELECT`) requires an explicit precision between 0 and 6 for `DATETIME2` columns (e.g. `DATETIME2(6)`). Bare `DATETIME2` defaults to precision 7 in T-SQL, which causes runtime error 24597: `An integer precision value between 0 and 6 must be specified`. Always cast timestamps as `TRY_CAST(... AS DATETIME2(6))`.
+
 ### Quarantining
 
 **All bracket escaping, Delta casing, renaming and type casting belongs in the `base_*` views in `models/int/{domain}/` — and only there.** Once a column leaves a `base_*` view it is lowercase `snake_case`, correctly typed, and bracket-free. `int_*`, `core_*` and mart models never write `[...]`, never reference Norwegian-cased Delta columns, and never compensate for Delta quirks.

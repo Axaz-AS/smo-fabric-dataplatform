@@ -1,0 +1,57 @@
+version: 2
+
+models:
+  - name: core_nobs_patient_clinical_profile
+    description: "Normalized 1:1 clinical profile per patient containing clinical metrics (height, weight, activity level, treatment risk) and practitioner communication notes. Extracted from exp_personalia and strictly linked to core_nobs_patient."
+    config:
+      meta:
+        grain: "one row per patient clinical profile"
+    columns:
+      - name: pk_patient_clinical_profile_id
+        description: "Primary key of the patient personalia / clinical profile record."
+        tests:
+          - not_null
+          - unique
+      - name: fk_patient
+        description: "Foreign key reference to core_nobs_patient."
+        tests:
+          - not_null
+          - unique
+          - relationships:
+              arguments:
+                to: ref('core_nobs_patient')
+                field: pk_patient_id
+      - name: clinical_activity_level
+        description: "Clinical activity level of the patient (KLI_Aktivitetsnivå)."
+      - name: clinical_treatment_risk
+        description: "Assessment of treatment risk (KLI_Behandlingsrisiko)."
+      - name: clinical_height_cm
+        description: "Recorded patient height in centimeters."
+      - name: clinical_weight_kg
+        description: "Recorded patient weight in kilograms."
+      - name: clinical_communication_needs
+        description: "Clinical communication needs."
+      - name: clinical_special_observations
+        description: "Special clinical observations recorded during consultation."
+      - name: communication_needs
+        description: "General communication preferences or requirements."
+      - name: followup_method
+        description: "Planned method of follow-up (Oppfølgingsmåte)."
+      - name: attendance_needs
+        description: "Attendance requirements or accommodations (Oppmøtebehov)."
+      - name: bht_fastlege_notes
+        description: "Treatment notes concerning fastlege collaboration."
+      - name: bht_fysioterapeut_notes
+        description: "Treatment notes concerning physical therapist collaboration."
+      - name: bht_ergoterapeut_notes
+        description: "Treatment notes concerning occupational therapist collaboration."
+      - name: bht_ingenior_notes
+        description: "Treatment notes from orthopedic engineer."
+      - name: bht_koordinerende_behandler_notes
+        description: "Treatment notes concerning coordinating clinician."
+      - name: bht_rekvirent_notes
+        description: "Treatment notes concerning requisitioning authority."
+      - name: created_at
+        description: "Record creation timestamp in source system."
+      - name: modified_at
+        description: "Record modification timestamp in source system."

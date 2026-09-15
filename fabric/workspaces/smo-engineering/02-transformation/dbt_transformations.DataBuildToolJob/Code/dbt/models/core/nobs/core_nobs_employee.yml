@@ -1,0 +1,42 @@
+version: 2
+
+models:
+  - name: core_nobs_employee
+    description: "Conformed core dimension representing internal Sophies Minde staff members, orthopedic engineers, technicians, and administration. Unifies the new exp_medarbeider master profile with historical clinician coverage from statkliniker."
+    config:
+      meta:
+        grain: "one row per internal Sophies Minde employee"
+    columns:
+      - name: pk_employee_id
+        description: "Primary key of the employee (conformed person ID)."
+        tests:
+          - not_null
+          - unique
+      - name: username
+        description: "System login username."
+      - name: first_name
+        description: "First name of the employee."
+      - name: last_name
+        description: "Last name of the employee."
+      - name: full_name
+        description: "Display or full name of the employee."
+      - name: abbreviation
+        description: "Short abbreviation / initials."
+      - name: job_title
+        description: "Employee role or job title."
+      - name: resource_type
+        description: "Resource classification (e.g. Ingeniør, Tekniker, Administrasjon)."
+      - name: department_name
+        description: "Assigned department (e.g. Bryn, Rikshospitalet, Drammen)."
+      - name: storage_location
+        description: "Associated storage or clinic location."
+      - name: email
+        description: "Work email address."
+      - name: is_active
+        description: "Flag indicating whether the employee is currently active."
+      - name: source_system_profile
+        description: "Audit flag indicating whether full profile came from exp_medarbeider or fell back to statkliniker."
+      - name: created_at
+        description: "Record creation timestamp in source system."
+      - name: modified_at
+        description: "Record modification timestamp in source system."

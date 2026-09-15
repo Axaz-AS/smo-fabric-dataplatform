@@ -1,0 +1,86 @@
+version: 2
+
+models:
+  - name: core_nobs_patient
+    description: "Conformed core dimension representing patients of Sophies Minde. Unifies historical patient data from statpasient_detail (~42k patients) with enriched master profiles from exp_pasient and exp_personalia."
+    config:
+      meta:
+        grain: "one row per patient"
+    columns:
+      - name: pk_patient_id
+        description: "Primary key of the patient (conformed person ID in NOBS)."
+        tests:
+          - not_null
+          - unique
+      - name: patient_number
+        description: "Business patient identifier number (Pasientnummer)."
+        tests:
+          - not_null
+      - name: first_name
+        description: "First name of the patient (available when exported in exp_pasient)."
+      - name: last_name
+        description: "Last name of the patient (available when exported in exp_pasient)."
+      - name: full_name
+        description: "Full combined name of the patient."
+      - name: national_id_number
+        description: "Norwegian national identification number (Fødselsnummer, 11 digits)."
+      - name: birth_date
+        description: "Exact date of birth."
+      - name: birth_year
+        description: "Year of birth (either from exact birth date or legacy baseline)."
+      - name: approximate_age
+        description: "Current age in years (calculated from birth date or legacy record)."
+      - name: gender
+        description: "Gender of the patient (e.g. Kvinne, Mann)."
+      - name: patient_status
+        description: "Current patient status (e.g. Aktiv, Avsluttet)."
+      - name: patient_status_code
+        description: "System status code."
+      - name: patient_type
+        description: "Classification of patient."
+      - name: is_address_secret
+        description: "Flag indicating whether the patient's address is confidential / secret (fortrolig adresse)."
+      - name: address_line_1
+        description: "Street address line 1."
+      - name: address_line_2
+        description: "Street address line 2."
+      - name: postal_code
+        description: "Postal code (Postnummer)."
+      - name: city
+        description: "City (Poststed)."
+      - name: country
+        description: "Country (Land)."
+      - name: municipality
+        description: "Municipality name (Kommune)."
+      - name: municipality_code
+        description: "Official 4-digit municipality code (Kommunenummer)."
+      - name: county
+        description: "County name (Fylke)."
+      - name: department_name
+        description: "Primary Sophies Minde department (e.g. Bryn, Rikshospitalet, Drammen)."
+      - name: meeting_place
+        description: "Consultation meeting location (Møtested)."
+      - name: institution
+        description: "Associated healthcare institution."
+      - name: nav_customer_number
+        description: "Patient's customer account number with NAV."
+      - name: fk_health_personnel_fastlege
+        description: "Foreign key reference to core_nobs_health_personnel for the patient's assigned general practitioner (Fastlege)."
+      - name: fk_health_personnel_henvisende_lege
+        description: "Foreign key reference to core_nobs_health_personnel for the referring doctor (Henvisende lege)."
+      - name: fk_health_personnel_rekvirent
+        description: "Foreign key reference to core_nobs_health_personnel for the requisitioning physician (Rekvirent)."
+      - name: fk_health_personnel_fysioterapeut
+        description: "Foreign key reference to core_nobs_health_personnel for the patient's physical therapist."
+      - name: fk_health_personnel_ergoterapeut
+        description: "Foreign key reference to core_nobs_health_personnel for the patient's occupational therapist."
+      - name: fk_employee_ortopediingenior
+        description: "Foreign key reference to core_nobs_employee for the assigned internal orthopedic engineer."
+      - name: has_extended_profile
+        description: "Flag indicating whether extended attributes from exp_pasient/exp_personalia were matched (1) or only baseline statpasient_detail was present (0)."
+      - name: date_created_business
+        description: "Date the patient was created in the business system."
+      - name: created_at
+        description: "Source record creation timestamp."
+      - name: modified_at
+        description: "Source record modification timestamp."
