@@ -1,0 +1,278 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/graphqlApi/definition/1.0.0/schema.json",
+  "datasources": [
+    {
+      "objects": [
+        {
+          "actions": {
+            "Query": "Enabled"
+          },
+          "fieldMappings": {
+            "address_line_1": "address_line_1",
+            "address_line_2": "address_line_2",
+            "abbreviation": "abbreviation",
+            "city": "city",
+            "country": "country",
+            "created_at": "created_at",
+            "department_name": "department_name",
+            "email": "email",
+            "first_name": "first_name",
+            "full_name": "full_name",
+            "is_active": "is_active",
+            "job_title": "job_title",
+            "last_name": "last_name",
+            "modified_at": "modified_at",
+            "pk_employee_id": "pk_employee_id",
+            "postal_code": "postal_code",
+            "resource_type": "resource_type",
+            "source_system_profile": "source_system_profile",
+            "storage_location": "storage_location",
+            "username": "username"
+          },
+          "graphqlType": "core_ops__employee",
+          "relationships": [],
+          "sourceObject": "core.core_ops__employee",
+          "sourceObjectType": "Table"
+        },
+        {
+          "actions": {
+            "Query": "Enabled"
+          },
+          "fieldMappings": {
+            "created_at": "created_at",
+            "created_by": "created_by",
+            "first_name": "first_name",
+            "full_name": "full_name",
+            "hpr_number": "hpr_number",
+            "last_name": "last_name",
+            "modified_at": "modified_at",
+            "modified_by": "modified_by",
+            "pk_health_personnel_id": "pk_health_personnel_id",
+            "practitioner_category": "practitioner_category",
+            "profession": "profession"
+          },
+          "graphqlType": "core_ops__health_personnel",
+          "relationships": [],
+          "sourceObject": "core.core_ops__health_personnel",
+          "sourceObjectType": "Table"
+        },
+        {
+          "actions": {
+            "Query": "Enabled"
+          },
+          "fieldMappings": {
+            "description": "description",
+            "has_additional_codes": "has_additional_codes",
+            "nobs_detail_id": "nobs_detail_id",
+            "nomenclature_category_code": "nomenclature_category_code",
+            "order_type": "order_type",
+            "pk_nomenclature_code": "pk_nomenclature_code",
+            "price_group": "price_group",
+            "product_group": "product_group",
+            "product_sub_group": "product_sub_group",
+            "source_origin": "source_origin",
+            "subject_area": "subject_area"
+          },
+          "graphqlType": "core_ops__nomenclature",
+          "relationships": [],
+          "sourceObject": "core.core_ops__nomenclature",
+          "sourceObjectType": "Table"
+        },
+        {
+          "actions": {
+            "Query": "Enabled"
+          },
+          "fieldMappings": {
+            "created_at": "created_at",
+            "days_manufacturing": "days_manufacturing",
+            "days_production": "days_production",
+            "days_production_hold": "days_production_hold",
+            "delivery_date": "delivery_date",
+            "department_name": "department_name",
+            "fk_avdeling_id": "fk_avdeling_id",
+            "fk_employee_engineer": "fk_employee_engineer",
+            "fk_employee_production_manager": "fk_employee_production_manager",
+            "fk_health_personnel_rekvirent": "fk_health_personnel_rekvirent",
+            "fk_patient": "fk_patient",
+            "fk_primary_nomenclature": "fk_primary_nomenclature",
+            "fk_sted_id": "fk_sted_id",
+            "invoice_date": "invoice_date",
+            "is_cancelled": "is_cancelled",
+            "is_in_production": "is_in_production",
+            "is_invoiced": "is_invoiced",
+            "is_ready_for_invoicing": "is_ready_for_invoicing",
+            "is_urgent": "is_urgent",
+            "location_name": "location_name",
+            "modified_at": "modified_at",
+            "order_date": "order_date",
+            "order_number": "order_number",
+            "order_status": "order_status",
+            "order_type": "order_type",
+            "patient_number": "patient_number",
+            "pk_order_id": "pk_order_id",
+            "planned_delivery_date": "planned_delivery_date",
+            "source_origin": "source_origin",
+            "total_copay_amount": "total_copay_amount",
+            "total_invoice_amount": "total_invoice_amount",
+            "total_order_items": "total_order_items",
+            "total_quantity": "total_quantity"
+          },
+          "graphqlType": "core_ops__order",
+          "relationships": [
+            {
+              "cardinality": "ManyToOne",
+              "field": "nomenclature",
+              "linkingSourceFields": [],
+              "linkingTargetFields": [],
+              "sourceFields": [
+                "fk_primary_nomenclature"
+              ],
+              "targetFields": [
+                "pk_nomenclature_code"
+              ],
+              "targetObject": "core_ops__nomenclature"
+            }
+          ],
+          "sourceObject": "core.core_ops__order",
+          "sourceObjectType": "Table"
+        },
+        {
+          "actions": {
+            "Query": "Enabled"
+          },
+          "fieldMappings": {
+            "address_line_1": "address_line_1",
+            "address_line_2": "address_line_2",
+            "approximate_age": "approximate_age",
+            "birth_date": "birth_date",
+            "birth_year": "birth_year",
+            "city": "city",
+            "country": "country",
+            "county": "county",
+            "created_at": "created_at",
+            "date_created_business": "date_created_business",
+            "department_name": "department_name",
+            "first_name": "first_name",
+            "fk_avdeling_id": "fk_avdeling_id",
+            "fk_employee_ortopediingenior": "fk_employee_ortopediingenior",
+            "fk_health_personnel_ergoterapeut": "fk_health_personnel_ergoterapeut",
+            "fk_health_personnel_fastlege": "fk_health_personnel_fastlege",
+            "fk_health_personnel_fysioterapeut": "fk_health_personnel_fysioterapeut",
+            "fk_health_personnel_henvisende_lege": "fk_health_personnel_henvisende_lege",
+            "fk_health_personnel_rekvirent": "fk_health_personnel_rekvirent",
+            "fk_sted_id": "fk_sted_id",
+            "full_name": "full_name",
+            "gender": "gender",
+            "has_extended_profile": "has_extended_profile",
+            "institution": "institution",
+            "is_address_secret": "is_address_secret",
+            "last_name": "last_name",
+            "meeting_place": "meeting_place",
+            "modified_at": "modified_at",
+            "municipality": "municipality",
+            "municipality_code": "municipality_code",
+            "national_id_number": "national_id_number",
+            "nav_customer_number": "nav_customer_number",
+            "patient_number": "patient_number",
+            "patient_status": "patient_status",
+            "patient_status_code": "patient_status_code",
+            "patient_type": "patient_type",
+            "pk_patient_id": "pk_patient_id",
+            "postal_code": "postal_code",
+            "recall_duration_hours": "recall_duration_hours",
+            "recall_interval": "recall_interval",
+            "recall_next": "recall_next",
+            "recall_next_location": "recall_next_location"
+          },
+          "graphqlType": "core_ops__patient",
+          "relationships": [],
+          "sourceObject": "core.core_ops__patient",
+          "sourceObjectType": "Table"
+        },
+        {
+          "actions": {
+            "Query": "Enabled"
+          },
+          "fieldMappings": {
+            "contact_type": "contact_type",
+            "contact_value": "contact_value",
+            "created_at": "created_at",
+            "created_by": "created_by",
+            "fk_patient": "fk_patient",
+            "is_sms_enabled": "is_sms_enabled",
+            "modified_at": "modified_at",
+            "modified_by": "modified_by",
+            "pk_patient_contact_id": "pk_patient_contact_id"
+          },
+          "graphqlType": "core_ops__patient_contact",
+          "relationships": [
+            {
+              "cardinality": "ManyToOne",
+              "field": "patient",
+              "linkingSourceFields": [],
+              "linkingTargetFields": [],
+              "sourceFields": [
+                "fk_patient"
+              ],
+              "targetFields": [
+                "pk_patient_id"
+              ],
+              "targetObject": "core_ops__patient"
+            }
+          ],
+          "sourceObject": "core.core_ops__patient_contact",
+          "sourceObjectType": "Table"
+        },
+        {
+          "actions": {
+            "Query": "Enabled"
+          },
+          "fieldMappings": {
+            "attendance_needs": "attendance_needs",
+            "bht_ergoterapeut_notes": "bht_ergoterapeut_notes",
+            "bht_fastlege_notes": "bht_fastlege_notes",
+            "bht_fysioterapeut_notes": "bht_fysioterapeut_notes",
+            "bht_ingenior_notes": "bht_ingenior_notes",
+            "bht_koordinerende_behandler_notes": "bht_koordinerende_behandler_notes",
+            "bht_rekvirent_notes": "bht_rekvirent_notes",
+            "clinical_activity_level": "clinical_activity_level",
+            "clinical_communication_needs": "clinical_communication_needs",
+            "clinical_height_cm": "clinical_height_cm",
+            "clinical_special_observations": "clinical_special_observations",
+            "clinical_treatment_risk": "clinical_treatment_risk",
+            "clinical_weight_kg": "clinical_weight_kg",
+            "communication_needs": "communication_needs",
+            "created_at": "created_at",
+            "created_by": "created_by",
+            "fk_patient": "fk_patient",
+            "followup_method": "followup_method",
+            "modified_at": "modified_at",
+            "modified_by": "modified_by",
+            "pk_patient_clinical_profile_id": "pk_patient_clinical_profile_id"
+          },
+          "graphqlType": "core_ops__patient_clinical_profile",
+          "relationships": [
+            {
+              "cardinality": "OneToOne",
+              "field": "patient",
+              "linkingSourceFields": [],
+              "linkingTargetFields": [],
+              "sourceFields": [
+                "fk_patient"
+              ],
+              "targetFields": [
+                "pk_patient_id"
+              ],
+              "targetObject": "core_ops__patient"
+            }
+          ],
+          "sourceObject": "core.core_ops__patient_clinical_profile",
+          "sourceObjectType": "Table"
+        }
+      ],
+      "sourceItemId": "6b61ac31-566a-402c-abaf-42da0f48e674",
+      "sourceType": "Warehouse",
+      "sourceWorkspaceId": "0090292d-63b6-403d-b31a-2ae7358fc623"
+    }
+  ]
+}
