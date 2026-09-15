@@ -26,10 +26,6 @@ models:
   smo_dbt:
     +materialized: view
 
-    source:
-      +materialized: view
-      +schema: src
-
     int:
       +materialized: view
       +schema: int

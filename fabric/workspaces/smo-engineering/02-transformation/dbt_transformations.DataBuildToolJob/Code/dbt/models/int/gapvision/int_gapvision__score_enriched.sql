@@ -1,9 +1,9 @@
 WITH scores AS (
-    SELECT * FROM {{ ref('src_gapvision__score') }}
+    SELECT * FROM {{ ref('base_gapvision__score') }}
 ),
 
 utsendelse AS (
-    SELECT * FROM {{ ref('src_gapvision__utsendelse') }}
+    SELECT * FROM {{ ref('base_gapvision__utsendelse') }}
 ),
 
 joined AS (

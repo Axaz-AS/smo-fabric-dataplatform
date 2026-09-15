@@ -1,0 +1,21 @@
+version: 2
+
+sources:
+  - name: nobs
+    description: "NOBS journal and administrative system data in bronze Lakehouse"
+    database: lh_bronze
+    schema: nobs
+    quoting:
+      database: false
+      schema: false
+      identifier: false
+    tables:
+      - name: stat_statistikk
+      - name: statevent
+      - name: statkliniker
+      - name: statnomenklatur_detail
+      - name: statordrehistorikk
+      - name: statordrelinje
+      - name: statpasient_detail
+      - name: stattime
+      - name: statvedtak

@@ -126,4 +126,6 @@ renamed AS (
     FROM source
 )
 
-SELECT * FROM renamed
+SELECT *
+FROM renamed
+WHERE is_deleted = 0 OR is_deleted IS NULL

@@ -8,14 +8,14 @@ dbt transformation project for **Sophies Minde Ortopedi (SMO)** on **Microsoft F
 
 - **Runs on:** a Fabric Data Build Tool job (`dbt_transformations.DataBuildToolJob`). The default connection is Fabric Data Warehouse **`wh_silver`**; mart models materialize in Fabric Data Warehouse **`wh_gold`** (via `+database: wh_gold` in `dbt_project.yml`).
 - **Reads:** Delta tables in Lakehouse **`lh_bronze`** (cross-database three-part naming) plus dbt-built models.
-- **Layers:** **bronze → source → int → core → mart**, one-way.
+- **Layers:** **bronze → int (`base_*`) → int → core → mart**, one-way. The folder decides the schema — see [Schema Layout](#folder-decides-the-schema).
 
 ## Architecture
 
 Each layer exists to answer one question:
 
 > **bronze** answers *"what did the source deliver?"*
-> **source** answers *"what did the source say?"* — same facts, clean, typed, predictable names
+> **base** answers *"what did the source say?"* — same facts, clean, typed, predictable names
 > **int** answers *"what fits together?"*
 > **core** answers *"what does the business entity mean?"*
 > **mart** answers *"what does this consumer need?"*
@@ -23,14 +23,17 @@ Each layer exists to answer one question:
 | Layer | Folder | Purpose | Materialization | Lives in |
 |-------|--------|---------|-----------------|----------|
 | **bronze** | — | *Land.* Delta tables in `lh_bronze` exactly as delivered by notebooks, dataflows and ADF | — (not dbt) | `lh_bronze` Lakehouse |
-| **source** | `models/source/{source}/` | *Extract & standardize.* Staging views over `lh_bronze`: bracket escaping, Delta casing quarantine, type casting, standardized column names. No business rules | `view` | `wh_silver` (`smo_wh_src`) |
-| **int** | `models/int/{domain}/` | *Intermediate.* Joins across sources within a domain, deduplication, intermediate calculations. Not yet a business contract | `view` | `wh_silver` (`smo_wh_int`) |
-| **core** | `models/core/{domain}/` | *Conformed business entity / normalized source of truth.* Highly normalized, conformed, reusable across consumers. **Enforces `pk_{entity}` / `fk_{entity}` keys** | `table` | `wh_silver` (`smo_wh_core`) |
-| **mart** | `models/mart/{domain}_{consumer}/` | *Serve.* Denormalized star-schema tables shaped for one consumer | `table` | `wh_gold` (`wh_gold.smo_wh_mart`) |
+| **source defs** | `models/sources/` | *Declare.* Standalone source ymls (`src_{source}.yml`) listing the bronze tables only — no models, no per-table column docs | — (yml only) | — |
+| **base** | `models/int/{domain}/base_{source}__{entity}.sql` | *Extract & standardize.* One view per bronze source table: queries `source()` directly, handles all T-SQL bracket escaping, exact Delta casing, type casts, snake_case renaming and soft-delete filters (`WHERE is_deleted = 0 OR is_deleted IS NULL`) | `view` | `wh_silver.int` |
+| **int** | `models/int/{domain}/int_{domain}__{entity}.sql` | *Intermediate.* Joins across base views within a domain, deduplication, intermediate calculations. Not yet a business contract | `view` | `wh_silver.int` |
+| **core** | `models/core/{domain}/` | *Conformed business entity / normalized source of truth.* Highly normalized, conformed, reusable across consumers. **Enforces `pk_{entity}` / `fk_{entity}` keys** | `table` | `wh_silver.core` |
+| **mart** | `models/mart/{domain}_{consumer}/` | *Serve.* Denormalized star-schema tables shaped for one consumer | `table` | `wh_gold.mart` |
 
-The bronze layer is never modelled in dbt — it is referenced only via dbt source yml files that point at the Delta tables in `lh_bronze` created by notebooks, dataflows and ADF in `01-data-source/`.
+Physical hierarchy: `wh_silver.int.base_*` → `wh_silver.int.int_*` → `wh_silver.core.core_*` → `wh_gold.mart.agg_*` / `fct_*` / `dim_*`.
 
-**Default to a staging view in `source/` for every bronze table.** It keeps the source-shaped work — bracket escaping, casing, renaming, casting — out of everything downstream, so `int` and `core` are free to be about business meaning. For a genuinely trivial pipeline you can go straight `bronze → core`.
+The bronze layer is never modelled in dbt — it is declared only in `models/sources/src_{source}.yml` (table names only) and queried by the `base_*` views.
+
+**Default to a `base_{source}__{entity}` view for every bronze table.** It keeps the source-shaped work — bracket escaping, casing, renaming, casting — out of everything downstream, so `int` and `core` are free to be about business meaning.
 
 ### Consumers
 
@@ -43,10 +46,10 @@ The bronze layer is never modelled in dbt — it is referenced only via dbt sour
 ### Dependency direction is one-way
 
 ```
-bronze  →  source  →  int  →  core  →  mart  →  Power BI / Boomi / reporting
+bronze  →  base_*  →  int_*  →  core_*  →  mart (dim_/fct_/agg_)  →  Power BI / Boomi / reporting
 ```
 
-A model only ever `ref()`s a layer to its left. A `source` model only calls `source()`. A core model is never made correct from a mart.
+A model only ever `ref()`s a layer to its left. A `base_*` view only calls `source()`. A core model is never made correct from a mart.
 
 ## Folder Structure
 
@@ -54,26 +57,23 @@ A model only ever `ref()`s a layer to its left. A `source` model only calls `sou
 Code/dbt/
   dbt_project.yml
   macros/
-    generate_schema_name.sql        ← bare joined schema names (smo_wh_src, smo_wh_int, ...)
+    generate_schema_name.sql        ← folder decides schema (int, core, mart)
     escape_identifier.sql           ← escape_column() T-SQL bracket helper
   models/
-    source/
-      {source}/
-        src_{source}.yml            ← source definition (co-located where first used)
-        src_{source}__{entity}.yml
-        src_{source}__{entity}.sql
+    sources/
+      src_{source}.yml              ← standalone source definition, tables only
     int/
       {domain}/
-        int_{domain}__{entity}.yml
-        int_{domain}__{entity}.sql
+        base_{source}__{entity}.sql ← one view per bronze table (escaping, casts, filters)
+        int_{domain}__{entity}.sql  ← joins/calculations across base views
     core/
       {domain}/
-        core_{domain}_{entity}.yml
         core_{domain}_{entity}.sql
+        core_{domain}_{entity}.yml  ← only where it carries real docs/tests
     mart/
       {domain}_{consumer}/
-        {prefix}_{domain}_{consumer}_{entity}.yml
         {prefix}_{domain}_{consumer}_{entity}.sql
+        {prefix}_{domain}_{consumer}_{entity}.yml  ← only where it carries real docs/tests
 ```
 
 Every layer is exactly one folder deep — one folder per dataset.
@@ -84,12 +84,14 @@ Fabric Warehouses speak T-SQL over Delta tables. These project-specific pitfalls
 
 ### Three-part naming and `quoting`
 
-Lakehouse tables are addressed with three-part names — `database.schema.table`, e.g. `lh_bronze.gapvision.V111_Score`. Declare every Lakehouse source with quoting disabled so the rendered three-part name stays bare and stable regardless of adapter default quoting:
+Lakehouse tables are addressed with three-part names — `database.schema.table`, e.g. `lh_bronze.gapvision.V111_Score`. Declare every Lakehouse source in `models/sources/` with quoting disabled so the rendered three-part name stays bare and stable regardless of adapter default quoting:
 
 ```yaml
+version: 2
+
 sources:
   - name: gapvision
-    description: "GapVision survey data ingested into bronze Lakehouse"
+    description: "GapVision survey data in bronze Lakehouse"
     database: lh_bronze
     schema: gapvision
     quoting:
@@ -98,19 +100,21 @@ sources:
       identifier: false
     tables:
       - name: V111_Score
-        description: "GapVision respondent scores per measurement and question"
+      - name: V111_Utsendelse
 ```
+
+Source ymls list **tables only** — no per-table column YAMLs. Column definitions live in the `base_*` view that queries the table.
 
 ### Binary, case-sensitive collation
 
-Fabric Warehouse endpoints use the binary collation `Latin1_General_100_BIN2_UTF8`. **Source references must match Delta casing exactly**: `V111_Score`, `ResponseID`, `Måling`. Writing `v111_score` or `måling` will fail to resolve. This applies only to references into `lh_bronze` — everything dbt builds itself is lowercase `snake_case`.
+Fabric Warehouse endpoints use the binary collation `Latin1_General_100_BIN2_UTF8`. **Source references must match Delta casing exactly**: `V111_Score`, `ResponseID`, `Måling`, `__kplt__ID`. Writing `v111_score` or `måling` will fail to resolve. This applies only to references into `lh_bronze` — everything dbt builds itself is lowercase `snake_case`.
 
 ### Bracket escaping
 
 T-SQL requires square brackets around a column when it:
 
 - contains Norwegian letters `æ`, `ø`, `å` / `Æ`, `Ø`, `Å` — e.g. `[Måling]`, `[Spørsmål]`
-- starts with an underscore — e.g. `[__kplt__ID]`
+- starts with an underscore — e.g. `[__kplt__ID]`, `[_kflt_AvdelingID]`
 - contains spaces or hyphens — e.g. `[response id]`, `[user-name]`
 - is a T-SQL reserved keyword — `[group]`, `[order]`, `[date]`, `[text]`
 
@@ -122,24 +126,37 @@ SELECT {{ escape_column('Måling') }} AS measurement
 
 ### Quarantining
 
-**All bracket escaping, Delta casing, renaming and type casting belongs in `source/` models — and only in `source/` models.** Once a column leaves `models/source/` it is lowercase `snake_case`, correctly typed, and bracket-free. Models in `int/`, `core/` and `mart/` never write `[...]`, never reference Norwegian-cased Delta columns, and never compensate for Delta quirks.
+**All bracket escaping, Delta casing, renaming and type casting belongs in the `base_*` views in `models/int/{domain}/` — and only there.** Once a column leaves a `base_*` view it is lowercase `snake_case`, correctly typed, and bracket-free. `int_*`, `core_*` and mart models never write `[...]`, never reference Norwegian-cased Delta columns, and never compensate for Delta quirks.
 
 ## Schema & Database Layout
 
-`macros/generate_schema_name.sql` produces bare joined schema names `{profile schema}_{+schema}`. The profile schema is `smo_wh` (set in `dbt-content.json`), so the layout is fixed:
+The folder decides the schema. `macros/generate_schema_name.sql` returns the `+schema` when set (and `dbt_project.yml` sets it per top-level folder); otherwise, for models at least one folder deep, it falls back to the first path segment of the model's path; otherwise `target.schema`:
+
+```sql
+{% macro generate_schema_name(custom_schema_name, node) -%}
+    {%- if custom_schema_name is not none -%}
+        {{ custom_schema_name | trim }}
+    {%- elif node.resource_type == 'model' and node.path.split('/') | length > 1 -%}
+        {{ node.path.split('/')[0] | trim }}
+    {%- else -%}
+        {{ target.schema }}
+    {%- endif -%}
+{%- endmacro %}
+```
+
+Schemas are bare folder names — no `smo_wh_` prefix:
 
 ```
 wh_silver (Fabric Data Warehouse)
-  ├─ smo_wh_src     ← source staging views
-  ├─ smo_wh_int     ← int views
-  └─ smo_wh_core    ← core tables
+  ├─ int      ← models/int/  (base_* views + int_* views)
+  └─ core     ← models/core/ (conformed tables)
 wh_gold (Fabric Data Warehouse)
-  └─ smo_wh_mart    ← mart tables (+database: wh_gold in dbt_project.yml)
+  └─ mart     ← models/mart/ (+database: wh_gold in dbt_project.yml)
 lh_bronze (Lakehouse)
-  └─ {source}       ← raw Delta tables, read-only for dbt
+  └─ {source} ← raw Delta tables, read-only for dbt
 ```
 
-Schemas are the access boundary: only the dbt job writes to `smo_wh_*`; consumers are granted read on `wh_gold.smo_wh_mart` (and `smo_wh_core` where needed) — never on `lh_bronze`.
+Schemas are the access boundary: only the dbt job writes to `int`, `core` and `mart`; consumers are granted read on `wh_gold.mart` (and `core` where needed) — never on `lh_bronze`.
 
 ## Naming Conventions
 
@@ -147,9 +164,9 @@ Schemas are the access boundary: only the dbt job writes to `smo_wh_*`; consumer
 
 | Layer | Prefix | Pattern | Example |
 |-------|--------|---------|---------|
-| source | `src_` | `src_{source}__{entity}` | `src_gapvision__score` |
+| base | `base_` | `base_{source}__{entity}` | `base_nobs__statistikk` |
 | int | `int_` | `int_{domain}__{entity}` | `int_gapvision__score_enriched` |
-| core | `core_` | `core_{domain}_{entity}` | `core_gapvision_response` |
+| core | `core_` | `core_{domain}_{entity}` | `core_gapvision_score` |
 | mart — Dimension | `dim_` | `dim_{domain}_{consumer}_{entity}` | `dim_gapvision_pbi_company` |
 | mart — Fact | `fct_` | `fct_{domain}_{consumer}_{entity}` | `fct_gapvision_pbi_score` |
 | mart — Aggregate | `agg_` | `agg_{domain}_{consumer}_{entity}_{grain}` | `agg_gapvision_pbi_score_monthly` |
@@ -159,11 +176,11 @@ Every mart table carries **both** the domain and the consumer short code, so the
 Rules:
 
 - All lowercase `snake_case`
-- Double underscore `__` separates source/domain from entity in `src_` and `int_` models
-- Singular entity names — `core_gapvision_response`, not `core_gapvision_responses`
-- Source-system identity is explicit in `src_` names; from `core_` onward the name describes the **business entity**, not where it came from
+- Double underscore `__` separates source/domain from entity in `base_` and `int_` models
+- Singular entity names — `core_gapvision_score`, not `core_gapvision_scores`
+- Source-system identity is explicit in `base_` names; from `core_` onward the name describes the **business entity**, not where it came from
 - Names describe business meaning, not implementation history. Never `_final`, `_new`, `_v2`, `_clean`, `_processed`, `_latest`, `_tmp`
-- Prefer one conformed core entity over per-consumer copies. If two consumers genuinely need different grains or definitions, those are two different entities and should be named as such — not `core_gapvision_response` and `core_gapvision_response_boomi`
+- Prefer one conformed core entity over per-consumer copies. If two consumers genuinely need different grains or definitions, those are two different entities and should be named as such
 - Model names are unique across the whole project (dbt enforces this); the layer prefix plus domain — and, in mart, consumer — short code is what keeps them unique
 
 ### Grain
@@ -176,7 +193,7 @@ agg_gapvision_pbi_score_monthly  1 row = 1 company, measurement and question per
 dim_gapvision_pbi_company        1 row = 1 company
 ```
 
-Declare it in the model's yml (see [yml Files](#yml-files)). The grain is what makes a model testable — a `unique` test on the key columns follows directly from it.
+Where a model carries a yml, declare the grain there (`config.meta.grain`). The grain is what makes a model testable — a `unique` test on the key columns follows directly from it.
 
 ### Keys
 
@@ -201,7 +218,7 @@ Which model an `fk_` points at is relationship metadata: declare it with a dbt `
 
 **The other layers are looser:**
 
-- **`source`** stays source-shaped after rename/cast, but where the natural key is obvious, name it `pk_`/`fk_` right away (`[ResponseID] AS pk_response_id`) so joins in `int` line up cleanly.
+- **`base`** stays source-shaped after rename/cast, but where the natural key is obvious, name it `pk_`/`fk_` right away (`[ResponseID] AS pk_response_id`) so joins in `int` line up cleanly.
 - **`int`** carries keys through but does not invent new ones.
 - **`mart`** inherits the core keys by default, but the consumer wins. Document what you chose in the model yml.
 
@@ -232,33 +249,24 @@ For monetary values where the currency varies by row, use a neutral `amount` plu
 
 ### yml Files
 
-- One yml file per table — for both source definitions and model definitions
-- Source yml: `src_{source}.yml`, co-located in `models/source/{source}/` where that source is first referenced
-- Model yml: `{model_name}.yml` — matches the `.sql` file name exactly, in the same folder
-
-Every model yml must carry a `description` and a `grain`. Ownership, classification, SLA and refresh frequency belong in metadata too if you have them — never in the table name:
+- Source definitions are **standalone**: one `models/sources/src_{source}.yml` per source system, listing the bronze **tables only** — no per-table column YAMLs
+- **No mirror ymls.** A model yml must carry real value (documentation, tests, ownership metadata). Never create a yml that just repeats the file name or empty stubs
+- `base_*` and `int_*` views need no yml by default — the SQL defines the columns
+- `core_*` and mart models keep a co-located `{model_name}.yml` where it documents description, `meta.grain`, columns and tests:
 
 ```yaml
+version: 2
+
 models:
-  - name: fct_gapvision_pbi_score
-    description: "Respondent answers registered in GapVision, one row per answer."
+  - name: core_gapvision_score
+    description: "Conformed core business entity representing respondent survey scores."
     config:
       meta:
         grain: one row per respondent answer
-        # optional, add when known:
-        # owner: data-platform
-        # source_system: gapvision
-        # classification: internal
     columns:
-      - name: pk_score_id
-        description: "Warehouse key for the answer."
-        tests: [unique, not_null]
-      - name: fk_response_id
-        description: "Sendout response this answer belongs to."
-        tests:
-          - relationships:
-              to: ref('core_gapvision_response')
-              field: pk_response_id
+      - name: response_id
+        description: "Reference to the survey response."
+        tests: [not_null]
 ```
 
 ## Fabric Git Integration Rules
@@ -279,8 +287,8 @@ cd fabric/workspaces/smo-engineering/02-transformation/dbt_transformations.DataB
 
 dbt compile                                    # verify models parse and compile
 dbt build                                      # same as the Fabric job
-dbt run --select src_gapvision__score          # a single model
-dbt build --select +core_gapvision_scores      # a model and everything upstream
+dbt run --select base_nobs__statistikk         # a single model
+dbt build --select +core_gapvision_score       # a model and everything upstream
 dbt run --select source:gapvision              # everything reading one source system
 dbt test                                       # all tests
 ```
@@ -289,10 +297,11 @@ dbt test                                       # all tests
 
 Before committing changes in this project:
 
-- [ ] New Lakehouse tables are declared in a co-located `src_{source}.yml` with `quoting` fully disabled and `database: lh_bronze`
-- [ ] All bracket escaping, Delta casing, renaming and casting is quarantined in `models/source/` — no `[...]` below that layer
+- [ ] New Lakehouse tables are declared in a standalone `models/sources/src_{source}.yml` (tables only) with `quoting` fully disabled and `database: lh_bronze`
+- [ ] Every bronze table consumed in dbt has a `models/int/{domain}/base_{source}__{entity}.sql` view that owns all bracket escaping, exact Delta casing, casting, snake_case renaming and soft-delete filtering
 - [ ] Every reference into `lh_bronze` matches Delta casing exactly (binary collation)
-- [ ] Names follow the layer patterns; `core` models have `pk_`/`fk_` keys with `unique`, `not_null` and `relationships` tests
-- [ ] Every new model has a co-located `{model_name}.yml` with `description` and `meta.grain`
-- [ ] Dependency direction respected — `ref()` only points left (`source → int → core → mart`)
+- [ ] No `[...]` escaping outside `base_*` views
+- [ ] Names follow the layer patterns; `core` models have `pk_`/`fk_` keys with `unique`, `not_null` and `relationships` tests where applicable
+- [ ] yml files carry real value (docs/tests) — no mirrors, no empty files
+- [ ] Dependency direction respected — `ref()` only points left (`base → int → core → mart`)
 - [ ] No 0-byte files, no extensionless files, no `profiles.yml` / `target/` / `logs/` under `Code/dbt/`
