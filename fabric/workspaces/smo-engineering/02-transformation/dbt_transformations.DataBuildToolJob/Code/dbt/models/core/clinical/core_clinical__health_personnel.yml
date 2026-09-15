@@ -1,7 +1,7 @@
 version: 2
 
 models:
-  - name: core_nobs_health_personnel
+  - name: core_clinical__health_personnel
     description: "Conformed core dimension representing external healthcare practitioners (e.g. general practitioners / fastleger, hospital doctors, physical therapists, occupational therapists) who interact with patients but are not internal employees of Sophies Minde."
     config:
       meta:

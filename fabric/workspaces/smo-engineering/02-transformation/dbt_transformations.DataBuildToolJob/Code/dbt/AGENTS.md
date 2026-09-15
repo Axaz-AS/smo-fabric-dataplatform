@@ -170,7 +170,7 @@ Schemas are the access boundary: only the dbt job writes to `int`, `core` and `m
 |-------|--------|---------|---------|
 | base | `base_` | `base_{source}__{entity}` | `base_nobs__statistikk` |
 | int | `int_` | `int_{domain}__{entity}` | `int_gapvision__score_enriched` |
-| core | `core_` | `core_{domain}_{entity}` | `core_gapvision_score` |
+| core | `core_` | `core_{domain}__{entity}` | `core_clinical__patient` |
 | mart — Dimension | `dim_` | `dim_{domain}_{consumer}_{entity}` | `dim_gapvision_pbi_company` |
 | mart — Fact | `fct_` | `fct_{domain}_{consumer}_{entity}` | `fct_gapvision_pbi_score` |
 | mart — Aggregate | `agg_` | `agg_{domain}_{consumer}_{entity}_{grain}` | `agg_gapvision_pbi_score_monthly` |
@@ -180,9 +180,9 @@ Every mart table carries **both** the domain and the consumer short code, so the
 Rules:
 
 - All lowercase `snake_case`
-- Double underscore `__` separates source/domain from entity in `base_` and `int_` models
-- Singular entity names — `core_gapvision_score`, not `core_gapvision_scores`
-- Source-system identity is explicit in `base_` names; from `core_` onward the name describes the **business entity**, not where it came from
+- Double underscore `__` separates source/domain from entity in `base_`, `int_`, and `core_` models
+- Singular entity names — `core_clinical__patient`, not `core_clinical__patients`
+- Source-system identity is explicit in `base_` names; from `int_` and `core_` onward the name describes the **business domain and entity**, not where it came from
 - Names describe business meaning, not implementation history. Never `_final`, `_new`, `_v2`, `_clean`, `_processed`, `_latest`, `_tmp`
 - Prefer one conformed core entity over per-consumer copies. If two consumers genuinely need different grains or definitions, those are two different entities and should be named as such
 - Model names are unique across the whole project (dbt enforces this); the layer prefix plus domain — and, in mart, consumer — short code is what keeps them unique

@@ -1,7 +1,7 @@
 /*
-    Model: int_nobs__employee_unified
-    Domain: NOBS
-    Grain: 1 row per employee / staff member (person_id)
+    Model: int_clinical__employee_unified
+    Domain: Clinical
+    Grain: 1 row per employee / clinician / staff member (person_id)
 
     Business Logic & Assumptions:
     - Unifies internal employees from the new master export (exp_medarbeider) and

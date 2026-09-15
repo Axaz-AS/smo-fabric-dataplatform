@@ -1,12 +1,12 @@
 /*
-    Model: core_nobs_patient_clinical_profile
-    Domain: NOBS
+    Model: core_clinical__patient_clinical_profile
+    Domain: Clinical
     Grain: 1 row per patient clinical profile (pk_patient_clinical_profile_id)
 
     Business Logic:
     - Normalized 1:1 clinical metrics, treatment risk assessments, and behavioral/communication
       notes for patients.
-    - Sourced from exp_personalia and strictly linked to core_nobs_patient.
+    - Sourced from exp_personalia and strictly linked to core_clinical__patient.
 */
 
 WITH source AS (
@@ -14,7 +14,7 @@ WITH source AS (
 ),
 
 patients AS (
-    SELECT pk_patient_id FROM {{ ref('core_nobs_patient') }}
+    SELECT pk_patient_id FROM {{ ref('core_clinical__patient') }}
 ),
 
 clinical_profile AS (

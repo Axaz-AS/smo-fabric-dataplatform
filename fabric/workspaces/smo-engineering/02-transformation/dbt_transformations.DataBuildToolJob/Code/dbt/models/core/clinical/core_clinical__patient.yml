@@ -1,7 +1,7 @@
 version: 2
 
 models:
-  - name: core_nobs_patient
+  - name: core_clinical__patient
     description: "Conformed core dimension representing patients of Sophies Minde. Unifies historical patient data from statpasient_detail (~42k patients) with enriched master profiles from exp_pasient and exp_personalia."
     config:
       meta:
@@ -65,17 +65,17 @@ models:
       - name: nav_customer_number
         description: "Patient's customer account number with NAV."
       - name: fk_health_personnel_fastlege
-        description: "Foreign key reference to core_nobs_health_personnel for the patient's assigned general practitioner (Fastlege)."
+        description: "Foreign key reference to core_clinical__health_personnel for the patient's assigned general practitioner (Fastlege)."
       - name: fk_health_personnel_henvisende_lege
-        description: "Foreign key reference to core_nobs_health_personnel for the referring doctor (Henvisende lege)."
+        description: "Foreign key reference to core_clinical__health_personnel for the referring doctor (Henvisende lege)."
       - name: fk_health_personnel_rekvirent
-        description: "Foreign key reference to core_nobs_health_personnel for the requisitioning physician (Rekvirent)."
+        description: "Foreign key reference to core_clinical__health_personnel for the requisitioning physician (Rekvirent)."
       - name: fk_health_personnel_fysioterapeut
-        description: "Foreign key reference to core_nobs_health_personnel for the patient's physical therapist."
+        description: "Foreign key reference to core_clinical__health_personnel for the patient's physical therapist."
       - name: fk_health_personnel_ergoterapeut
-        description: "Foreign key reference to core_nobs_health_personnel for the patient's occupational therapist."
+        description: "Foreign key reference to core_clinical__health_personnel for the patient's occupational therapist."
       - name: fk_employee_ortopediingenior
-        description: "Foreign key reference to core_nobs_employee for the assigned internal orthopedic engineer."
+        description: "Foreign key reference to core_clinical__employee for the assigned internal orthopedic engineer."
       - name: has_extended_profile
         description: "Flag indicating whether extended attributes from exp_pasient/exp_personalia were matched (1) or only baseline statpasient_detail was present (0)."
       - name: date_created_business

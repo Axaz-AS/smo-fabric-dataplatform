@@ -1,6 +1,6 @@
 /*
-    Model: core_nobs_employee
-    Domain: NOBS
+    Model: core_clinical__employee
+    Domain: Clinical
     Grain: 1 row per internal Sophies Minde employee (pk_employee_id)
 
     Business Logic:
@@ -11,7 +11,7 @@
 */
 
 WITH unified AS (
-    SELECT * FROM {{ ref('int_nobs__employee_unified') }}
+    SELECT * FROM {{ ref('int_clinical__employee_unified') }}
 )
 
 SELECT

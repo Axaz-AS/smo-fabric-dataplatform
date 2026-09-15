@@ -1,7 +1,7 @@
 version: 2
 
 models:
-  - name: core_nobs_employee
+  - name: core_clinical__employee
     description: "Conformed core dimension representing internal Sophies Minde staff members, orthopedic engineers, technicians, and administration. Unifies the new exp_medarbeider master profile with historical clinician coverage from statkliniker."
     config:
       meta:

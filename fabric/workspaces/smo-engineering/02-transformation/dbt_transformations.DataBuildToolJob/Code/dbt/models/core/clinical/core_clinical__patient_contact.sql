@@ -1,11 +1,11 @@
 /*
-    Model: core_nobs_patient_contact
-    Domain: NOBS
+    Model: core_clinical__patient_contact
+    Domain: Clinical
     Grain: 1 row per contact channel per patient (pk_patient_contact_id)
 
     Business Logic:
     - Normalized 1:N contact methods (mobile, phone, private/work email) per patient.
-    - Sourced from exp_kontakt and filtered to persons present in core_nobs_patient.
+    - Sourced from exp_kontakt and filtered to persons present in core_clinical__patient.
 */
 
 WITH source AS (
@@ -13,7 +13,7 @@ WITH source AS (
 ),
 
 patients AS (
-    SELECT pk_patient_id FROM {{ ref('core_nobs_patient') }}
+    SELECT pk_patient_id FROM {{ ref('core_clinical__patient') }}
 ),
 
 patient_contacts AS (

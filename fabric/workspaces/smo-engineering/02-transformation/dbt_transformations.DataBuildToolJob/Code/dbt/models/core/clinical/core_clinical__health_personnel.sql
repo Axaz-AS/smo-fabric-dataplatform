@@ -1,13 +1,13 @@
 /*
-    Model: core_nobs_health_personnel
-    Domain: NOBS
+    Model: core_clinical__health_personnel
+    Domain: Clinical
     Grain: 1 row per external healthcare practitioner (pk_health_personnel_id)
 
     Business Logic:
     - Represents external healthcare practitioners (fastleger, sykehusleger,
       spesialister, fysioterapeuter, ergoterapeuter, rekvirenter) who interact
-      with Sophies Minde patients but are NOT internal employees.
-    - Sourced from exp_helsepersonell.
+      with patients but are NOT internal employees of Sophies Minde.
+    - Sourced from base_nobs__helsepersonell.
 */
 
 WITH source AS (

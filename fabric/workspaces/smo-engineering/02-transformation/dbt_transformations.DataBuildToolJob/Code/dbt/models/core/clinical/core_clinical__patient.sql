@@ -1,6 +1,6 @@
 /*
-    Model: core_nobs_patient
-    Domain: NOBS
+    Model: core_clinical__patient
+    Domain: Clinical
     Grain: 1 row per patient (pk_patient_id)
 
     Business Logic:
@@ -13,7 +13,7 @@
 */
 
 WITH unified AS (
-    SELECT * FROM {{ ref('int_nobs__patient_unified') }}
+    SELECT * FROM {{ ref('int_clinical__patient_unified') }}
 )
 
 SELECT
