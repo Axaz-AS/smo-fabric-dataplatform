@@ -130,7 +130,7 @@
               "targetFields": [
                 "pk_nomenclature_code"
               ],
-              "targetObject": "core_ops__nomenclature"
+              "targetObject": "core.core_ops__nomenclature"
             }
           ],
           "sourceObject": "core.core_ops__order",
@@ -217,7 +217,7 @@
               "targetFields": [
                 "pk_patient_id"
               ],
-              "targetObject": "core_ops__patient"
+              "targetObject": "core.core_ops__patient"
             }
           ],
           "sourceObject": "core.core_ops__patient_contact",
@@ -263,7 +263,7 @@
               "targetFields": [
                 "pk_patient_id"
               ],
-              "targetObject": "core_ops__patient"
+              "targetObject": "core.core_ops__patient"
             }
           ],
           "sourceObject": "core.core_ops__patient_clinical_profile",
