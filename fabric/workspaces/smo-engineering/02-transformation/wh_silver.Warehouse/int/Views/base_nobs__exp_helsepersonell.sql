@@ -1,14 +1,15 @@
-create view [int].[base_nobs__kontakt] as WITH source AS (
-    SELECT * FROM lh_bronze.nobs.exp_kontakt
+create view [int].[base_nobs__exp_helsepersonell] as WITH source AS (
+    SELECT * FROM lh_bronze.nobs.exp_helsepersonell
 ),
 
 renamed AS (
     SELECT
-        [__kplt__ID]                                       AS pk_kontakt_id,
-        [_kflt__Person]                                    AS fk_person_id,
-        [Type_as_text]                                     AS contact_type,
-        [Nummer]                                           AS contact_value,
-        TRY_CAST([SMS] AS INT)                             AS is_sms,
+        [__kplt__ID]                                       AS pk_helsepersonell_id,
+        [ID_nummer]                                        AS employee_id_number,
+        [Fornavn]                                          AS first_name,
+        [Etternavn]                                        AS last_name,
+        [Kategori]                                         AS category,
+        [Profesjon]                                        AS profession,
         TRY_CAST([zz__IsDeleted] AS INT)                   AS is_deleted,
         TRY_CAST([zz__Creation_Timestamp__lxm] AS DATETIME2(6)) AS created_at,
         [zz__Creation_AccountName__lxt]                    AS created_by,

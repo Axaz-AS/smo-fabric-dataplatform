@@ -1,4 +1,4 @@
-create view [int].[base_nobs__ordrelinje] as WITH source AS (
+create view [int].[base_nobs__statordrelinje] as WITH source AS (
     SELECT * FROM lh_bronze.nobs.statordrelinje
 ),
 

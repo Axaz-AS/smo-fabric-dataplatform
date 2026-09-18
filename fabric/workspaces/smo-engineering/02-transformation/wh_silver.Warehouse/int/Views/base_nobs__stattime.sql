@@ -1,4 +1,4 @@
-create view [int].[base_nobs__time] as WITH source AS (
+create view [int].[base_nobs__stattime] as WITH source AS (
     SELECT * FROM lh_bronze.nobs.stattime
 ),
 

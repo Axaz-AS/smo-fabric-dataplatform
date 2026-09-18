@@ -1,4 +1,4 @@
-create view [int].[base_nobs__vedtak] as WITH source AS (
+create view [int].[base_nobs__statvedtak] as WITH source AS (
     SELECT * FROM lh_bronze.nobs.statvedtak
 ),
 

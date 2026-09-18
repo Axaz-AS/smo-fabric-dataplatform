@@ -1,4 +1,4 @@
-create view [int].[base_nobs__event] as WITH source AS (
+create view [int].[base_nobs__statevent] as WITH source AS (
     SELECT * FROM lh_bronze.nobs.statevent
 ),
 

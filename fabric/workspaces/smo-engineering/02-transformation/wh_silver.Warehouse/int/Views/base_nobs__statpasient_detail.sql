@@ -1,4 +1,4 @@
-create view [int].[base_nobs__pasient_detail] as WITH source AS (
+create view [int].[base_nobs__statpasient_detail] as WITH source AS (
     SELECT * FROM lh_bronze.nobs.statpasient_detail
 ),
 

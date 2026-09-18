@@ -1,16 +1,17 @@
-create view [int].[base_nobs__gipslager] as WITH source AS (
-    SELECT * FROM lh_bronze.nobs.exp_gipslager
+create view [int].[base_nobs__exp_journal] as WITH source AS (
+    SELECT * FROM lh_bronze.nobs.exp_journal
 ),
 
 renamed AS (
     SELECT
-        [__kplt__ID]                                       AS pk_gipslager_id,
+        [__kplt__ID]                                       AS pk_journal_id,
         [_kflt__Person]                                    AS fk_person_id,
-        TRY_CAST([Dato_Kastes] AS DATE)                    AS date_discard,
-        TRY_CAST([Dato_Til_Lager] AS DATE)                 AS date_to_storage,
-        [Kategori]                                         AS category,
-        [Ordrenummer]                                      AS order_number,
-        [Sted]                                             AS location,
+        [_kflt__Ordre]                                     AS fk_ordre_id,
+        TRY_CAST([Dato] AS DATE)                           AS journal_date,
+        [EPJDokumentType]                                  AS epj_document_type,
+        [Sak_Type]                                         AS case_type,
+        [Journaltekst]                                     AS journal_text,
+        [Opprettet_Av]                                     AS created_by_user,
         TRY_CAST([zz__IsDeleted] AS INT)                   AS is_deleted,
         TRY_CAST([zz__Creation_Timestamp__lxm] AS DATETIME2(6)) AS created_at,
         [zz__Creation_AccountName__lxt]                    AS created_by,

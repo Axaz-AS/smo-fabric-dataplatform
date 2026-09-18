@@ -1,4 +1,4 @@
-create view [int].[base_nobs__avtaler] as WITH source AS (
+create view [int].[base_nobs__exp_avtaler] as WITH source AS (
     SELECT * FROM lh_bronze.nobs.exp_avtaler
 ),
 

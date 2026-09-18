@@ -6,7 +6,7 @@ create view [int].[int_ops__nomenclature_unified] as /*
     Business Logic & Assumptions:
     - Master conformed nomenclature catalog for orthopedic aids, prosthetics, and orthotics.
     - Sourced from base_excel_mappings__nomenklatur (official NAV / Excel mapping master)
-      and base_nobs__nomenklatur_detail (internal NOBS nomenclature detail).
+      and base_nobs__statnomenklatur_detail (internal NOBS nomenclature detail).
     - Cleans whitespace and newlines from codes and text.
     - Deduplicates excel mappings where multiple rows existed for the same code (e.g. J/R vs N).
     - Future-proofed to incorporate incoming exp_nomenklatur via this intermediate model.
@@ -17,7 +17,7 @@ WITH excel_mapping AS (
 ),
 
 nobs_detail AS (
-    SELECT * FROM [wh_silver].[int].[base_nobs__nomenklatur_detail]
+    SELECT * FROM [wh_silver].[int].[base_nobs__statnomenklatur_detail]
 ),
 
 -- Deduplicate excel mapping by nomenclature_code

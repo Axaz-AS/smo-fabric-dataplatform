@@ -1,4 +1,4 @@
-create view [int].[base_nobs__nomenklatur_detail] as WITH source AS (
+create view [int].[base_nobs__statnomenklatur_detail] as WITH source AS (
     SELECT * FROM lh_bronze.nobs.statnomenklatur_detail
 ),
 

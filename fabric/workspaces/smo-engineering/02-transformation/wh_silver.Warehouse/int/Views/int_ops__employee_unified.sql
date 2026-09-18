@@ -17,11 +17,11 @@ create view [int].[int_ops__employee_unified] as /*
 */
 
 WITH medarbeider AS (
-    SELECT * FROM [wh_silver].[int].[base_nobs__medarbeider]
+    SELECT * FROM [wh_silver].[int].[base_nobs__exp_medarbeider]
 ),
 
 kliniker AS (
-    SELECT * FROM [wh_silver].[int].[base_nobs__kliniker]
+    SELECT * FROM [wh_silver].[int].[base_nobs__statkliniker]
     WHERE COALESCE(employee_resource_type, '') <> 'Rom'
 ),
 

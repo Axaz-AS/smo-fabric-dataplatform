@@ -22,6 +22,7 @@ CREATE TABLE [core].[core_ops__order] (
     [planned_delivery_date]          DATE           NULL,
     [delivery_date]                  DATE           NULL,
     [invoice_date]                   DATE           NULL,
+    [invoice_number]                 VARCHAR (8000) NULL,
     [days_manufacturing]             BIGINT         NULL,
     [days_production]                BIGINT         NULL,
     [days_production_hold]           BIGINT         NULL,
