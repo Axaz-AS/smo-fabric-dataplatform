@@ -17,15 +17,15 @@
 */
 
 WITH pasient_detail AS (
-    SELECT * FROM {{ ref('base_nobs__pasient_detail') }}
+    SELECT * FROM {{ ref('base_nobs__statpasient_detail') }}
 ),
 
 pasient AS (
-    SELECT * FROM {{ ref('base_nobs__pasient') }}
+    SELECT * FROM {{ ref('base_nobs__exp_pasient') }}
 ),
 
 personalia AS (
-    SELECT * FROM {{ ref('base_nobs__personalia') }}
+    SELECT * FROM {{ ref('base_nobs__exp_personalia') }}
 ),
 
 all_patients AS (
@@ -89,6 +89,12 @@ unified AS (
         pas.recall_next,
         pas.recall_next_location,
         pas.recall_duration_hours,
+        pas.recall_opbh_interval,
+        pas.recall_opbh_next,
+        pas.recall_time_preference,
+        pas.recall_last_followup_date,
+        pas.bank_account_number,
+        pas.reminders,
 
         -- Data integration flags and audit timestamps
         CASE

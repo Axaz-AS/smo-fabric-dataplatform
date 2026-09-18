@@ -7,11 +7,11 @@
     - Represents external healthcare practitioners (fastleger, sykehusleger,
       spesialister, fysioterapeuter, ergoterapeuter, rekvirenter) who interact
       with patients but are NOT internal employees of Sophies Minde.
-    - Sourced from base_nobs__helsepersonell.
+    - Sourced from base_nobs__exp_helsepersonell.
 */
 
 WITH source AS (
-    SELECT * FROM {{ ref('base_nobs__helsepersonell') }}
+    SELECT * FROM {{ ref('base_nobs__exp_helsepersonell') }}
 ),
 
 renamed AS (

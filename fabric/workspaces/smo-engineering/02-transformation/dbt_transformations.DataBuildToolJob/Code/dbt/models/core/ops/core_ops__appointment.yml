@@ -1,0 +1,92 @@
+version: 2
+
+models:
+  - name: core_ops__appointment
+    description: "Conformed appointment entity unifying exp_avtaler bookings (appointment_record_type = 'booked') with statevent occurred patient visits ('occurred'). The sources share no link key, so one real-world visit may appear once per source; source_origin preserves provenance."
+    config:
+      meta:
+        grain: "one row per appointment record per source system (exp_avtaler booking or statevent event)"
+    columns:
+      - name: pk_appointment_id
+        description: "Surrogate primary key: source_origin concatenated with the source-system record id (e.g. 'exp_avtaler|456')."
+        tests:
+          - not_null
+          - unique
+      - name: source_origin
+        description: "Source system the appointment record came from ('exp_avtaler' or 'statevent')."
+        tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values: ['exp_avtaler', 'statevent']
+      - name: source_record_id
+        description: "Record id within the source system (pk_avtale_id or pk_event_id)."
+        tests:
+          - not_null
+      - name: appointment_record_type
+        description: "Record semantics: 'booked' for exp_avtaler appointments, 'occurred' for statevent visit events."
+        tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values: ['booked', 'occurred']
+      - name: fk_patient
+        description: "Foreign key reference to core_ops__patient."
+        tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('core_ops__patient')
+                field: pk_patient_id
+      - name: patient_archive_number
+        description: "Patient archive number recorded on the statevent event. A different identifier domain from core_ops__patient.patient_number; NULL for bookings."
+      - name: appointment_date
+        description: "Calendar date of the appointment (business date from bookings, event date from events)."
+      - name: start_time
+        description: "Scheduled/actual start time as delivered by the source (type not standardized until the base views cast it); NULL-safe across sources."
+      - name: end_time
+        description: "Scheduled/actual end time as delivered by the source (type not standardized until the base views cast it); NULL-safe across sources."
+      - name: duration
+        description: "Duration of the occurred visit as recorded by statevent; unit not declared by source. NULL for bookings."
+      - name: appointment_type
+        description: "Appointment type (booked appointment type or occurred consultation type)."
+      - name: appointment_title
+        description: "Title of the booked appointment from exp_avtaler; NULL for events."
+      - name: fk_employee_responsible
+        description: "Soft reference to the responsible employee on the occurred visit (statevent). No relationships test: employee master coverage from exp_medarbeider is incomplete. NULL for bookings."
+      - name: responsible_employee_name
+        description: "Name of the employee assigned on the booked appointment from exp_avtaler; NULL for events."
+      - name: fk_employee_performing
+        description: "Soft reference to the employee performing the occurred visit (statevent). No relationships test: employee master coverage from exp_medarbeider is incomplete. NULL for bookings."
+      - name: employee_count
+        description: "Number of employees on the occurred visit from statevent; NULL for bookings."
+      - name: employee_initials
+        description: "Employee initials recorded on the occurred visit from statevent; NULL for bookings."
+      - name: location_name
+        description: "Location as free-text recorded by either source (booked location or event location)."
+      - name: fk_sted_id
+        description: "Location id from statevent; NULL for bookings."
+      - name: fk_avdeling_id
+        description: "Department id from statevent; NULL for bookings."
+      - name: department_name
+        description: "Department name from statevent; NULL for bookings."
+      - name: arrived_at
+        description: "Timestamp the patient arrived (statevent only); NULL for bookings."
+      - name: checked_out_at
+        description: "Timestamp the patient checked out (statevent only); NULL for bookings."
+      - name: did_not_arrive_at
+        description: "Timestamp the visit was registered as did-not-arrive (statevent only); NULL for bookings."
+      - name: attendance_status
+        description: "Derived attendance status for occurred visits, evaluated did_not_arrive > checked_out > arrived; NULL when no attendance timestamp is set and for bookings."
+        tests:
+          - accepted_values:
+              arguments:
+                values: ['arrived', 'checked_out', 'did_not_arrive']
+      - name: created_at
+        description: "Record creation timestamp in source system."
+      - name: created_by
+        description: "Account that created the record in source system."
+      - name: modified_at
+        description: "Record modification timestamp in source system."
+      - name: modified_by
+        description: "Account that last modified the record in source system."

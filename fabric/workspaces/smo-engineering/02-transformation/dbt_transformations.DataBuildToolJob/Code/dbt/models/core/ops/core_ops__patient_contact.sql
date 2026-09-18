@@ -9,7 +9,7 @@
 */
 
 WITH source AS (
-    SELECT * FROM {{ ref('base_nobs__kontakt') }}
+    SELECT * FROM {{ ref('base_nobs__exp_kontakt') }}
 ),
 
 patients AS (

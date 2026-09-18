@@ -1,0 +1,73 @@
+version: 2
+
+models:
+  - name: core_ops__nav_decision
+    description: "Conformed NAV decision (vedtak) entity unifying legacy statvedtak records and exp_vedtak master-export records. The two sources share no vedtak key, so the same real-world decision may appear once per source; source_origin preserves provenance."
+    config:
+      meta:
+        grain: "one row per NAV decision record per source system (statvedtak or exp_vedtak)"
+    columns:
+      - name: pk_nav_decision_id
+        description: "Surrogate primary key: source_origin concatenated with the source-system record id (e.g. 'statvedtak|123')."
+        tests:
+          - not_null
+          - unique
+      - name: source_origin
+        description: "Source system the decision record came from ('statvedtak' or 'exp_vedtak')."
+        tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values: ['statvedtak', 'exp_vedtak']
+      - name: source_record_id
+        description: "Record id within the source system (pk_stat_vedtak_id or pk_exp_vedtak_id)."
+        tests:
+          - not_null
+      - name: fk_patient
+        description: "Foreign key reference to core_ops__patient."
+        tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('core_ops__patient')
+                field: pk_patient_id
+      - name: fk_order
+        description: "Soft order reference (source order id). No relationships test: core_ops__order is scoped to stat_statistikk and does not cover every order referenced by decisions."
+      - name: fk_vedtak_id
+        description: "Legacy vedtak header key from statvedtak (links decision rows sharing the same vedtak case); NULL for exp_vedtak records."
+      - name: patient_number
+        description: "Patient number as recorded on the statvedtak decision row; NULL for exp_vedtak records."
+      - name: fk_avdeling_id
+        description: "Department id as recorded on the statvedtak decision row; NULL for exp_vedtak records."
+      - name: fk_nomenclature
+        description: "Soft nomenclature code reference from statvedtak (assistive device code). No relationships test: coverage of core_ops__nomenclature is not guaranteed for historical decisions."
+      - name: decision_status
+        description: "Decision status as recorded in statvedtak; NULL for exp_vedtak records."
+      - name: decision_type
+        description: "Decision type / calculated type code as recorded in statvedtak; NULL for exp_vedtak records."
+      - name: date_decision
+        description: "Date the decision was made (vedtaksdato) from statvedtak; NULL for exp_vedtak records."
+      - name: date_sent_nav
+        description: "Date the decision was sent to NAV from statvedtak; NULL for exp_vedtak records."
+      - name: fk_vedtak_type_code
+        description: "Decision type code from exp_vedtak (vedtak type reference); NULL for statvedtak records."
+      - name: decision_name
+        description: "Name of the decision from exp_vedtak; NULL for statvedtak records."
+      - name: decision_icd10_code
+        description: "ICD-10 diagnosis code tied to the decision in exp_vedtak; NULL for statvedtak records."
+      - name: decision_extension_expiration_date
+        description: "Expiration date of a decision extension from exp_vedtak; NULL for statvedtak records."
+      - name: renewal_expiration_date
+        description: "Expiration date of the decision renewal from exp_vedtak; NULL for statvedtak records."
+      - name: renewal_status_text
+        description: "Renewal status text (decision name and status) from exp_vedtak; NULL for statvedtak records."
+      - name: renewal_status_code
+        description: "Renewal status code from exp_vedtak; NULL for statvedtak records."
+      - name: created_at
+        description: "Record creation timestamp in source system."
+      - name: created_by
+        description: "Account that created the record in source system."
+      - name: modified_at
+        description: "Record modification timestamp in source system."
+      - name: modified_by
+        description: "Account that last modified the record in source system."

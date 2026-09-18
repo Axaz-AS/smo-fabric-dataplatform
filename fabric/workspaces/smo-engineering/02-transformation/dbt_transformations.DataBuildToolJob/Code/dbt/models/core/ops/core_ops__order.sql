@@ -46,6 +46,7 @@ SELECT
     planned_delivery_date,
     delivery_date,
     invoice_date,
+    invoice_number,
     days_manufacturing,
     days_production,
     days_production_hold,

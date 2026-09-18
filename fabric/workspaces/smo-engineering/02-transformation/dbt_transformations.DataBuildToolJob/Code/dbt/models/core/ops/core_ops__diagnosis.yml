@@ -1,0 +1,54 @@
+version: 2
+
+models:
+  - name: core_ops__diagnosis
+    description: "Conformed core business entity representing NOBS diagnosis records per patient, including diagnosis classification and clinical descriptors (aid type, info line, injury and wound details). Scoped strictly to patients in core_ops__patient."
+    config:
+      meta:
+        grain: "one row per diagnosis record"
+    columns:
+      - name: pk_diagnosis_id
+        description: "Primary key of the diagnosis record."
+        tests:
+          - not_null
+          - unique
+      - name: fk_patient
+        description: "Foreign key reference to core_ops__patient."
+        tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('core_ops__patient')
+                field: pk_patient_id
+      - name: diagnosis_type_code
+        description: "Type code classification of the diagnosis (NOBS diagnose type)."
+      - name: diagnosis
+        description: "Diagnosis code/description as registered in NOBS."
+      - name: diagnosis_display
+        description: "Display text of the diagnosis shown in the source system."
+      - name: clinical_aid_type
+        description: "Type of assistive device (hjelpemiddel) associated with the diagnosis."
+      - name: clinical_info_line
+        description: "Clinical info line (infolinje) classification."
+      - name: clinical_injury_level
+        description: "Injury level classification (skadenivå)."
+      - name: clinical_injury_side
+        description: "Side of the body the injury affects (skadeside)."
+      - name: clinical_injury_type
+        description: "Type of injury (skadet type)."
+      - name: clinical_wound
+        description: "Wound classification (sår)."
+      - name: clinical_wound_location
+        description: "Anatomical location of the wound (sårlokasjon)."
+      - name: clinical_wound_location_date
+        description: "Date the wound location was assessed/registered."
+      - name: clinical_occupational_injury
+        description: "Occupational injury indicator (yrkesskade)."
+      - name: created_at
+        description: "Record creation timestamp in source system."
+      - name: created_by
+        description: "Source-system account that created the record."
+      - name: modified_at
+        description: "Record modification timestamp in source system."
+      - name: modified_by
+        description: "Source-system account that last modified the record."

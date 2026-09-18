@@ -1,0 +1,96 @@
+version: 2
+
+models:
+  - name: core_ops__order_line
+    description: "Conformed core entity representing individual component / article lines belonging to a clinical or manufacturing order. Captures article numbers and designations, supplier info, quantities, prices, invoicing references and per-line nomenclature. Supports LOP mapping of component history / model warehouse / order lines."
+    config:
+      meta:
+        grain: "one row per order line"
+    columns:
+      - name: pk_order_line_id
+        description: "Primary key of the order line (NOBS ordrelinje ID)."
+        tests:
+          - not_null
+          - unique
+      - name: fk_order
+        description: "Foreign key reference to core_ops__order (the order header this line belongs to). Soft: core_ops__order is currently scoped to stat_statistikk orders, while order lines may reference orders outside that set — no relationships test (same treatment as core_ops__nav_decision.fk_order)."
+      - name: parent_order_line_id
+        description: "Identifier of the parent order line, when this line is a child of another line. Plain ID — no parent-line core entity exists yet."
+      - name: component_id
+        description: "Identifier of the component / article master record in NOBS. Plain ID — no component core entity exists yet."
+      - name: supplier_id
+        description: "Identifier of the supplier master record in NOBS. Plain ID — no supplier core entity exists yet."
+      - name: fk_avdeling_id
+        description: "Department identifier from the source system. Soft id — no core department entity exists (naming kept consistent with core_ops__patient/order)."
+      - name: fk_sted_id
+        description: "Location identifier from the source system. Soft id — no core location entity exists (naming kept consistent with core_ops__patient/order)."
+      - name: order_number
+        description: "Business order number of the parent order (OrdreNummer)."
+      - name: line_status
+        description: "Current workflow status of the order line."
+      - name: production_status
+        description: "Production status of the order line (Produksjonsstatus)."
+      - name: nomenclature_code
+        description: "Nomenclature code (NomenklaturKode) classifying the device/article on this line."
+      - name: destination_code
+        description: "Destination code for delivery / fulfillment of the line."
+      - name: quantity_ordered
+        description: "Quantity ordered on the line (Antall)."
+      - name: quantity_picked
+        description: "Quantity actually picked / fulfilled on the line (AntallPlukket)."
+      - name: article_number_internal
+        description: "Internal article number (ArtikkelNummer Intern)."
+      - name: article_number_supplier
+        description: "Supplier-side article number (ArtikkelNummer Lev)."
+      - name: article_name_internal
+        description: "Internal article designation / name (ArtikkelBenevnelse Intern)."
+      - name: article_name_supplier
+        description: "Supplier-side article designation / name (ArtikkelBenevnelse Lev)."
+      - name: supplier_number
+        description: "Supplier number (LeverandoerNr)."
+      - name: supplier_admin_number
+        description: "Supplier administrative number (LeverandoerAdmNr)."
+      - name: supplier_name
+        description: "Supplier name (Leverandoernavn)."
+      - name: unit_price
+        description: "Unit price for the line article."
+      - name: unit_price_in
+        description: "Unit price in (purchase / cost price from supplier)."
+      - name: unit_price_out
+        description: "Unit price out (sales price to customer / payer)."
+      - name: line_amount
+        description: "Total line amount (LinjeBeloep) for the ordered quantity."
+      - name: line_amount_picked_in
+        description: "Picked line amount in (cost value of picked quantity)."
+      - name: line_amount_picked_out
+        description: "Picked line amount out (sales value of picked quantity)."
+      - name: invoice_number
+        description: "Invoice number the line was invoiced on (Fakturanummer)."
+      - name: copay_invoice_number
+        description: "Invoice number for the patient copay part (EgenbetalingFakturanummer)."
+      - name: order_date
+        description: "Date of the order (Ordredato)."
+      - name: registered_date
+        description: "Date the line was registered in the source system (RegistrertDato)."
+      - name: ordered_from_supplier_date
+        description: "Date the line was ordered from the supplier (BestiltDato)."
+      - name: picked_date
+        description: "Date the line was picked / fulfilled (PlukketDato)."
+      - name: invoice_date
+        description: "Date the line was invoiced (FakturaDato)."
+      - name: copay_invoice_date
+        description: "Date the patient copay invoice was issued (EgenbetalingFakturaDato)."
+      - name: department_name
+        description: "Department name associated with the order line."
+      - name: location_name
+        description: "Location name associated with the order line."
+      - name: is_locked
+        description: "Source lock flag indicating the record is frozen in NOBS (zz__IsLocked)."
+      - name: created_at
+        description: "Record creation timestamp in source system."
+      - name: created_by
+        description: "Account that created the record in the source system."
+      - name: modified_at
+        description: "Record modification timestamp in source system."
+      - name: modified_by
+        description: "Account that last modified the record in the source system."

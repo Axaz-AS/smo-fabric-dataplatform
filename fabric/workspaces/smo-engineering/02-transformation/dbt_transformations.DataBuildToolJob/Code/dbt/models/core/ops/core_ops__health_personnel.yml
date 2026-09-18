@@ -13,7 +13,7 @@ models:
           - not_null
           - unique
       - name: hpr_number
-        description: "Official practitioner ID number (e.g. HPR / Helsepersonellregisteret ID)."
+        description: "Official practitioner ID number, sourced from NOBS [ID_nummer]. Assumed to be the HPR / Helsepersonellregisteret ID — verify against a known practitioner before relying on it for LOP migration."
       - name: first_name
         description: "First name of the practitioner."
       - name: last_name

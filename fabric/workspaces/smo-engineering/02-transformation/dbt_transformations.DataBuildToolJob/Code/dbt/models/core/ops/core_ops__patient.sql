@@ -61,6 +61,12 @@ SELECT
     recall_next,
     recall_next_location,
     recall_duration_hours,
+    recall_opbh_interval,
+    recall_opbh_next,
+    recall_time_preference,
+    recall_last_followup_date,
+    bank_account_number,
+    reminders,
 
     -- Metadata & audit
     has_extended_profile,

@@ -84,3 +84,15 @@ models:
         description: "Source record creation timestamp."
       - name: modified_at
         description: "Source record modification timestamp."
+      - name: recall_opbh_interval
+        description: "OPBH follow-up interval (Innkalling_OPBH_Intervall)."
+      - name: recall_opbh_next
+        description: "Next OPBH follow-up date (Innkalling_OPBH_Neste)."
+      - name: recall_time_preference
+        description: "Patient's preferred call/appointment time (Innkalling_KlokkeslettØnske)."
+      - name: recall_last_followup_date
+        description: "Date of the last follow-up task (Innkalling_Siste_OppfølgingOppgaveDato)."
+      - name: bank_account_number
+        description: "Patient bank account number used for refunds (KontonummerBank)."
+      - name: reminders
+        description: "Free-text reminder notes attached to the patient (Påminnelser)."

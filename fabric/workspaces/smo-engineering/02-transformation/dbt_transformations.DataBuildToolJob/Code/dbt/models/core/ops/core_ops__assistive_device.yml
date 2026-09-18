@@ -1,0 +1,60 @@
+version: 2
+
+models:
+  - name: core_ops__assistive_device
+    description: "Conformed core business entity listing the assistive devices / orthopedic aids (hjelpemiddel) a patient has received, with nomenclature classification, ICD-10 diagnosis linkage and clinical injury descriptors. Supports LOP mapping of orthopedic aids, ICD-10 number/name and device type. Scoped strictly to patients in core_ops__patient."
+    config:
+      meta:
+        grain: "one row per assistive device"
+    columns:
+      - name: pk_assistive_device_id
+        description: "Primary key of the assistive device record."
+        tests:
+          - not_null
+          - unique
+      - name: fk_patient
+        description: "Foreign key reference to core_ops__patient."
+        tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('core_ops__patient')
+                field: pk_patient_id
+      - name: vedtak_id
+        description: "NOBS vedtak (NAV decision) business key the device was granted under. Soft reference only: core_ops__nav_decision uses a surrogate key not derivable from this value, so no core FK target exists."
+      - name: fag_code
+        description: "Source code for the responsible discipline/field (Fag) handling the device. Plain code, no core dimension target."
+      - name: production_method_code
+        description: "Source code for the production method (Produksjonsmetode) used for the device. Plain code, no core dimension target."
+      - name: name
+        description: "Name of the assistive device as registered in NOBS."
+      - name: icd10_code
+        description: "ICD-10 diagnosis code linked to the device need. Feeds LOP ICD-10 number mapping."
+      - name: icd10_description
+        description: "ICD-10 diagnosis description. Feeds LOP ICD-10 name mapping."
+      - name: nomenclature_main_group_code
+        description: "Nomenclature main group code classifying the device. Feeds LOP orthopedic aid / device type mapping."
+      - name: nomenclature_main_group_description
+        description: "Nomenclature main group description. Feeds LOP orthopedic aid / device type mapping."
+      - name: nomenclature_product_code
+        description: "Nomenclature product code identifying the specific device product. Feeds LOP orthopedic aid / device type mapping."
+      - name: nomenclature_product_description
+        description: "Nomenclature product description. Feeds LOP orthopedic aid / device type mapping."
+      - name: clinical_cause_of_need
+        description: "Clinical cause of need (Klinisk Årsak Til Behov) documented for the device."
+      - name: clinical_injury_level
+        description: "Injury level classification (skadenivå). Feeds LOP injury level mapping."
+      - name: clinical_injury_type
+        description: "Injury type classification (skadetype). Feeds LOP injury type mapping."
+      - name: clinical_injury_side
+        description: "Side of the body affected (skadeside). Feeds LOP injury side mapping."
+      - name: clinical_occupational_injury
+        description: "Occupational injury indicator (yrkesskade). Feeds LOP occupational injury mapping."
+      - name: created_at
+        description: "Record creation timestamp in source system."
+      - name: created_by
+        description: "Source-system account that created the record."
+      - name: modified_at
+        description: "Record modification timestamp in source system."
+      - name: modified_by
+        description: "Source-system account that last modified the record."

@@ -57,3 +57,5 @@ models:
         description: "Total patient copay amount (Egenbetaling)."
       - name: source_origin
         description: "Audit origin indicating source dataset."
+      - name: invoice_number
+        description: "Invoice number for the order (Fakturanummer)."

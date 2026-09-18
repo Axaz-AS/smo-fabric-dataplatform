@@ -168,7 +168,7 @@ Schemas are the access boundary: only the dbt job writes to `int`, `core` and `m
 
 | Layer | Prefix | Pattern | Example |
 |-------|--------|---------|---------|
-| base | `base_` | `base_{source}__{entity}` | `base_nobs__statistikk` |
+| base | `base_` | `base_{source}__{entity}` | `base_nobs__stat_statistikk` |
 | int | `int_` | `int_{domain}__{entity}` | `int_gapvision__score_enriched` |
 | core | `core_` | `core_{domain}__{entity}` | `core_ops__patient` |
 | mart — Dimension | `dim_` | `dim_{domain}_{consumer}_{entity}` | `dim_gapvision_pbi_company` |
@@ -291,7 +291,7 @@ cd fabric/workspaces/smo-engineering/02-transformation/dbt_transformations.DataB
 
 dbt compile                                    # verify models parse and compile
 dbt build                                      # same as the Fabric job
-dbt run --select base_nobs__statistikk         # a single model
+dbt run --select base_nobs__stat_statistikk         # a single model
 dbt build --select +core_gapvision_score       # a model and everything upstream
 dbt run --select source:gapvision              # everything reading one source system
 dbt test                                       # all tests

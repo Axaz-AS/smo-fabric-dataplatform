@@ -1,0 +1,42 @@
+version: 2
+
+models:
+  - name: core_ops__journal
+    description: "Conformed core business entity representing NOBS journal entries (EPJ journal text records) captured for patients, linked to their originating order where present. Scoped strictly to patients in core_ops__patient."
+    config:
+      meta:
+        grain: "one row per journal entry"
+    columns:
+      - name: pk_journal_id
+        description: "Primary key of the journal entry."
+        tests:
+          - not_null
+          - unique
+      - name: fk_patient
+        description: "Foreign key reference to core_ops__patient."
+        tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('core_ops__patient')
+                field: pk_patient_id
+      - name: fk_order
+        description: "Foreign key reference to core_ops__order for the order the journal entry was registered against (nullable). Soft: no relationships test — core_ops__order currently covers only stat_statistikk orders, so a journal entry may reference an order outside that set."
+      - name: journal_date
+        description: "Date the journal entry was made."
+      - name: epj_document_type
+        description: "EPJ document type classification of the journal entry."
+      - name: case_type
+        description: "Case type (Sak Type) under which the journal entry was registered."
+      - name: journal_text
+        description: "Free-text journal note content (Journaltekst)."
+      - name: created_by_user
+        description: "Source-system user who created the journal entry (Opprettet Av)."
+      - name: created_at
+        description: "Record creation timestamp in source system."
+      - name: created_by
+        description: "Source-system account that created the record."
+      - name: modified_at
+        description: "Record modification timestamp in source system."
+      - name: modified_by
+        description: "Source-system account that last modified the record."

@@ -17,11 +17,11 @@
 */
 
 WITH medarbeider AS (
-    SELECT * FROM {{ ref('base_nobs__medarbeider') }}
+    SELECT * FROM {{ ref('base_nobs__exp_medarbeider') }}
 ),
 
 kliniker AS (
-    SELECT * FROM {{ ref('base_nobs__kliniker') }}
+    SELECT * FROM {{ ref('base_nobs__statkliniker') }}
     WHERE COALESCE(employee_resource_type, '') <> 'Rom'
 ),
 

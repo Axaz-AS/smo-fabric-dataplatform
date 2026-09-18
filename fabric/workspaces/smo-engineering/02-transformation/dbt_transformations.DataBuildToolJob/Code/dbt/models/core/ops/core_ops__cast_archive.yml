@@ -1,0 +1,40 @@
+version: 2
+
+models:
+  - name: core_ops__cast_archive
+    description: "Conformed core business entity representing cast and plaster-cast archive (gips- og lestelager) storage items tracked per patient, including storage location, order reference and archive/discard dates. Scoped strictly to patients in core_ops__patient."
+    config:
+      meta:
+        grain: "one row per cast archive item"
+    columns:
+      - name: pk_cast_archive_id
+        description: "Primary key of the cast archive item."
+        tests:
+          - not_null
+          - unique
+      - name: fk_patient
+        description: "Foreign key reference to core_ops__patient."
+        tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('core_ops__patient')
+                field: pk_patient_id
+      - name: cast_category
+        description: "Category of the archived cast item (Kategori)."
+      - name: cast_location
+        description: "Physical storage location of the cast archive item (Sted)."
+      - name: order_number
+        description: "Business order number associated with the cast (Ordrenummer)."
+      - name: date_to_storage
+        description: "Date the cast was moved into archive storage (Dato Til Lager)."
+      - name: date_discard
+        description: "Date the cast is scheduled or was discarded (Dato Kastes)."
+      - name: created_at
+        description: "Record creation timestamp in source system."
+      - name: created_by
+        description: "Source-system account that created the record."
+      - name: modified_at
+        description: "Record modification timestamp in source system."
+      - name: modified_by
+        description: "Source-system account that last modified the record."

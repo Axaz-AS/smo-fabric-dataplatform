@@ -5,7 +5,7 @@
 
     Business Logic & Assumptions:
     - Master conformed operational order entity for Sophies Minde.
-    - Sourced from base_nobs__statistikk, which records order-level lines and component statistics.
+    - Sourced from base_nobs__stat_statistikk, which records order-level lines and component statistics.
     - Resolves the order header grain (1 row per order_number) by selecting the primary assistive device
       nomenclature code (prioritizing physical devices over 598/599 supplementary service codes).
     - Aggregates total order item count, total quantity, and invoice amounts across all lines.
@@ -16,7 +16,7 @@
 */
 
 WITH source AS (
-    SELECT * FROM {{ ref('base_nobs__statistikk') }}
+    SELECT * FROM {{ ref('base_nobs__stat_statistikk') }}
 ),
 
 ranked_items AS (
@@ -88,6 +88,7 @@ unified AS (
         p.planned_delivery_date,
         p.delivery_date,
         p.invoice_date,
+        p.invoice_number,
         p.days_manufacturing,
         p.days_production,
         p.days_production_hold,
