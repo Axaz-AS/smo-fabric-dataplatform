@@ -1,0 +1,30 @@
+version: 2
+
+models:
+  - name: dim_ops_lop_health_personnel
+    description: "External healthcare practitioner dimension shaped for the LOP migration import (requesting doctors, requisitioners, GPs). Field selection follows the NOBS-to-LOP mapping workbook: name, surname, HPR ID number, profession, category. Draft: source exp_helsepersonell currently holds a 12-row sample, all 'Lege (Rekvirent)'."
+    config:
+      meta:
+        grain: "one row per external healthcare practitioner"
+    columns:
+      - name: pk_health_personnel_id
+        description: "Primary key of the healthcare practitioner (NOBS person ID)."
+        tests:
+          - not_null
+          - unique
+      - name: hpr_number
+        description: "Official HPR number (NOBS 'ID_nummer'). All current sample values are distinct and populated; verify against the HPR registry when the full export arrives."
+      - name: first_name
+        description: "First name of the practitioner."
+      - name: last_name
+        description: "Surname of the practitioner."
+      - name: full_name
+        description: "Full combined name, derived in core when first or last name is present."
+      - name: practitioner_category
+        description: "Practitioner category (NOBS 'Kategori'). DATA QUALITY: values carry numeric sort prefixes (e.g. '1 Spesialist i ort...') — clean before LOP import."
+      - name: profession
+        description: "Profession (e.g. 'Lege (Rekvirent)')."
+      - name: created_at
+        description: "Record creation timestamp in source system."
+      - name: modified_at
+        description: "Record modification timestamp in source system."

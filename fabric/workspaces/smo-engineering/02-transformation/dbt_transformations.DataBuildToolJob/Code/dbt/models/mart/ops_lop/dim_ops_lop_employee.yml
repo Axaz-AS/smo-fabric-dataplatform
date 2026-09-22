@@ -1,0 +1,40 @@
+version: 2
+
+models:
+  - name: dim_ops_lop_employee
+    description: "Employee dimension shaped for the LOP migration import. LOP fetches employees as JSON from the datalake; this model is the export source. Phone numbers are not included (no phone field in the NOBS export; handled via Entra ID). Draft: rich attributes (email, username, job title, storage location) are only populated for employees present in the new exp_medarbeider export — currently a 1-row sample; the rest fall back to legacy statkliniker coverage."
+    config:
+      meta:
+        grain: "one row per internal Sophies Minde employee"
+    columns:
+      - name: pk_employee_id
+        description: "NOBS employee ID (conformed person ID). Primary key, used by LOP to cross-reference employees on migrated orders and appointments."
+        tests:
+          - not_null
+          - unique
+      - name: username
+        description: "NOBS login username. Migrated/created into Entra ID by LOP user provisioning."
+      - name: first_name
+        description: "First name of the employee."
+      - name: last_name
+        description: "Last name of the employee."
+      - name: full_name
+        description: "Display / full name of the employee."
+      - name: job_title
+        description: "Job title (NOBS 'Tittel')."
+      - name: resource_type
+        description: "Resource / function classification (e.g. Ingeniør, Tekniker, Administrasjon). NOTE: this is an employment-type classification, not a clinical subject area — verify with business whether it satisfies LOP-team matching ('primary subject area')."
+      - name: department_name
+        description: "Department / location the employee belongs to (Bryn, Drammen, Rikshospitalet, Hamar, Aker, Ullevål)."
+      - name: storage_location
+        description: "Standard storage location for the employee (NOBS 'Lagersted'). Sparsely populated until the full export arrives."
+      - name: email
+        description: "Work e-mail address. Migrated/created into Entra ID."
+      - name: is_active
+        description: "Whether the employee is currently active. Historical employees are retained so migrated appointments/orders can reference them."
+      - name: source_system_profile
+        description: "Audit flag: 'exp_medarbeider' (full profile) or 'statkliniker_fallback' (legacy coverage, sparse attributes)."
+      - name: created_at
+        description: "Record creation timestamp in source system."
+      - name: modified_at
+        description: "Record modification timestamp in source system."

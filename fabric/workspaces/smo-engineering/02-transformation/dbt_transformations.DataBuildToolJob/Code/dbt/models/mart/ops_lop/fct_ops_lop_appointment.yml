@@ -1,0 +1,82 @@
+version: 2
+
+models:
+  - name: fct_ops_lop_appointment
+    description: "Appointment fact shaped for the LOP migration import of historical appointments. LOP fetches appointments as JSON from the datalake; this model is the export source. Includes both 'occurred' visit events (statevent — the historical population LOP wants) and 'booked' appointments (exp_avtaler sample); the JSON export should filter per the agreed LOP approach for past vs future appointments. Draft: revisit when the full NOBS export arrives."
+    config:
+      meta:
+        grain: "one row per appointment record per source system (exp_avtaler booking or statevent event)"
+    columns:
+      - name: pk_appointment_id
+        description: "Surrogate primary key: source_origin concatenated with the source-system record id."
+        tests:
+          - not_null
+          - unique
+      - name: source_origin
+        description: "Source system the appointment record came from ('exp_avtaler' or 'statevent')."
+        tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values: ['exp_avtaler', 'statevent']
+      - name: source_record_id
+        description: "Record id within the source system."
+        tests:
+          - not_null
+      - name: appointment_record_type
+        description: "Record semantics: 'booked' (exp_avtaler) or 'occurred' (statevent visit event). LOP migrates historical ('occurred') appointments; future bookings are created directly in LOP."
+        tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values: ['booked', 'occurred']
+      - name: fk_patient
+        description: "Foreign key reference to the patient (imported to LOP via Boomi from core)."
+        tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('core_ops__patient')
+                field: pk_patient_id
+      - name: appointment_date
+        description: "Calendar date of the appointment. Fully populated."
+        tests:
+          - not_null
+      - name: start_time
+        description: "Scheduled/actual start time (46 NULLs in current data)."
+      - name: end_time
+        description: "Scheduled/actual end time."
+      - name: duration
+        description: "Duration of the occurred visit as recorded by statevent; unit not declared by source; NULL for bookings."
+      - name: appointment_type
+        description: "Appointment type. DATA QUALITY: NULL for ~94.6k of 114.7k records (statevent events carry no type) — gap to revisit with full export."
+      - name: appointment_title
+        description: "Title of the booked appointment; NULL for events."
+      - name: fk_employee_responsible
+        description: "Reference to dim_ops_lop_employee for the responsible employee. DATA QUALITY: NULL on all current rows — statevent does not provide an employee FK; use employee_initials to resolve identity."
+      - name: responsible_employee_name
+        description: "Employee name assigned on booked appointments; NULL for events."
+      - name: fk_employee_performing
+        description: "Reference to dim_ops_lop_employee for the employee performing the occurred visit."
+      - name: employee_initials
+        description: "Employee initials recorded on occurred visits (statevent). Well populated (31 NULLs of 114.7k) — the primary employee reference for historical appointments."
+      - name: location_name
+        description: "Location as free-text recorded by either source."
+      - name: department_name
+        description: "Department name (statevent); 55 NULLs in current data."
+      - name: attendance_status
+        description: "Derived attendance status for occurred visits (arrived / checked_out / did_not_arrive); NULL when no attendance timestamp is set and for bookings (~36k NULLs)."
+        tests:
+          - accepted_values:
+              arguments:
+                values: ['arrived', 'checked_out', 'did_not_arrive']
+      - name: arrived_at
+        description: "Timestamp the patient arrived (statevent only)."
+      - name: checked_out_at
+        description: "Timestamp the patient checked out (statevent only)."
+      - name: did_not_arrive_at
+        description: "Timestamp the visit was registered as did-not-arrive (statevent only)."
+      - name: created_at
+        description: "Record creation timestamp in source system."
+      - name: modified_at
+        description: "Record modification timestamp in source system."

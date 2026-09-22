@@ -1,0 +1,63 @@
+version: 2
+
+models:
+  - name: fct_ops_lop_order
+    description: "Order fact shaped for the LOP migration import. LOP fetches orders as JSON from the datalake; this model is the export source. Invoicing attributes are excluded (not migrated to LOP). Draft: built on the full legacy order population (~94.5k orders) — the NOBS export tables for orders have not yet been delivered."
+    config:
+      meta:
+        grain: "one row per clinical order"
+    columns:
+      - name: pk_order_id
+        description: "Primary key of the order (conformed NOBS order entity ID)."
+        tests:
+          - not_null
+          - unique
+      - name: order_number
+        description: "Business order number (OrdreNummer). Migrated to a separate read-only field in LOP — the NOBS number must not be editable there."
+        tests:
+          - not_null
+          - unique
+      - name: fk_patient
+        description: "Foreign key reference to the patient (imported to LOP via Boomi from core)."
+        tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('core_ops__patient')
+                field: pk_patient_id
+      - name: patient_number
+        description: "Business patient number, carried so the JSON export can reference patients without a core join."
+      - name: fk_employee_engineer
+        description: "Reference to dim_ops_lop_employee — the attending orthopedic engineer (part of the patient treatment team)."
+      - name: fk_employee_production_manager
+        description: "Reference to dim_ops_lop_employee — the production manager of the order."
+      - name: fk_health_personnel_rekvirent
+        description: "Reference to dim_ops_lop_health_personnel — the requisitioning physician."
+      - name: fk_primary_nomenclature
+        description: "Reference to core_ops__nomenclature — the primary assistive device nomenclature code of the order."
+      - name: department_name
+        description: "Clinic department handling the order."
+      - name: location_name
+        description: "Clinic location."
+      - name: order_type
+        description: "Order classification type (reparation, new, etc.). Currently source codes (N / R / K) — code-to-name mapping must be agreed with the business."
+      - name: order_status
+        description: "NOBS workflow status of the order. DATA QUALITY: ~40 distinct Norwegian status values — a mapping to simplified LOP statuses must be agreed before import."
+      - name: is_in_production
+        description: "Flag for whether the order is in production (order-level production status)."
+      - name: is_urgent
+        description: "Whether this is an urgent / rush order (Hasteordre)."
+      - name: is_cancelled
+        description: "Whether the order was cancelled."
+      - name: order_date
+        description: "Date the order was created (LOP basic order information)."
+      - name: planned_delivery_date
+        description: "Scheduled delivery date for the patient."
+      - name: delivery_date
+        description: "Date the device was delivered to the patient."
+      - name: source_origin
+        description: "Audit origin indicating source dataset."
+      - name: created_at
+        description: "Record creation timestamp in source system."
+      - name: modified_at
+        description: "Record modification timestamp in source system."
