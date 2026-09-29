@@ -1,0 +1,95 @@
+{
+  "properties": {
+    "activities": [
+      {
+        "type": "InvokePipeline",
+        "typeProperties": {
+          "parameters": {
+            "entity_list": [
+              "exp_Avtaler",
+              "exp_Diagnose",
+              "exp_Gipslager",
+              "exp_Helsepersonell",
+              "exp_Hjelpemiddel",
+              "exp_Journal",
+              "exp_Kontakt",
+              "exp_Medarbeider",
+              "exp_Pasient",
+              "exp_Personalia",
+              "exp_Vedtak"
+            ]
+          },
+          "waitOnCompletion": true,
+          "pipelineName": "pl_main_nobs_full_load_export",
+          "operationType": "InvokeADFPipeline"
+        },
+        "externalReferences": {
+          "connection": "7972ec38-c85a-41c3-a5a9-bada360bf1c2"
+        },
+        "policy": {
+          "timeout": "0.12:00:00",
+          "retry": 0,
+          "retryIntervalInSeconds": 30,
+          "secureInput": false,
+          "secureOutput": false
+        },
+        "name": "Fetch NOBS json from OData",
+        "dependsOn": []
+      },
+      {
+        "type": "TridentNotebook",
+        "typeProperties": {
+          "notebookId": "859525c3-4eb4-8c77-408b-ca066f03de4e",
+          "workspaceId": "00000000-0000-0000-0000-000000000000"
+        },
+        "externalReferences": {
+          "connection": "2d9fa317-5878-4a76-9eab-a302eac1a073"
+        },
+        "policy": {
+          "timeout": "0.12:00:00",
+          "retry": 0,
+          "retryIntervalInSeconds": 30,
+          "secureInput": false,
+          "secureOutput": false
+        },
+        "name": "Load NOBS json to tables",
+        "dependsOn": [
+          {
+            "activity": "Fetch NOBS json from OData",
+            "dependencyConditions": [
+              "Succeeded"
+            ]
+          }
+        ]
+      },
+      {
+        "type": "InvokeDataBuildToolJob",
+        "typeProperties": {
+          "dataBuildToolJobId": "da92185e-348e-9a03-4825-32c2120a040c",
+          "workspaceId": "00000000-0000-0000-0000-000000000000",
+          "threads": 8,
+          "operation": "build"
+        },
+        "externalReferences": {
+          "connection": "ffef1e2d-baaf-453d-ad9c-092645f03ef8"
+        },
+        "policy": {
+          "timeout": "0.12:00:00",
+          "retry": 0,
+          "retryIntervalInSeconds": 30,
+          "secureInput": false,
+          "secureOutput": false
+        },
+        "name": "DBT build",
+        "dependsOn": [
+          {
+            "activity": "Load NOBS json to tables",
+            "dependencyConditions": [
+              "Succeeded"
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}
