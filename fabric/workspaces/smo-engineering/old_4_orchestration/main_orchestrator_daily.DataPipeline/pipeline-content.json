@@ -116,7 +116,7 @@
             ]
           },
           "waitOnCompletion": true,
-          "pipelineName": "pl_main_nobs_full_load_set_of_entities",
+          "pipelineName": "pl_main_nobs_full_load_stat_reporting_tables",
           "operationType": "InvokeADFPipeline"
         },
         "externalReferences": {
@@ -124,8 +124,8 @@
         },
         "policy": {
           "timeout": "0.12:00:00",
-          "retry": 0,
-          "retryIntervalInSeconds": 30,
+          "retry": 3,
+          "retryIntervalInSeconds": 60,
           "secureInput": false,
           "secureOutput": false
         },
@@ -196,8 +196,8 @@
         },
         "policy": {
           "timeout": "0.12:00:00",
-          "retry": 0,
-          "retryIntervalInSeconds": 30,
+          "retry": 3,
+          "retryIntervalInSeconds": 60,
           "secureInput": false,
           "secureOutput": false
         },
