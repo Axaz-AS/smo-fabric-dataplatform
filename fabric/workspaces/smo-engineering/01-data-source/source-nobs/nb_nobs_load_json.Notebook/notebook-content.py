@@ -52,9 +52,12 @@ ENTITIES = [
     "exp_Journal",
     "exp_Kontakt",
     "exp_Medarbeider",
+    "exp_Ordre",
+    "exp_Ordrelinje",
     "exp_Pasient",
     "exp_Personalia",
-    "exp_Vedtak"
+    "exp_Vedtak",
+    "exp_Verge"
 ]
 
 # Entities to skip
