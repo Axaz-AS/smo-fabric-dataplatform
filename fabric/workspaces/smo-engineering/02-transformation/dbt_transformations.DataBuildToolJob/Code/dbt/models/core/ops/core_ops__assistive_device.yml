@@ -20,8 +20,17 @@ models:
               arguments:
                 to: ref('core_ops__patient')
                 field: pk_patient_id
+      - name: fk_nav_decision
+        description: "Foreign key reference to core_ops__nav_decision."
+        tests:
+          - relationships:
+              arguments:
+                to: ref('core_ops__nav_decision')
+                field: pk_nav_decision_id
+              config:
+                severity: warn # some historical devices reference soft-deleted or un-exported decisions
       - name: vedtak_id
-        description: "NOBS vedtak (NAV decision) business key the device was granted under. Soft reference only: core_ops__nav_decision uses a surrogate key not derivable from this value, so no core FK target exists."
+        description: "NOBS vedtak (NAV decision) business key the device was granted under. Kept for backward compatibility; use fk_nav_decision for the conformed core reference."
       - name: fag_code
         description: "Source code for the responsible discipline/field (Fag) handling the device. Plain code, no core dimension target."
       - name: production_method_code

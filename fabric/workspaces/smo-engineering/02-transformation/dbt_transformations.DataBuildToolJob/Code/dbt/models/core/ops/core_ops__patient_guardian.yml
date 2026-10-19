@@ -1,0 +1,40 @@
+version: 2
+
+models:
+  - name: core_ops__patient_guardian
+    description: "Conformed core business entity listing legal guardians / next of kin (verge) registered against a patient in NOBS, with contact details. Scoped strictly to patients in core_ops__patient."
+    config:
+      meta:
+        grain: "one row per patient guardian"
+    columns:
+      - name: pk_patient_guardian_id
+        description: "Primary key of the guardian record (NOBS exp_verge entity ID)."
+        tests:
+          - not_null
+          - unique
+      - name: fk_patient
+        description: "Foreign key reference to core_ops__patient."
+        tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('core_ops__patient')
+                field: pk_patient_id
+      - name: first_name
+        description: "First name of the guardian."
+      - name: last_name
+        description: "Last name of the guardian."
+      - name: full_name
+        description: "Full combined name of the guardian; NULL when neither first nor last name is registered."
+      - name: phone_number
+        description: "Guardian phone number (Telefonnummer)."
+      - name: email
+        description: "Guardian email address (Epost)."
+      - name: created_at
+        description: "Record creation timestamp in source system."
+      - name: created_by
+        description: "Source-system account that created the record."
+      - name: modified_at
+        description: "Record modification timestamp in source system."
+      - name: modified_by
+        description: "Source-system account that last modified the record."

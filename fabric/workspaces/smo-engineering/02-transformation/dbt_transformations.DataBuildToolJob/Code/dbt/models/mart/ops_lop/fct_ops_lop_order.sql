@@ -16,9 +16,9 @@
       status-mapping to LOP order statuses must be agreed before import.
     - order_type carries source codes (N / R / K); code-to-name mapping must be
       agreed with the business.
-    - Draft scope: built on the full legacy order population (statordrehistorikk,
-      ~94.5k orders); NOBS export tables for orders have not yet been delivered,
-      so revisit once the full export arrives.
+    - Draft scope: built on the full legacy order population (stat_statistikk);
+      enriched via core_ops__order with exp_ordre master-export references
+      (fk_assistive_device, fk_nav_decision) and trial/completion dates.
     - Scoped to the conformed patient population (inner join core_ops__patient):
       ~1.8% of legacy orders cannot be linked to a patient (14 with no patient
       reference, 1,694 pointing at patients outside core_ops__patient) and are
@@ -45,6 +45,8 @@ SELECT
     o.fk_employee_production_manager,
     o.fk_health_personnel_rekvirent,
     o.fk_primary_nomenclature,
+    o.fk_assistive_device,
+    o.fk_nav_decision,
 
     -- Organizational attributes
     o.department_name,
@@ -61,6 +63,8 @@ SELECT
     o.order_date,
     o.planned_delivery_date,
     o.delivery_date,
+    o.trial_date,
+    o.completed_date,
 
     -- Audit & origin
     o.source_origin,

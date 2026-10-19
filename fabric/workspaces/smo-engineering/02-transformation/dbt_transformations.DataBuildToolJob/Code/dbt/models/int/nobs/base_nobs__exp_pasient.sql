@@ -13,7 +13,10 @@ renamed AS (
         [Adresse_Postnr]                                   AS postal_code,
         [Adresse_Poststed]                                 AS city,
         [Adresse_Land]                                     AS country,
-        [Adresse_Hemmelig]                                 AS is_address_secret,
+        CASE
+            WHEN LOWER(TRIM(CAST([Adresse_Hemmelig] AS VARCHAR(10)))) IN ('ja', '1', 'true', 'j') THEN CAST(1 AS BIT)
+            ELSE CAST(0 AS BIT)
+        END                                                AS is_address_secret,
         [Innkalling_Intervall]                             AS recall_interval,
         [Innkalling_Neste]                                 AS recall_next,
         [Innkalling_Neste_Sted]                            AS recall_next_location,

@@ -28,10 +28,13 @@ personalia AS (
     SELECT * FROM {{ ref('base_nobs__exp_personalia') }}
 ),
 
+-- Full-export validation: exp_pasient carries blank ghost stubs (no name, and
+-- with no patient number / personalia match downstream) that would violate the
+-- core_ops__patient.patient_number not_null contract. Exclude nameless stubs.
 all_patients AS (
     SELECT fk_person_id AS person_id FROM pasient_detail WHERE fk_person_id IS NOT NULL
     UNION
-    SELECT pk_pasient_id AS person_id FROM pasient WHERE pk_pasient_id IS NOT NULL
+    SELECT pk_pasient_id AS person_id FROM pasient WHERE pk_pasient_id IS NOT NULL AND (first_name IS NOT NULL OR last_name IS NOT NULL)
     UNION
     SELECT fk_person_id AS person_id FROM personalia WHERE fk_person_id IS NOT NULL
 ),
@@ -58,15 +61,15 @@ unified AS (
         COALESCE(per.patient_status, pd.status)            AS patient_status,
         pd.status_code                                     AS patient_status_code,
         pas.patient_type,
-        COALESCE(pas.is_address_secret, 'Nei')             AS is_address_secret,
-        pas.address_line_1,
-        pas.address_line_2,
-        pas.postal_code,
-        pas.city,
-        pas.country,
-        COALESCE(per.city_place, pd.municipality)          AS municipality,
-        per.municipality_code,
-        per.county,
+        COALESCE(pas.is_address_secret, CAST(0 AS BIT))             AS is_address_secret,
+        CASE WHEN pas.is_address_secret = 1 THEN NULL ELSE pas.address_line_1 END AS address_line_1,
+        CASE WHEN pas.is_address_secret = 1 THEN NULL ELSE pas.address_line_2 END AS address_line_2,
+        CASE WHEN pas.is_address_secret = 1 THEN NULL ELSE pas.postal_code END AS postal_code,
+        CASE WHEN pas.is_address_secret = 1 THEN NULL ELSE pas.city END AS city,
+        CASE WHEN pas.is_address_secret = 1 THEN NULL ELSE pas.country END AS country,
+        CASE WHEN pas.is_address_secret = 1 THEN NULL ELSE COALESCE(per.city_place, pd.municipality) END AS municipality,
+        CASE WHEN pas.is_address_secret = 1 THEN NULL ELSE per.municipality_code END AS municipality_code,
+        CASE WHEN pas.is_address_secret = 1 THEN NULL ELSE per.county END AS county,
         COALESCE(per.department, pd.department_name)       AS department_name,
         COALESCE(per.meeting_place, pd.meeting_place)      AS meeting_place,
         per.institution,
@@ -112,3 +115,4 @@ unified AS (
 
 SELECT *
 FROM unified
+WHERE patient_number IS NOT NULL

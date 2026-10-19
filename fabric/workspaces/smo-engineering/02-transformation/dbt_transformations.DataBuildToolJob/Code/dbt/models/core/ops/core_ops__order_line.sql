@@ -21,66 +21,66 @@ WITH source AS (
 
 renamed AS (
     SELECT
-        pk_ordrelinje_id                                AS pk_order_line_id,
-        fk_ordre_id                                     AS fk_order,
-        fk_parent_ordrelinje_id                         AS parent_order_line_id,
-        fk_komponent_id                                 AS component_id,
-        fk_leverandoer_id                               AS supplier_id,
-        fk_avdeling_id,
-        fk_sted_id,
+        CAST(pk_ordrelinje_id AS VARCHAR(64))           AS pk_order_line_id,
+        CAST(fk_ordre_id AS VARCHAR(64))                AS fk_order,
+        CAST(fk_parent_ordrelinje_id AS VARCHAR(64))    AS parent_order_line_id,
+        CAST(fk_komponent_id AS VARCHAR(64))            AS component_id,
+        CAST(fk_leverandoer_id AS VARCHAR(64))          AS supplier_id,
+        CAST(fk_avdeling_id AS VARCHAR(64))             AS fk_avdeling_id,
+        CAST(fk_sted_id AS VARCHAR(64))                 AS fk_sted_id,
 
         -- Classification & status
-        order_number,
-        status                                          AS line_status,
-        production_status,
-        nomenclature_code,
-        destination_code,
+        CAST(order_number AS VARCHAR(50))               AS order_number,
+        CAST(status AS VARCHAR(50))                     AS line_status,
+        CAST(production_status AS VARCHAR(50))          AS production_status,
+        CAST(nomenclature_code AS VARCHAR(50))          AS nomenclature_code,
+        CAST(destination_code AS VARCHAR(50))           AS destination_code,
 
         -- Quantities
-        quantity_ordered,
-        quantity_picked,
+        TRY_CAST(quantity_ordered AS FLOAT)             AS quantity_ordered,
+        TRY_CAST(quantity_picked AS FLOAT)              AS quantity_picked,
 
         -- Article / component identification
-        article_number_internal,
-        article_number_supplier,
-        article_name_internal,
-        article_name_supplier,
+        CAST(article_number_internal AS VARCHAR(50))    AS article_number_internal,
+        CAST(article_number_supplier AS VARCHAR(50))    AS article_number_supplier,
+        CAST(article_name_internal AS VARCHAR(255))     AS article_name_internal,
+        CAST(article_name_supplier AS VARCHAR(255))     AS article_name_supplier,
 
         -- Supplier
-        supplier_number,
-        supplier_admin_number,
-        supplier_name,
+        CAST(supplier_number AS VARCHAR(50))            AS supplier_number,
+        CAST(supplier_admin_number AS VARCHAR(50))      AS supplier_admin_number,
+        CAST(supplier_name AS VARCHAR(255))             AS supplier_name,
 
         -- Prices & amounts
-        unit_price,
-        unit_price_in,
-        unit_price_out,
-        line_amount,
-        line_amount_picked_in,
-        line_amount_picked_out,
+        TRY_CAST(unit_price AS FLOAT)                   AS unit_price,
+        TRY_CAST(unit_price_in AS FLOAT)                AS unit_price_in,
+        TRY_CAST(unit_price_out AS FLOAT)               AS unit_price_out,
+        TRY_CAST(line_amount AS FLOAT)                  AS line_amount,
+        TRY_CAST(line_amount_picked_in AS FLOAT)        AS line_amount_picked_in,
+        TRY_CAST(line_amount_picked_out AS FLOAT)       AS line_amount_picked_out,
 
         -- Invoicing
-        invoice_number,
-        copay_invoice_number,
+        CAST(invoice_number AS VARCHAR(50))             AS invoice_number,
+        CAST(copay_invoice_number AS VARCHAR(50))       AS copay_invoice_number,
 
         -- Key business dates
-        order_date,
-        registered_date,
-        ordered_from_supplier_date,
-        picked_date,
-        invoice_date,
-        copay_invoice_date,
+        TRY_CAST(order_date AS DATE)                    AS order_date,
+        TRY_CAST(registered_date AS DATE)               AS registered_date,
+        TRY_CAST(ordered_from_supplier_date AS DATE)    AS ordered_from_supplier_date,
+        TRY_CAST(picked_date AS DATE)                   AS picked_date,
+        TRY_CAST(invoice_date AS DATE)                  AS invoice_date,
+        TRY_CAST(copay_invoice_date AS DATE)            AS copay_invoice_date,
 
         -- Organizational attributes
-        department_name,
-        location_name,
+        CAST(department_name AS VARCHAR(100))           AS department_name,
+        CAST(location_name AS VARCHAR(100))             AS location_name,
 
         -- Audit & origin
-        is_locked,
-        created_at,
-        created_by,
-        modified_at,
-        modified_by
+        CAST(is_locked AS BIT)                          AS is_locked,
+        TRY_CAST(created_at AS DATETIME2(6))            AS created_at,
+        CAST(created_by AS VARCHAR(100))                AS created_by,
+        TRY_CAST(modified_at AS DATETIME2(6))           AS modified_at,
+        CAST(modified_by AS VARCHAR(100))               AS modified_by
     FROM source
 )
 

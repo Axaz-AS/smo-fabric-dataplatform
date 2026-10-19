@@ -14,10 +14,11 @@
       'booked' records (exp_avtaler) are included for completeness — LOP
       handles future bookings natively, so the JSON export should filter on
       appointment_record_type / appointment_date as agreed with Tieto.
-    - Responsible employee: the statevent source carries employee initials
-      rather than an employee FK; fk_employee_responsible is NULL for all
-      occurred records today. employee_initials and responsible_employee_name
-      (booked records) are therefore kept for identity resolution in LOP.
+    - Responsible employee: the full statevent export carries an employee FK;
+      fk_employee_responsible now resolves ~361k occurred records against
+      core_ops__employee (carried here as a dim_ops_lop_employee reference).
+      employee_initials and responsible_employee_name (booked records) remain
+      available as human-readable identity hints.
     - Draft scope: exp_avtaler currently contains an 11-row sample; statevent
       carries the full historical visit population. Revisit when the full
       NOBS export arrives.
@@ -39,6 +40,7 @@ SELECT
     start_time,
     end_time,
     duration,
+    duration_minutes,
     appointment_type,
     appointment_title,
 

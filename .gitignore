@@ -30,6 +30,8 @@ env/
 *.csv
 *.parquet
 *.jsonl
+*.xlsx
+temp_work_files/
 !.gitkeep
 
 # ==========================================

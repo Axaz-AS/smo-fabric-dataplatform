@@ -18,17 +18,17 @@ patients AS (
 
 cast_archive_items AS (
     SELECT
-        g.pk_gipslager_id                                   AS pk_cast_archive_id,
-        g.fk_person_id                                      AS fk_patient,
-        g.category                                          AS cast_category,
-        g.location                                          AS cast_location,
-        g.order_number,
-        g.date_to_storage,
-        g.date_discard,
-        g.created_at,
-        g.created_by,
-        g.modified_at,
-        g.modified_by
+        CAST(g.pk_gipslager_id AS VARCHAR(64))              AS pk_cast_archive_id,
+        CAST(g.fk_person_id AS VARCHAR(64))                 AS fk_patient,
+        CAST(g.category AS VARCHAR(100))                    AS cast_category,
+        CAST(g.location AS VARCHAR(100))                    AS cast_location,
+        CAST(g.order_number AS VARCHAR(50))                 AS order_number,
+        TRY_CAST(g.date_to_storage AS DATE)                 AS date_to_storage,
+        TRY_CAST(g.date_discard AS DATE)                    AS date_discard,
+        TRY_CAST(g.created_at AS DATETIME2(6))              AS created_at,
+        CAST(g.created_by AS VARCHAR(100))                  AS created_by,
+        TRY_CAST(g.modified_at AS DATETIME2(6))             AS modified_at,
+        CAST(g.modified_by AS VARCHAR(100))                 AS modified_by
     FROM source g
     INNER JOIN patients p
         ON g.fk_person_id = p.pk_patient_id

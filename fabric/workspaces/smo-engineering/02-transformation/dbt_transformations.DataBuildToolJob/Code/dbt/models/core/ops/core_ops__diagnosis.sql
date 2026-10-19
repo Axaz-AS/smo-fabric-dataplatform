@@ -18,24 +18,24 @@ patients AS (
 
 diagnoses AS (
     SELECT
-        d.pk_diagnose_id                                    AS pk_diagnosis_id,
-        d.fk_person_id                                      AS fk_patient,
-        d.fk_type_code                                      AS diagnosis_type_code,
-        d.diagnosis,
-        d.diagnosis_display,
-        d.clinical_aid_type,
-        d.clinical_info_line,
-        d.clinical_injury_level,
-        d.clinical_injury_side,
-        d.clinical_injury_type,
-        d.clinical_wound,
-        d.clinical_wound_location,
-        d.clinical_wound_location_date,
-        d.clinical_occupational_injury,
-        d.created_at,
-        d.created_by,
-        d.modified_at,
-        d.modified_by
+        CAST(d.pk_diagnose_id AS VARCHAR(64))               AS pk_diagnosis_id,
+        CAST(d.fk_person_id AS VARCHAR(64))                 AS fk_patient,
+        CAST(d.fk_type_code AS VARCHAR(50))                 AS diagnosis_type_code,
+        CAST(d.diagnosis AS VARCHAR(255))                   AS diagnosis,
+        CAST(d.diagnosis_display AS VARCHAR(255))           AS diagnosis_display,
+        CAST(d.clinical_aid_type AS VARCHAR(100))           AS clinical_aid_type,
+        CAST(d.clinical_info_line AS VARCHAR(255))          AS clinical_info_line,
+        CAST(d.clinical_injury_level AS VARCHAR(100))       AS clinical_injury_level,
+        CAST(d.clinical_injury_side AS VARCHAR(50))         AS clinical_injury_side,
+        CAST(d.clinical_injury_type AS VARCHAR(100))        AS clinical_injury_type,
+        CAST(d.clinical_wound AS VARCHAR(100))              AS clinical_wound,
+        CAST(d.clinical_wound_location AS VARCHAR(255))     AS clinical_wound_location,
+        TRY_CAST(d.clinical_wound_location_date AS DATE)    AS clinical_wound_location_date,
+        CAST(d.clinical_occupational_injury AS VARCHAR(50)) AS clinical_occupational_injury,
+        TRY_CAST(d.created_at AS DATETIME2(6))              AS created_at,
+        CAST(d.created_by AS VARCHAR(100))                  AS created_by,
+        TRY_CAST(d.modified_at AS DATETIME2(6))             AS modified_at,
+        CAST(d.modified_by AS VARCHAR(100))                 AS modified_by
     FROM source d
     INNER JOIN patients p
         ON d.fk_person_id = p.pk_patient_id

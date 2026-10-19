@@ -27,6 +27,8 @@ sources:
       - name: exp_journal
       - name: exp_kontakt
       - name: exp_medarbeider
+      - name: exp_ordre
       - name: exp_pasient
       - name: exp_personalia
       - name: exp_vedtak
+      - name: exp_verge

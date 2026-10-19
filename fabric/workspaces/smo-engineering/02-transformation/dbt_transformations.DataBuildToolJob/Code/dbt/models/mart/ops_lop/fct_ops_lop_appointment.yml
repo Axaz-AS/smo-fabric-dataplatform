@@ -47,13 +47,15 @@ models:
       - name: end_time
         description: "Scheduled/actual end time."
       - name: duration
-        description: "Duration of the occurred visit as recorded by statevent; unit not declared by source; NULL for bookings."
+        description: "Duration of the occurred visit as recorded by statevent (HH:MM:SS string); NULL for bookings."
+      - name: duration_minutes
+        description: "Duration of the occurred visit in minutes, derived from the statevent Varighet time value; NULL for bookings and unparseable durations."
       - name: appointment_type
         description: "Appointment type. DATA QUALITY: NULL for ~94.6k of 114.7k records (statevent events carry no type) — gap to revisit with full export."
       - name: appointment_title
         description: "Title of the booked appointment; NULL for events."
       - name: fk_employee_responsible
-        description: "Reference to dim_ops_lop_employee for the responsible employee. DATA QUALITY: NULL on all current rows — statevent does not provide an employee FK; use employee_initials to resolve identity."
+        description: "Reference to dim_ops_lop_employee for the responsible employee. Full export: resolves ~361k occurred records against the employee master; still NULL for bookings."
       - name: responsible_employee_name
         description: "Employee name assigned on booked appointments; NULL for events."
       - name: fk_employee_performing

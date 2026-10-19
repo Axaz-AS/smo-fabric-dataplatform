@@ -39,23 +39,23 @@ models:
       - name: patient_type
         description: "Classification of patient."
       - name: is_address_secret
-        description: "Flag indicating whether the patient's address is confidential / secret (fortrolig adresse)."
+        description: "Boolean flag (BIT) indicating whether the patient's address is confidential / secret (fortrolig adresse). When true (1), all address fields are masked with NULL."
       - name: address_line_1
-        description: "Street address line 1."
+        description: "Street address line 1 (NULL when is_address_secret is true)."
       - name: address_line_2
-        description: "Street address line 2."
+        description: "Street address line 2 (NULL when is_address_secret is true)."
       - name: postal_code
-        description: "Postal code (Postnummer)."
+        description: "Postal code (Postnummer, NULL when is_address_secret is true)."
       - name: city
-        description: "City (Poststed)."
+        description: "City (Poststed, NULL when is_address_secret is true)."
       - name: country
-        description: "Country (Land)."
+        description: "Country (Land, NULL when is_address_secret is true)."
       - name: municipality
-        description: "Municipality name (Kommune)."
+        description: "Municipality name (Kommune, NULL when is_address_secret is true)."
       - name: municipality_code
-        description: "Official 4-digit municipality code (Kommunenummer)."
+        description: "Official 4-digit municipality code (Kommunenummer, NULL when is_address_secret is true)."
       - name: county
-        description: "County name (Fylke)."
+        description: "County name (Fylke, NULL when is_address_secret is true)."
       - name: department_name
         description: "Primary Sophies Minde department (e.g. Bryn, Rikshospitalet, Drammen)."
       - name: meeting_place

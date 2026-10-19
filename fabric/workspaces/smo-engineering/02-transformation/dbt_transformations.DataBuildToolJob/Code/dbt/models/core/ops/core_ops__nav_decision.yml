@@ -2,23 +2,23 @@ version: 2
 
 models:
   - name: core_ops__nav_decision
-    description: "Conformed NAV decision (vedtak) entity unifying legacy statvedtak records and exp_vedtak master-export records. The two sources share no vedtak key, so the same real-world decision may appear once per source; source_origin preserves provenance."
+    description: "Conformed NAV decision (vedtak) entity uniting legacy statvedtak records and exp_vedtak master-export records. Full-export validation proved statvedtak.fk_vedtak_id matches exp_vedtak.pk_exp_vedtak_id 1-to-1, so both sources are joined on the shared vedtak key; pk_nav_decision_id is the conformed vedtak key and source_origin preserves provenance."
     config:
       meta:
-        grain: "one row per NAV decision record per source system (statvedtak or exp_vedtak)"
+        grain: "one row per conformed vedtak decision"
     columns:
       - name: pk_nav_decision_id
-        description: "Surrogate primary key: source_origin concatenated with the source-system record id (e.g. 'statvedtak|123')."
+        description: "Conformed vedtak key (statvedtak.fk_vedtak_id = exp_vedtak.pk_exp_vedtak_id) — the primary key of the unified decision."
         tests:
           - not_null
           - unique
       - name: source_origin
-        description: "Source system the decision record came from ('statvedtak' or 'exp_vedtak')."
+        description: "Which sources contributed the decision record ('statvedtak', 'exp_vedtak' or 'statvedtak+exp_vedtak' when both sources matched on the vedtak key)."
         tests:
           - not_null
           - accepted_values:
               arguments:
-                values: ['statvedtak', 'exp_vedtak']
+                values: ['statvedtak', 'exp_vedtak', 'statvedtak+exp_vedtak']
       - name: source_record_id
         description: "Record id within the source system (pk_stat_vedtak_id or pk_exp_vedtak_id)."
         tests:
@@ -34,7 +34,7 @@ models:
       - name: fk_order
         description: "Soft order reference (source order id). No relationships test: core_ops__order is scoped to stat_statistikk and does not cover every order referenced by decisions."
       - name: fk_vedtak_id
-        description: "Legacy vedtak header key from statvedtak (links decision rows sharing the same vedtak case); NULL for exp_vedtak records."
+        description: "Conformed vedtak header key (statvedtak.fk_vedtak_id, coalesced with exp_vedtak.pk_exp_vedtak_id); links decision rows sharing the same vedtak case."
       - name: patient_number
         description: "Patient number as recorded on the statvedtak decision row; NULL for exp_vedtak records."
       - name: fk_avdeling_id

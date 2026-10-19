@@ -29,6 +29,10 @@ models:
         description: "Foreign key reference to core_ops__health_personnel for the requisitioning physician."
       - name: fk_primary_nomenclature
         description: "Foreign key reference to core_ops__nomenclature for the primary assistive device."
+      - name: fk_assistive_device
+        description: "Foreign key reference to core_ops__assistive_device for the device ordered, from the exp_ordre order master export. NULL for orders not present in exp_ordre."
+      - name: fk_nav_decision
+        description: "Foreign key reference to core_ops__nav_decision (vedtak) the order was granted under, from the exp_ordre order master export. NULL for orders not present in exp_ordre."
       - name: department_name
         description: "Clinic department handling the order."
       - name: location_name
@@ -42,9 +46,21 @@ models:
       - name: order_date
         description: "Date the order was created."
       - name: planned_delivery_date
-        description: "Scheduled delivery date for the patient."
+        description: "Scheduled delivery date for the patient (exp_ordre preferred, stat_statistikk fallback)."
       - name: delivery_date
         description: "Date the device was delivered to the patient."
+      - name: trial_date
+        description: "Date of the patient fitting/trial (Prøvedato), from the exp_ordre order master export."
+      - name: completed_date
+        description: "Date the order was completed/ready (Ferdigdato), from the exp_ordre order master export."
+      - name: delivery_method
+        description: "Delivery method (LeveringsinfoMetode) from the exp_ordre order master export."
+      - name: order_notes
+        description: "Free-text order information notes (Ordreopplysninger) from the exp_ordre order master export."
+      - name: trial_notes
+        description: "Free-text trial/fitting notes (SamPrøvingsinfo) from the exp_ordre order master export."
+      - name: delivery_notes
+        description: "Free-text delivery notes (SamLeveringsinfo) from the exp_ordre order master export."
       - name: invoice_date
         description: "Date the order was invoiced."
       - name: total_order_items
