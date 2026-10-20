@@ -1,5 +1,5 @@
 WITH source AS (
-    SELECT * FROM {{ source('gapvision', 'V111_Utsendelse') }}
+    SELECT * FROM {{ source('gapvision', 'v111_utsendelse') }}
 ),
 
 renamed AS (

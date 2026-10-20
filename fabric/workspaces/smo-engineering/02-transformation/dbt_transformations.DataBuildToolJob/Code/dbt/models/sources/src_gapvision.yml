@@ -10,5 +10,5 @@ sources:
       schema: false
       identifier: false
     tables:
-      - name: V111_Score
-      - name: V111_Utsendelse
+      - name: v111_score
+      - name: v111_utsendelse
