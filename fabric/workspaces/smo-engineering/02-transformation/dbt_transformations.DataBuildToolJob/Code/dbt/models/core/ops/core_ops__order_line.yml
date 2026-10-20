@@ -2,18 +2,24 @@ version: 2
 
 models:
   - name: core_ops__order_line
-    description: "Conformed core entity representing individual component / article lines belonging to a clinical or manufacturing order. Captures article numbers and designations, supplier info, quantities, prices, invoicing references and per-line nomenclature. Supports LOP mapping of component history / model warehouse / order lines."
+    description: "Conformed core entity representing individual component / article lines belonging to a clinical or manufacturing order. Unifies the exp_ordrelinje master export (driving, precedence) with the legacy statordrelinje table (augmenting where the line matches). Captures article numbers and designations, supplier info, quantities, prices, invoicing references and per-line nomenclature. Supports LOP mapping of component history / model warehouse / order lines."
     config:
       meta:
         grain: "one row per order line"
     columns:
       - name: pk_order_line_id
-        description: "Primary key of the order line (NOBS ordrelinje ID)."
+        description: "Primary key of the order line (NOBS ordrelinje ID from the driving exp_ordrelinje export)."
         tests:
           - not_null
           - unique
+      - name: source_origin
+        description: "Provenance of the line: 'exp_ordrelinje' (export only) or 'exp_ordrelinje+statordrelinje' (matched and augmented by the legacy stat table)."
+        tests:
+          - not_null
       - name: fk_order
         description: "Foreign key reference to core_ops__order (the order header this line belongs to). Soft: core_ops__order is currently scoped to stat_statistikk orders, while order lines may reference orders outside that set — no relationships test (same treatment as core_ops__nav_decision.fk_order)."
+      - name: fk_person_id
+        description: "Person (patient) identifier the order line is linked to in the export (_kflt__Person). Plain ID — no person core entity join here."
       - name: parent_order_line_id
         description: "Identifier of the parent order line, when this line is a child of another line. Plain ID — no parent-line core entity exists yet."
       - name: component_id
@@ -34,10 +40,16 @@ models:
         description: "Nomenclature code (NomenklaturKode) classifying the device/article on this line."
       - name: destination_code
         description: "Destination code for delivery / fulfillment of the line."
+      - name: component_category
+        description: "Component category from the export (Komponent_kategori). exp_ordrelinje only."
       - name: quantity_ordered
         description: "Quantity ordered on the line (Antall)."
       - name: quantity_picked
         description: "Quantity actually picked / fulfilled on the line (AntallPlukket)."
+      - name: quantity_loaned
+        description: "Quantity loaned on the line (AntallLånt). exp_ordrelinje only."
+      - name: quantity_available_for_reservation
+        description: "Quantity available for reservation on the line (AntallTilgjForReservasjon). exp_ordrelinje only."
       - name: article_number_internal
         description: "Internal article number (ArtikkelNummer Intern)."
       - name: article_number_supplier
@@ -46,6 +58,14 @@ models:
         description: "Internal article designation / name (ArtikkelBenevnelse Intern)."
       - name: article_name_supplier
         description: "Supplier-side article designation / name (ArtikkelBenevnelse Lev)."
+      - name: unit
+        description: "Unit of measure for the line (Enhet). exp_ordrelinje only."
+      - name: batch_number_supplier
+        description: "Supplier batch number (BatchNrLev). exp_ordrelinje only."
+      - name: reference
+        description: "Line reference from the export (Referanse). exp_ordrelinje only."
+      - name: serial_number
+        description: "Serial number for the line (Serienummer). exp_ordrelinje only."
       - name: supplier_number
         description: "Supplier number (LeverandoerNr)."
       - name: supplier_admin_number
