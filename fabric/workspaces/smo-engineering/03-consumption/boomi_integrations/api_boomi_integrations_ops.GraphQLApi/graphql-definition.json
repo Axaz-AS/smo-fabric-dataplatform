@@ -34,6 +34,7 @@
             "username": "username"
           },
           "graphqlType": "Employee",
+          "isUserDefinedKeyField": false,
           "relationships": [],
           "sourceObject": "core.core_ops__employee",
           "sourceObjectType": "Table"
@@ -60,6 +61,7 @@
             "profession": "profession"
           },
           "graphqlType": "HealthPersonnel",
+          "isUserDefinedKeyField": false,
           "relationships": [],
           "sourceObject": "core.core_ops__health_personnel",
           "sourceObjectType": "Table"
@@ -86,6 +88,7 @@
             "subject_area": "subject_area"
           },
           "graphqlType": "Nomenclature",
+          "isUserDefinedKeyField": false,
           "relationships": [],
           "sourceObject": "core.core_ops__nomenclature",
           "sourceObjectType": "Table"
@@ -134,6 +137,7 @@
             "total_quantity": "total_quantity"
           },
           "graphqlType": "Order",
+          "isUserDefinedKeyField": false,
           "relationships": [
             {
               "cardinality": "ManyToOne",
@@ -205,6 +209,7 @@
             "recall_next_location": "recall_next_location"
           },
           "graphqlType": "Patient",
+          "isUserDefinedKeyField": false,
           "relationships": [],
           "sourceObject": "core.core_ops__patient",
           "sourceObjectType": "Table"
@@ -241,6 +246,7 @@
             "pk_patient_clinical_profile_id": "pk_patient_clinical_profile_id"
           },
           "graphqlType": "PatientClinicalProfile",
+          "isUserDefinedKeyField": false,
           "relationships": [
             {
               "cardinality": "OneToOne",
@@ -279,6 +285,7 @@
             "pk_patient_contact_id": "pk_patient_contact_id"
           },
           "graphqlType": "PatientContact",
+          "isUserDefinedKeyField": false,
           "relationships": [
             {
               "cardinality": "ManyToOne",

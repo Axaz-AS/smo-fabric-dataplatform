@@ -31,6 +31,7 @@
             "status": "status"
           },
           "graphqlType": "order",
+          "isUserDefinedKeyField": false,
           "relationships": [
             {
               "cardinality": "ManyToOne",
@@ -69,6 +70,7 @@
             "subject_area": "subject_area"
           },
           "graphqlType": "nomenclature",
+          "isUserDefinedKeyField": false,
           "relationships": [],
           "sourceObject": "nobs.s_nobs_nomenclature",
           "sourceObjectType": "Table"
