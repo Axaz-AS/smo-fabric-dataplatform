@@ -11,12 +11,18 @@ create view [int].[int_ops__order_unified] as /*
     - Aggregates total order item count, total quantity, and invoice amounts across all lines.
     - Maps role-based foreign keys to patient, engineer (clinician), production manager,
       requisitioning physician, and primary nomenclature code.
-    - Designed to easily incorporate incoming exp_ordre / exp_orders via union/coalesce
-      when that export table becomes available.
+    - Enriched via LEFT JOIN to exp_ordre (NOBS order master export): conformed
+      device/decision references (fk_assistive_device, fk_nav_decision), trial and
+      completion dates, delivery method and free-text notes; engineer, production
+      manager and planned delivery date are coalesced with exp_ordre precedence.
 */
 
 WITH source AS (
     SELECT * FROM [wh_silver].[int].[base_nobs__stat_statistikk]
+),
+
+exp_orders AS (
+    SELECT * FROM [wh_silver].[int].[base_nobs__exp_ordre]
 ),
 
 ranked_items AS (
@@ -63,10 +69,14 @@ unified AS (
         -- Role-based foreign keys
         p.fk_pasient_id                                    AS fk_patient,
         p.patient_number,
-        p.fk_ingenioer_id                                  AS fk_employee_engineer,
-        p.fk_produksjonsansvarlig_id                       AS fk_employee_production_manager,
+        COALESCE(eo.fk_ortopediingenior_id, p.fk_ingenioer_id) AS fk_employee_engineer,
+        COALESCE(eo.fk_produksjonsansvarlig_id, p.fk_produksjonsansvarlig_id) AS fk_employee_production_manager,
         p.fk_rekvirent_id                                  AS fk_health_personnel_rekvirent,
         p.nomenclature_code                                AS fk_primary_nomenclature,
+
+        -- Conformed entity references from exp_ordre
+        eo.fk_hjelpemiddel_id                              AS fk_assistive_device,
+        eo.fk_vedtak_id                                    AS fk_nav_decision,
 
         -- Organizational references
         p.fk_avdeling_id,
@@ -85,13 +95,21 @@ unified AS (
 
         -- Dates
         p.order_date,
-        p.planned_delivery_date,
+        COALESCE(eo.planned_delivery_date, p.planned_delivery_date) AS planned_delivery_date,
         p.delivery_date,
+        eo.trial_date,
+        eo.completed_date,
         p.invoice_date,
         p.invoice_number,
         p.days_manufacturing,
         p.days_production,
         p.days_production_hold,
+
+        -- Order detail from exp_ordre (production, delivery and trial notes)
+        eo.delivery_method,
+        eo.order_notes,
+        eo.trial_notes,
+        eo.delivery_notes,
 
         -- Order-level aggregates
         p.total_order_items,
@@ -106,6 +124,8 @@ unified AS (
         p.modified_at,
         p.modified_by
     FROM primary_orders p
+    LEFT JOIN exp_orders eo
+        ON p.fk_ordre_id = eo.pk_exp_ordre_id
 )
 
 SELECT *

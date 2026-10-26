@@ -5,7 +5,7 @@ create view [int].[base_nobs__exp_diagnose] as WITH source AS (
 renamed AS (
     SELECT
         [__kplt__ID]                                       AS pk_diagnose_id,
-        [_kflt_Person]                                     AS fk_person_id,
+        [_kflt__Person]                                    AS fk_person_id,
         [_kalt__Type]                                      AS fk_type_code,
         [Diagnose]                                         AS diagnosis,
         [Diagnose_Display]                                 AS diagnosis_display,
