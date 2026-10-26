@@ -1,0 +1,40 @@
+version: 2
+
+models:
+  - name: core_ops__invoice_line
+    description: "Conformed core entity representing billed line items from the NOBS exp_Fakturalinje export. Captures description, quantity, unit price, line amounts with and without VAT, VAT type and posting key per invoice line."
+    config:
+      meta:
+        grain: "one row per invoice line"
+    columns:
+      - name: pk_invoice_line_id
+        description: "Primary key of the invoice line (NOBS Fakturalinje ID)."
+        tests:
+          - not_null
+          - unique
+      - name: fk_invoice_id
+        description: "Foreign key reference to core_ops__invoice (the invoice header this line belongs to). Soft: no relationships test, consistent with other NOBS export FKs in this project."
+      - name: quantity
+        description: "Quantity on the line (Antall)."
+      - name: description
+        description: "Line item description (Beskrivelse)."
+      - name: unit_price
+        description: "Unit price for the line (EnhetsPris)."
+      - name: line_amount
+        description: "Line amount excluding VAT (LinjeBeløp)."
+      - name: line_amount_vat
+        description: "VAT amount on the line (LinjeBeløp_MVA)."
+      - name: accounting
+        description: "Posting / accounting key for the line (Kontering)."
+      - name: vat_type
+        description: "VAT type from the source lookup (_kalt__MVAType)."
+      - name: line_type
+        description: "Line type from the source lookup (_kalt__Type)."
+      - name: created_at
+        description: "Record creation timestamp in source system."
+      - name: created_by
+        description: "Account that created the record in the source system."
+      - name: modified_at
+        description: "Record modification timestamp in source system."
+      - name: modified_by
+        description: "Account that last modified the record in the source system."

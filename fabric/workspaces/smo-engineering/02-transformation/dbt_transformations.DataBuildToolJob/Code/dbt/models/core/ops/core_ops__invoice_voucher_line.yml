@@ -1,0 +1,32 @@
+version: 2
+
+models:
+  - name: core_ops__invoice_voucher_line
+    description: "Conformed core entity representing invoice attachment / voucher (bilag) lines from the NOBS exp_FakturaBilagslinje export. Captures quantity, internal article designation, unit price and line amount per voucher line."
+    config:
+      meta:
+        grain: "one row per invoice voucher line"
+    columns:
+      - name: pk_invoice_voucher_line_id
+        description: "Primary key of the invoice voucher line (NOBS FakturaBilagslinje ID)."
+        tests:
+          - not_null
+          - unique
+      - name: fk_invoice_id
+        description: "Foreign key reference to core_ops__invoice (the invoice header this voucher line belongs to). Soft: no relationships test, consistent with other NOBS export FKs in this project."
+      - name: quantity
+        description: "Quantity on the voucher line (Antall)."
+      - name: article_name_internal
+        description: "Internal article designation on the voucher line (ArtikkelBenevnelse_Intern)."
+      - name: unit_price
+        description: "Unit price for the voucher line (EnhetsPris)."
+      - name: line_amount
+        description: "Line amount on the voucher line (LinjeBeløp)."
+      - name: created_at
+        description: "Record creation timestamp in source system."
+      - name: created_by
+        description: "Account that created the record in the source system."
+      - name: modified_at
+        description: "Record modification timestamp in source system."
+      - name: modified_by
+        description: "Account that last modified the record in the source system."

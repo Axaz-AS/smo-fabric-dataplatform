@@ -1,0 +1,104 @@
+version: 2
+
+models:
+  - name: core_ops__invoice
+    description: "Conformed core entity representing invoice / credit note headers from the NOBS exp_Faktura export. Top-level financial truth for billed revenue: invoice number and dates, totals with and without VAT, payment status, copay and NAV direct-dialog amounts, and references to order, billing recipient and subject."
+    config:
+      meta:
+        grain: "one row per invoice"
+    columns:
+      - name: pk_invoice_id
+        description: "Primary key of the invoice (NOBS Faktura ID)."
+        tests:
+          - not_null
+          - unique
+      - name: invoice_number
+        description: "Business invoice number (Fakturanummer)."
+      - name: invoice_date
+        description: "Invoice date (Fakturadato)."
+      - name: payment_due_date
+        description: "Payment due date (BetalingsDato)."
+      - name: paid_date
+        description: "Date the invoice was paid (DatoInnbetalt)."
+      - name: invoice_type
+        description: "Invoice type from the source lookup (_kalt__FakturaType)."
+      - name: invoice_kind
+        description: "Invoice kind / category from the source lookup (_kalt__Type)."
+      - name: invoice_status
+        description: "Current payment / workflow status of the invoice (_kalt__Status)."
+      - name: customer_category
+        description: "Customer category from the source lookup (_kalt__KundeKategori)."
+      - name: payment_method
+        description: "Payment method from the source lookup (_kalt_BetalingsMåte)."
+      - name: paid_via
+        description: "Channel the invoice is paid out via (_kalt__UtbetalesVia)."
+      - name: billing_recipient_private
+        description: "Whether the billing recipient is a private person (_kalt_FakturamottakerPrivat)."
+      - name: billing_customer_name
+        description: "Name of the billed customer (FaktureringKundeNavn)."
+      - name: billing_recipient_id
+        description: "Identifier of the invoice recipient (RegningsMottakerID). Plain ID — no recipient core entity exists yet."
+      - name: department_code
+        description: "Department code on the invoice (Avdelingkode)."
+      - name: main_department_code
+        description: "Main department code on the invoice (Avdelingkode_Hoved)."
+      - name: total_before_vat
+        description: "Invoice total excluding VAT (FakturaTotalFørMVA)."
+      - name: total_incl_vat
+        description: "Invoice total including VAT (FakturaTotal)."
+      - name: vat_amount
+        description: "VAT amount on the invoice (MVA_normal)."
+      - name: outstanding_amount
+        description: "Outstanding (unpaid) invoice amount (Faktura_IkkeInnbetalt)."
+      - name: paid_amount
+        description: "Amount paid in on the invoice (InnbetaltBeløp)."
+      - name: credit_amount
+        description: "Credit amount to be paid out (Kredit_TilUtbetaling)."
+      - name: copay_amount
+        description: "Patient statutory copay amount on the invoice (EB_Egenbetaling_Beløp)."
+      - name: copay_indicator
+        description: "Copay indicator from the source (EB_Egenbetaling)."
+      - name: direct_dialog_amount
+        description: "NAV direct-dialog amount (DirekteDialog_Beløp)."
+      - name: direct_dialog_payment_date
+        description: "NAV direct-dialog payment date (DirekteDialog_Betalingsdato)."
+      - name: direct_dialog_accounting
+        description: "NAV direct-dialog accounting reference (DirekteDialog_Kontering)."
+      - name: credit_account_number
+        description: "Bank account number for crediting (Kontonummer_kreditering)."
+      - name: credit_reference
+        description: "Reference for the credit (Kreditert_referanse)."
+      - name: requisition_number
+        description: "Requisition number linked to the invoice (RekvisisjonsNummer)."
+      - name: additional_reference
+        description: "Additional payment reference (TilleggsReferanse)."
+      - name: invoice_note
+        description: "Free-text note on the invoice (FakturaNote)."
+      - name: invoice_title
+        description: "Invoice title as shown in NOBS (FakturaTittel)."
+      - name: order_number
+        description: "Business order number the invoice relates to (Ordrenr)."
+      - name: fk_order_id
+        description: "Foreign key reference to the order (NOBS Ordre ID). Soft: core_ops__order is scoped to stat_statistikk orders and does not cover every order referenced by invoices — no relationships test (same treatment as core_ops__order_line.fk_order)."
+      - name: fk_order_number
+        description: "Order number reference from the export (_kflt_OrdreNr). Soft reference — no relationships test."
+      - name: fk_recipient_id
+        description: "Identifier of the invoice recipient (_kflt_MottakerID). Plain ID — no recipient core entity exists yet."
+      - name: fk_subject_id
+        description: "Identifier of the subject the invoice concerns (_kflt_OmhandlerID). Plain ID — no subject core entity exists yet."
+      - name: subject_archive_number
+        description: "Archive number of the subject the invoice concerns (Omhandler_arkivnr)."
+      - name: subject_name
+        description: "Name of the subject the invoice concerns (Omhandler_navn)."
+      - name: fk_avdeling_id
+        description: "Department identifier from the source system. Soft id — no core department entity exists (naming kept consistent with core_ops__patient/order)."
+      - name: fk_sted_id
+        description: "Location identifier from the source system. Soft id — no core location entity exists (naming kept consistent with core_ops__patient/order)."
+      - name: created_at
+        description: "Record creation timestamp in source system."
+      - name: created_by
+        description: "Account that created the record in the source system."
+      - name: modified_at
+        description: "Record modification timestamp in source system."
+      - name: modified_by
+        description: "Account that last modified the record in the source system."

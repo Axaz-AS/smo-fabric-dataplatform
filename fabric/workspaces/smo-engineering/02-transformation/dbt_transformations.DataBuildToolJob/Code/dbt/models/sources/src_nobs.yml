@@ -21,6 +21,9 @@ sources:
       - name: statvedtak
       - name: exp_avtaler
       - name: exp_diagnose
+      - name: exp_faktura
+      - name: exp_fakturabilagslinje
+      - name: exp_fakturalinje
       - name: exp_gipslager
       - name: exp_helsepersonell
       - name: exp_hjelpemiddel
@@ -28,8 +31,10 @@ sources:
       - name: exp_kontakt
       - name: exp_medarbeider
       - name: exp_ordre
+      - name: exp_ordrehistorikk
       - name: exp_ordrelinje
       - name: exp_pasient
       - name: exp_personalia
+      - name: exp_time
       - name: exp_vedtak
       - name: exp_verge

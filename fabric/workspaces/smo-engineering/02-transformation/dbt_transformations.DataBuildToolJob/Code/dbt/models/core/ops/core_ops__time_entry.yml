@@ -1,0 +1,32 @@
+version: 2
+
+models:
+  - name: core_ops__time_entry
+    description: "Conformed core entity representing logged work hours from the NOBS exp_Time export. Captures hours per date per employee per order, with the production status at entry time."
+    config:
+      meta:
+        grain: "one row per time entry"
+    columns:
+      - name: pk_time_entry_id
+        description: "Primary key of the time entry (NOBS Time ID)."
+        tests:
+          - not_null
+          - unique
+      - name: fk_order_id
+        description: "Foreign key reference to core_ops__order (the order the hours are logged against). Soft: core_ops__order is scoped to stat_statistikk orders and does not cover every order referenced by time entries — no relationships test (same treatment as core_ops__order_line.fk_order)."
+      - name: fk_employee_id
+        description: "Employee identifier the hours are logged by (_kflt_MedarbeiderID). Soft reference to core_ops__employee — no relationships test."
+      - name: entry_date
+        description: "Date of the time entry (Dato)."
+      - name: production_status
+        description: "Production status at entry time (Produksjonsstatus)."
+      - name: hours
+        description: "Number of hours logged (Timer)."
+      - name: created_at
+        description: "Record creation timestamp in source system."
+      - name: created_by
+        description: "Account that created the record in the source system."
+      - name: modified_at
+        description: "Record modification timestamp in source system."
+      - name: modified_by
+        description: "Account that last modified the record in the source system."

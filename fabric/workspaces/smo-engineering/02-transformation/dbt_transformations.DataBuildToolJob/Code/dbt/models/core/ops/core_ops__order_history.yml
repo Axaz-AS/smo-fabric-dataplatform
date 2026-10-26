@@ -1,0 +1,38 @@
+version: 2
+
+models:
+  - name: core_ops__order_history
+    description: "Conformed core entity representing order history / production stage events from the NOBS exp_Ordrehistorikk export. Captures event date, production status, stage and the responsible employee, orthopedic engineer and production manager per event."
+    config:
+      meta:
+        grain: "one row per order history event"
+    columns:
+      - name: pk_order_history_id
+        description: "Primary key of the order history event (NOBS Ordrehistorikk ID)."
+        tests:
+          - not_null
+          - unique
+      - name: fk_order_id
+        description: "Foreign key reference to core_ops__order (the order this history event belongs to). Soft: core_ops__order is scoped to stat_statistikk orders and does not cover every order referenced by history events — no relationships test (same treatment as core_ops__order_line.fk_order)."
+      - name: event_date
+        description: "Date of the history event (Dato)."
+      - name: production_status
+        description: "Production status recorded on the event (Produksjonsstatus)."
+      - name: stage
+        description: "Production stage recorded on the event (Stadie)."
+      - name: fk_employee_id
+        description: "Employee identifier recorded on the event (_kflt_MedarbeiderID). Soft reference to core_ops__employee — no relationships test."
+      - name: fk_orthopedic_engineer_id
+        description: "Orthopedic engineer responsible at the event (_kflt_OrtopediingeniøransvarligID). Soft reference — no relationships test."
+      - name: fk_production_manager_id
+        description: "Production manager responsible at the event (_klft_ProduksjonsAnsvarligID). Soft reference — no relationships test."
+      - name: fk_production_status_manager_id
+        description: "Production status manager responsible at the event (_klft_ProduksjonsStatusAnsvarligID). Soft reference — no relationships test."
+      - name: created_at
+        description: "Record creation timestamp in source system."
+      - name: created_by
+        description: "Account that created the record in the source system."
+      - name: modified_at
+        description: "Record modification timestamp in source system."
+      - name: modified_by
+        description: "Account that last modified the record in the source system."
