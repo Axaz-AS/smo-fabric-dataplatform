@@ -56,6 +56,12 @@ models:
         description: "Official 4-digit municipality code (Kommunenummer, NULL when is_address_secret is true)."
       - name: county
         description: "County name (Fylke, NULL when is_address_secret is true)."
+      - name: mobile_number
+        description: "Primary mobile phone number (latest contact of type mobile from exp_kontakt)."
+      - name: phone_number
+        description: "Primary landline/telephone number (latest contact of type telephone from exp_kontakt)."
+      - name: email_address
+        description: "Primary email address (latest contact of type e-post or any value containing '@' from exp_kontakt)."
       - name: department_name
         description: "Primary Sophies Minde department (e.g. Bryn, Rikshospitalet, Drammen)."
       - name: meeting_place
@@ -70,6 +76,10 @@ models:
         description: "Foreign key reference to core_ops__health_personnel for the referring doctor (Henvisende lege)."
       - name: fk_health_personnel_rekvirent
         description: "Foreign key reference to core_ops__health_personnel for the requisitioning physician (Rekvirent)."
+      - name: rekvirent_hpr_number
+        description: "HPR register authorization number of the requisitioning physician (Rekvirent)."
+      - name: rekvirent_name
+        description: "Full name of the requisitioning physician (Rekvirent)."
       - name: fk_health_personnel_fysioterapeut
         description: "Foreign key reference to core_ops__health_personnel for the patient's physical therapist."
       - name: fk_health_personnel_ergoterapeut

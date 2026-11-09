@@ -27,6 +27,10 @@ models:
         description: "Foreign key reference to core_ops__employee for the production manager."
       - name: fk_health_personnel_rekvirent
         description: "Foreign key reference to core_ops__health_personnel for the requisitioning physician."
+      - name: rekvirent_hpr_number
+        description: "HPR register authorization number of the requisitioning physician."
+      - name: rekvirent_name
+        description: "Full name of the requisitioning physician."
       - name: fk_primary_nomenclature
         description: "Foreign key reference to core_ops__nomenclature for the primary assistive device."
       - name: fk_assistive_device

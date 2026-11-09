@@ -49,6 +49,8 @@ models:
         description: "Date the decision was made (vedtaksdato) from statvedtak; NULL for exp_vedtak records."
       - name: date_sent_nav
         description: "Date the decision was sent to NAV from statvedtak; NULL for exp_vedtak records."
+      - name: application_date
+        description: "Date the application was sent to NAV (Søknadsdato proxy from statvedtak.date_sent_nav)."
       - name: fk_vedtak_type_code
         description: "Decision type code from exp_vedtak (vedtak type reference); NULL for statvedtak records."
       - name: decision_name
@@ -59,6 +61,10 @@ models:
         description: "Expiration date of a decision extension from exp_vedtak; NULL for statvedtak records."
       - name: renewal_expiration_date
         description: "Expiration date of the decision renewal from exp_vedtak; NULL for statvedtak records."
+      - name: decision_expiration_date
+        description: "Expiration date of the decision (coalescing extension and renewal expiration dates from exp_vedtak)."
+      - name: decision_duration_months
+        description: "Calculated duration of decision validity in months (VedtakVarighet), computed as DATEDIFF in months from date_decision to decision_expiration_date."
       - name: renewal_status_text
         description: "Renewal status text (decision name and status) from exp_vedtak; NULL for statvedtak records."
       - name: renewal_status_code

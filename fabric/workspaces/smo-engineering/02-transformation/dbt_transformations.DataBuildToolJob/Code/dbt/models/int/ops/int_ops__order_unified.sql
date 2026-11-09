@@ -25,6 +25,10 @@ exp_orders AS (
     SELECT * FROM {{ ref('base_nobs__exp_ordre') }}
 ),
 
+helsepersonell AS (
+    SELECT * FROM {{ ref('base_nobs__exp_helsepersonell') }}
+),
+
 ranked_items AS (
     SELECT
         s.*,
@@ -72,6 +76,12 @@ unified AS (
         COALESCE(eo.fk_ortopediingenior_id, p.fk_ingenioer_id) AS fk_employee_engineer,
         COALESCE(eo.fk_produksjonsansvarlig_id, p.fk_produksjonsansvarlig_id) AS fk_employee_production_manager,
         p.fk_rekvirent_id                                  AS fk_health_personnel_rekvirent,
+        hp_rekvirent.employee_id_number                    AS rekvirent_hpr_number,
+        CASE
+            WHEN hp_rekvirent.first_name IS NOT NULL OR hp_rekvirent.last_name IS NOT NULL
+            THEN TRIM(CONCAT(COALESCE(hp_rekvirent.first_name, ''), ' ', COALESCE(hp_rekvirent.last_name, '')))
+            ELSE NULL
+        END                                                AS rekvirent_name,
         p.nomenclature_code                                AS fk_primary_nomenclature,
 
         -- Conformed entity references from exp_ordre
@@ -126,6 +136,8 @@ unified AS (
     FROM primary_orders p
     LEFT JOIN exp_orders eo
         ON p.fk_ordre_id = eo.pk_exp_ordre_id
+    LEFT JOIN helsepersonell hp_rekvirent
+        ON p.fk_rekvirent_id = hp_rekvirent.pk_helsepersonell_id
 )
 
 SELECT *

@@ -24,6 +24,8 @@ SELECT
     CAST(fk_employee_engineer AS VARCHAR(64))             AS fk_employee_engineer,
     CAST(fk_employee_production_manager AS VARCHAR(64))    AS fk_employee_production_manager,
     CAST(fk_health_personnel_rekvirent AS VARCHAR(64))    AS fk_health_personnel_rekvirent,
+    CAST(rekvirent_hpr_number AS VARCHAR(50))             AS rekvirent_hpr_number,
+    CAST(rekvirent_name AS VARCHAR(255))                  AS rekvirent_name,
     CAST(fk_primary_nomenclature AS VARCHAR(64))         AS fk_primary_nomenclature,
 
     -- Conformed entity references from exp_ordre
