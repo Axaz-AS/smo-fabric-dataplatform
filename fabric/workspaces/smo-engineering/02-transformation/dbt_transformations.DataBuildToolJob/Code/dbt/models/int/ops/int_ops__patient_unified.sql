@@ -125,7 +125,14 @@ unified AS (
         per.fk_fastlege_id                                 AS fk_health_personnel_fastlege,
         per.fk_henvisende_lege_id                          AS fk_health_personnel_henvisende_lege,
         per.fk_rekvirent_id                                AS fk_health_personnel_rekvirent,
-        hp_rekvirent.employee_id_number                    AS rekvirent_hpr_number,
+        COALESCE(
+            hp_rekvirent.employee_id_number,
+            CASE
+                WHEN CHARINDEX('ID:', per.bht_rekvirent) > 0
+                THEN NULLIF(TRIM(REPLACE(REPLACE(SUBSTRING(per.bht_rekvirent, CHARINDEX('ID:', per.bht_rekvirent) + 3, 20), CHAR(13), ''), CHAR(10), '')), '')
+                ELSE NULL
+            END
+        )                                                  AS rekvirent_hpr_number,
         CASE
             WHEN hp_rekvirent.first_name IS NOT NULL OR hp_rekvirent.last_name IS NOT NULL
             THEN TRIM(CONCAT(COALESCE(hp_rekvirent.first_name, ''), ' ', COALESCE(hp_rekvirent.last_name, '')))
