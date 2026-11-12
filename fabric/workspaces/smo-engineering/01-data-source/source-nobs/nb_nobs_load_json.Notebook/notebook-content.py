@@ -44,6 +44,7 @@ ENTITIES = [
     "StatPasient_detail",
     "StatTime",
     "StatVedtak",
+    "exp_Arbeidsbeskrivelse",
     "exp_Avtaler",
     "exp_Diagnose",
     "exp_Faktura",
